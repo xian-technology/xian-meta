@@ -13,4 +13,4 @@
 ## Workflow
 - When the convention changes, update this repo first, then roll the change into the implementation repos.
 - Favor consistency over novelty. New documentation patterns should be introduced here before they spread.
-
+- Other Xian repos should point here and follow `docs/REPO_CONVENTIONS.md` for root structure, backlog placement, and folder-level README rules.
