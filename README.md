@@ -3,7 +3,9 @@
 `xian-meta` defines the shared repository conventions and stack-wide design
 standards for the main `xian-technology` repos.
 
-Use this repo as the reference point for:
+## Scope
+
+This repo owns:
 
 - root-level repo structure
 - AI-facing notes and backlog locations
@@ -11,10 +13,28 @@ Use this repo as the reference point for:
 - cross-repo documentation conventions
 - cross-repo protocol and workflow design notes when a change spans the whole stack
 
-`xian-meta` is not a general future-work repo.
+This repo does not own:
 
-Keep repo-local implementation details, backlog items, and internal redesign
-notes in the owning repo. Use `xian-meta` only when the subject defines a
-shared contract or convention across multiple Xian repos.
+- repo-local implementation details
+- repo-local backlog items
+- repo-local redesign notes
+- day-to-day code ownership in the implementation repos
 
-Start with [docs/REPO_CONVENTIONS.md](docs/REPO_CONVENTIONS.md).
+## Key Directories
+
+- `docs/`: shared conventions, workflow rules, and cross-repo design contracts
+- `scripts/`: lightweight tooling for checking repo-wide standards
+
+## Validation
+
+```bash
+python3 ./scripts/check_repo_conventions.py --workspace-root ..
+```
+
+## Related Docs
+
+- [AGENTS.md](AGENTS.md)
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [docs/BACKLOG.md](docs/BACKLOG.md)
+- [docs/REPO_CONVENTIONS.md](docs/REPO_CONVENTIONS.md)
+- [docs/CHANGE_WORKFLOW.md](docs/CHANGE_WORKFLOW.md)

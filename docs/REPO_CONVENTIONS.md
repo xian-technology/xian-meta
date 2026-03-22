@@ -56,6 +56,32 @@ Exception:
 - `docs/ARCHITECTURE.md`: major components, ownership, dependency direction
 - `docs/BACKLOG.md`: future work, open problems, follow-up items, and links to deeper notes
 
+## Root README Template
+
+Every main repo root `README.md` should use the same top-level structure:
+
+1. repo title and one-paragraph summary
+2. `## Scope`
+3. `## Key Directories`
+4. `## Validation`
+5. `## Related Docs`
+
+Additional repo-specific sections are expected after those shared sections.
+
+The shared sections should answer:
+
+- `Scope`: what the repo owns and what it intentionally does not own
+- `Key Directories`: where the important code, docs, tests, and scripts live
+- `Validation`: the preferred local commands to run before push
+- `Related Docs`: links to `AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/BACKLOG.md`,
+  and any other high-value repo notes
+
+The docs site repo follows the same structure, but its internal links should
+point to `.meta/ARCHITECTURE.md` and `.meta/BACKLOG.md` instead of `docs/`.
+If the root README is part of a published docs build, those `.meta/` references
+may need to be plain path references instead of markdown links so the build
+does not treat them as public-site dead links.
+
 ## Change Workflow
 
 Every change in a main Xian repo should follow two explicit gates before push:
