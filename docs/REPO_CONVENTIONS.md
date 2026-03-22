@@ -10,6 +10,29 @@ The convention is designed around:
 - a stable place for future work and architecture notes
 - short folder-level entrypoints at architectural boundaries
 
+## `xian-meta` Scope
+
+`xian-meta` is the shared standards repo for the Xian workspace.
+
+It should contain only:
+
+- shared repo conventions
+- shared change-workflow rules
+- cross-repo architectural or protocol designs
+- stack-wide standards that define a common contract before implementation
+
+It should not become:
+
+- a global backlog for all future work
+- a duplicate of implementation-repo architecture docs
+- a storage place for repo-local redesign notes
+- a replacement for `docs/BACKLOG.md` in the owning repos
+
+Rule of thumb:
+
+- if a note mainly affects one repo's internals, keep it in that repo
+- if a note defines a shared contract across multiple main repos, `xian-meta` is the right home
+
 ## Required Root Files
 
 Every main repo should have:

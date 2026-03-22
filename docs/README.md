@@ -1,6 +1,16 @@
 # Docs
 
-This folder contains the shared repo-structure standard for the Xian workspace.
+This folder contains the shared repo-structure standard and stack-wide design
+notes for the Xian workspace.
+
+The scope here is intentionally narrow:
+
+- shared conventions
+- shared workflows
+- cross-repo design contracts
+
+Repo-local implementation notes and future-work details should stay in the
+owning repo.
 
 Files:
 
