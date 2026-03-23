@@ -130,7 +130,8 @@ scripts, and backend applications.
 - done: block watchers using raw node RPC with resume by height
 - done: event watchers using indexed BDS reads with stable `after_id` cursor
 - done: explicit SDK config objects and retry/resource policy
-- next: higher-level SDK application helper layer
+- done: higher-level SDK application helper layer
+- next: service integration examples
 
 ### Deliverables
 
@@ -418,8 +419,8 @@ Each pack should explain:
 
 ## Current Next Action
 
-Continue Phase 1 with a higher-level SDK application helper layer in
-`xian-py`, then update the integration docs in `xian-docs-web`.
+Continue Phase 1 with service integration examples in `xian-py` and
+`xian-docs-web`, then move into the first template-driven network slice.
 
 When that slice is complete:
 
