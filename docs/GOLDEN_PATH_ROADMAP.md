@@ -129,7 +129,8 @@ scripts, and backend applications.
 - done: typed node status reads
 - done: block watchers using raw node RPC with resume by height
 - done: event watchers using indexed BDS reads with stable `after_id` cursor
-- next: explicit SDK config objects and retry/resource policy
+- done: explicit SDK config objects and retry/resource policy
+- next: higher-level SDK application helper layer
 
 ### Deliverables
 
@@ -417,7 +418,7 @@ Each pack should explain:
 
 ## Current Next Action
 
-Continue Phase 1 with explicit SDK config objects and retry/resource policy in
+Continue Phase 1 with a higher-level SDK application helper layer in
 `xian-py`, then update the integration docs in `xian-docs-web`.
 
 When that slice is complete:
