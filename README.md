@@ -36,5 +36,6 @@ python3 ./scripts/check_repo_conventions.py --workspace-root ..
 - [AGENTS.md](AGENTS.md)
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - [docs/BACKLOG.md](docs/BACKLOG.md)
+- [docs/XIAN_MISSION_AND_PRODUCT_STRATEGY.md](docs/XIAN_MISSION_AND_PRODUCT_STRATEGY.md)
 - [docs/REPO_CONVENTIONS.md](docs/REPO_CONVENTIONS.md)
 - [docs/CHANGE_WORKFLOW.md](docs/CHANGE_WORKFLOW.md)
