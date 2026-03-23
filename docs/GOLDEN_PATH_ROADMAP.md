@@ -131,7 +131,8 @@ scripts, and backend applications.
 - done: event watchers using indexed BDS reads with stable `after_id` cursor
 - done: explicit SDK config objects and retry/resource policy
 - done: higher-level SDK application helper layer
-- next: service integration examples
+- done: service integration examples
+- next: define the first template-driven network slice
 
 ### Deliverables
 
@@ -189,6 +190,19 @@ These examples should show how Xian fits into ordinary software workflows.
 2. config objects and retry policy
 3. higher-level application helper layer
 4. service integration examples
+
+### Exit Criteria
+
+Phase 1 is considered complete when:
+
+- the SDK supports long-running block and event consumers
+- client behavior is configurable through explicit config objects
+- common application patterns have thin helper clients
+- the repo includes realistic examples for:
+  - an API service
+  - an event-driven worker
+  - an admin or automation job
+- `xian-docs-web` documents the resulting SDK surface
 
 ### Docs Work Required
 
@@ -419,12 +433,12 @@ Each pack should explain:
 
 ## Current Next Action
 
-Continue Phase 1 with service integration examples in `xian-py` and
-`xian-docs-web`, then move into the first template-driven network slice.
+Phase 1 is now complete. Begin Phase 2 with the first template-driven network
+slice in `xian-configs`, `xian-cli`, `xian-stack`, and `xian-docs-web`.
 
 When that slice is complete:
 
 1. update this roadmap if the scope changed
-2. mark the implemented items in `xian-py/docs/SDK_REVIEW_BACKLOG.md`
+2. mark the implemented items in the owning repo backlog/docs files
 3. record the docs updates in `xian-docs-web`
-4. move to higher-level SDK application helpers
+4. move to the next template or operator workflow slice
