@@ -1,0 +1,428 @@
+# Golden Path Roadmap
+
+## Status
+
+Active cross-repo implementation roadmap.
+
+This document turns the product strategy into an ordered execution plan for
+the main Xian repos. It is intended to be resumable: if work stops midstream,
+the next useful steps should still be obvious from this file.
+
+## Purpose
+
+The goal of this roadmap is to make Xian feel like the easiest programmable
+decentralized backend to use from a normal software stack.
+
+That means the next work should prioritize:
+
+- the application integration path
+- network creation and deployment simplicity
+- monitoring, recovery, and operations clarity
+- a small set of opinionated templates
+- incremental docs updates as features land
+
+It should not prioritize:
+
+- throughput-first work
+- VM implementation as the immediate next milestone
+- protocol expansion without a clear product payoff
+
+## Golden Path Definition
+
+The golden path should let a normal engineering team do this with minimal
+guesswork:
+
+1. create a purposeful network from a template
+2. start it locally or remotely
+3. deploy one or more contracts
+4. integrate it from a Python service
+5. query state, history, and events cleanly
+6. monitor the node and recover it when something goes wrong
+
+The stack should eventually support a polished version of that flow in under
+thirty minutes for a new user.
+
+## Cross-Repo Principles For This Roadmap
+
+- Every implemented feature that changes user-facing behavior must be reviewed
+  for docs impact in `xian-docs-web`.
+- Docs should be updated incrementally with implementation, not as a large
+  cleanup pass afterward.
+- Each completed slice should update the relevant backlog/roadmap notes so work
+  can resume cleanly later.
+- Repo-local implementation detail belongs in the owning repo; cross-repo
+  product flow belongs here.
+
+## Phase Overview
+
+### Phase 1: SDK And Integration Maturity
+
+Primary repo:
+
+- `xian-py`
+
+Supporting repos:
+
+- `xian-docs-web`
+
+Outcome:
+
+- the SDK becomes a strong application integration surface, not just a node
+  helper
+
+### Phase 2: Template-Driven Network Creation
+
+Primary repos:
+
+- `xian-configs`
+- `xian-cli`
+- `xian-stack`
+
+Supporting repos:
+
+- `xian-docs-web`
+- `xian-deploy`
+
+Outcome:
+
+- purposeful network templates become the default way to start a Xian network
+
+### Phase 3: Monitoring, Control, And Recovery
+
+Primary repos:
+
+- `xian-stack`
+- `xian-cli`
+- `xian-deploy`
+
+Supporting repos:
+
+- `xian-docs-web`
+
+Outcome:
+
+- running and operating a Xian node feels predictable and observable
+
+### Phase 4: Reference Solution Packs
+
+Primary repos:
+
+- `xian-docs-web`
+- `xian-py`
+- `xian-configs`
+- `xian-stack`
+
+Outcome:
+
+- Xian is demonstrated through concrete backend-oriented use cases instead of
+  generic toy examples
+
+## Phase 1: SDK And Integration Maturity
+
+### Goal
+
+Make `xian-py` feel like a serious SDK for services, workers, automation
+scripts, and backend applications.
+
+### Progress
+
+- done: typed node status reads
+- done: block watchers using raw node RPC with resume by height
+- done: event watchers using indexed BDS reads with stable `after_id` cursor
+- next: explicit SDK config objects and retry/resource policy
+
+### Deliverables
+
+#### 1. Watchers And Subscriptions
+
+Add first-class SDK support for:
+
+- waiting for transactions cleanly
+- polling new blocks with resume support
+- watching contract events with cursor/height continuation
+- reconnect and retry behavior for long-running consumers
+
+This can start as polling-based if that keeps the implementation reliable and
+simple.
+
+#### 2. Explicit Client Configuration
+
+Add config objects for:
+
+- transport and timeout behavior
+- retry/backoff policy
+- tx submission policy
+- watcher/subscription behavior
+
+The current client methods work, but they still expose too much behavior
+through loose parameters and defaults.
+
+#### 3. Higher-Level Application Helpers
+
+Add a small application-facing layer above the raw client surface.
+
+Examples:
+
+- `ContractClient`
+- `EventClient`
+- `HistoryClient`
+- `TokenClient`
+
+These should remove repetitive boilerplate without hiding the underlying
+network model.
+
+#### 4. Integration Examples
+
+Provide examples for:
+
+- a Python API service
+- a background worker consuming chain events
+- an admin or automation job
+
+These examples should show how Xian fits into ordinary software workflows.
+
+### Recommended Order
+
+1. watchers and subscriptions
+2. config objects and retry policy
+3. higher-level application helper layer
+4. service integration examples
+
+### Docs Work Required
+
+Update `xian-docs-web` at each step:
+
+- `tools/xian-py.md`
+- `tools/index.md`
+- architecture or integration pages if the SDK surface changes materially
+
+Also maintain `xian-py/docs/SDK_REVIEW_BACKLOG.md` as slices are completed.
+
+## Phase 2: Template-Driven Network Creation
+
+### Goal
+
+Make network creation feel intentional and productized instead of assembled
+from lower-level pieces.
+
+### Initial Template Set
+
+#### `single-node-dev`
+
+- one node
+- dashboard on
+- BDS off by default
+- fast local contract iteration
+
+#### `single-node-indexed`
+
+- one node
+- BDS on
+- dashboard on
+- Prometheus on
+- useful for backend integration development
+
+#### `consortium-3`
+
+- three validators
+- conservative defaults
+- monitoring enabled
+- snapshot and state-sync guidance
+
+#### `public-network-starter`
+
+- multi-node starter shape
+- stricter operational defaults
+- monitoring and recovery enabled by default
+- positioned for public network experimentation
+
+#### `embedded-backend`
+
+- positioned as a decentralized backend for an application
+- one or few authorities depending on profile
+- BDS on
+- integration-friendly defaults
+
+### Repo Responsibilities
+
+#### `xian-configs`
+
+- canonical manifests and settings per template
+
+#### `xian-cli`
+
+- template selection and creation UX
+- commands such as `xian network create --template ...`
+
+#### `xian-stack`
+
+- runtime defaults and compose/preset behavior aligned to templates
+
+#### `xian-deploy`
+
+- deployment playbooks aligned to template classes
+
+### Recommended Order
+
+1. define canonical template names and intent
+2. add manifests in `xian-configs`
+3. expose template-driven creation in `xian-cli`
+4. align `xian-stack` presets and defaults
+5. add `xian-deploy` support where it materially differs by template
+
+### Docs Work Required
+
+Update `xian-docs-web` as template support lands:
+
+- node/network setup pages
+- CLI pages
+- deployment/operator guidance
+
+## Phase 3: Monitoring, Control, And Recovery
+
+### Goal
+
+Make it easy to understand what a node is doing and what to do when it is not
+healthy.
+
+### Deliverables
+
+#### 1. Unified Status Commands
+
+Add or improve commands so operators can quickly see:
+
+- node up/down state
+- current height
+- catching-up state
+- peers
+- BDS enabled/disabled and lag
+- dashboard/metrics endpoints
+
+#### 2. Doctor / Health Checks
+
+Add a stronger diagnostic surface for:
+
+- RPC reachability
+- CometBFT health
+- disk pressure
+- spool health
+- Postgres/BDS health
+- snapshot and state-sync readiness
+
+#### 3. Endpoint Discovery
+
+Add one obvious way to print the useful local endpoints for a running stack.
+
+Examples:
+
+- dashboard URL
+- metrics URL
+- Prometheus URL
+- Grafana URL
+- BDS/GraphQL status if enabled
+
+#### 4. Monitoring Presets
+
+Standardize monitoring defaults by template:
+
+- local dev
+- indexed local backend
+- consortium
+- public network starter
+
+### Repo Responsibilities
+
+#### `xian-stack`
+
+- local stack status
+- doctor
+- endpoint discovery
+- monitoring defaults and presets
+
+#### `xian-cli`
+
+- higher-level operator commands where appropriate
+
+#### `xian-deploy`
+
+- remote deployment and operational checks
+
+### Docs Work Required
+
+Keep `xian-docs-web` current for:
+
+- monitoring layers
+- operator workflows
+- recovery and troubleshooting
+
+## Phase 4: Reference Solution Packs
+
+### Goal
+
+Prove the product thesis with realistic examples that are smaller than full
+products but more meaningful than toy demos.
+
+### Initial Candidate Packs
+
+#### Credits Ledger Pack
+
+- token or credits contract
+- Python service using `xian-py`
+- event watcher
+- indexed read examples
+
+#### Registry / Approval Pack
+
+- registry contract
+- approval or governance layer
+- Python admin flow
+- monitoring and recovery guidance
+
+#### Workflow Backend Pack
+
+- state-machine style contract
+- Python worker consuming events
+- API service reading indexed state and history
+
+### Output Shape
+
+Each pack should explain:
+
+- why Xian fits this problem
+- how to start the network
+- how the app talks to it
+- how to monitor and recover it
+
+## Recommended Immediate Order
+
+### Do Now
+
+1. mature `xian-py` with watchers/subscriptions
+2. add SDK config objects and retry/resource policies
+3. define and implement the first network template set
+4. add unified local stack status and endpoint discovery
+
+### Do Soon After
+
+1. add higher-level SDK application helpers
+2. add stronger doctor/health workflows
+3. align `xian-deploy` with the initial template set
+4. build the first reference solution pack
+
+### Do Later
+
+1. broader multi-account adoption work
+2. a future Xian VM or bytecode implementation
+3. deeper throughput-focused optimization beyond obvious product needs
+
+## Current Next Action
+
+Continue Phase 1 with explicit SDK config objects and retry/resource policy in
+`xian-py`, then update the integration docs in `xian-docs-web`.
+
+When that slice is complete:
+
+1. update this roadmap if the scope changed
+2. mark the implemented items in `xian-py/docs/SDK_REVIEW_BACKLOG.md`
+3. record the docs updates in `xian-docs-web`
+4. move to higher-level SDK application helpers
