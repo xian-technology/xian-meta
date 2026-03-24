@@ -314,3 +314,30 @@ After repo-level validation is green, run real workflow checks covering:
     - `consortium-3`
     - snapshot and recovery flows
     - at least one solution-pack walkthrough against a live node
+  - live `Registry / Approval` reference-app validation then completed against
+    the indexed single-node network
+  - registry validation exposed and resolved additional cross-stack issues:
+    - the SDK/example hydration path was still using raw simulation envelopes;
+      `xian-py` now exposes `call(...)` for decoded readonly contract returns
+      and raises on failed simulated execution
+    - the registry projector only read `event.data`, but live BDS payloads can
+      split decisive fields into `data_indexed`; the registry projector now
+      merges both halves before applying or hydrating state
+    - the workflow backend examples had the same authoritative-read issue and
+      now use the shared `call(...)` path for `get_item`
+    - boolean ABCI query values were mislabeled as `int` because `bool` is a
+      subclass of `int`; the node now emits `info = "bool"` and the SDK also
+      decodes older mislabeled responses compatibly
+    - the registry bootstrap job added approvers but did not fund them with
+      enough native balance to pay for approval transactions in the reference
+      flow; it now tops up configured signers by default, with `0` disabling
+      the top-up
+  - live registry validation result after fixes:
+    - the initial proposal hydrated correctly from authoritative contract reads
+    - the second signer approval succeeded through the FastAPI service
+    - the projector applied `ProposalApproved`, `RecordUpserted`, and
+      `ProposalExecuted`
+    - projected proposal, record, approval, and activity views all matched the
+      authoritative on-chain registry state
+  - next live scenario:
+    - `Workflow Backend` reference-app validation at the same depth
