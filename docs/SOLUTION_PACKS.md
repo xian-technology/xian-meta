@@ -299,3 +299,23 @@ It still does not need:
 - a separate repo
 - generalized governance machinery
 - new protocol features
+
+## Third Deeper Reference-App Slice: Workflow Backend
+
+After the Registry / Approval reference-app slice, the next deeper slice built
+on Workflow Backend.
+
+That deeper slice demonstrates:
+
+- separate processor and projector workers
+- indexed events as workflow and projection triggers
+- authoritative contract reads used to hydrate richer item projections
+- a resumable local read model for queue state, item catalogs, and activity
+- an API service that serves both on-chain reads and projected workflow views
+
+It still does not need:
+
+- a separate frontend
+- a separate repo
+- generalized workflow tooling
+- new protocol features

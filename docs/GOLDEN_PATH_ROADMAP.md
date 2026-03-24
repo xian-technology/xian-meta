@@ -430,8 +430,12 @@ products but more meaningful than toy demos.
   slice
 - done: turn the Registry / Approval Pack into a fuller reference application
   with an event-driven hydrated read model
-- next: decide how far to deepen the Workflow Backend Pack as the third deeper
-  reference-app slice
+- done: choose Workflow Backend as the third deeper reference application
+  slice
+- done: turn the Workflow Backend Pack into a fuller reference application
+  with separate processor and projector workers
+- next: review the resulting three-pack deeper reference-app set and choose
+  the next major product slice from that stronger base
 
 ### Initial Candidate Packs
 
@@ -465,6 +469,13 @@ products but more meaningful than toy demos.
 - state-machine style contract
 - Python worker consuming events
 - API service reading indexed state and history
+- deeper reference-app direction:
+  - separate processor and projector workers
+  - projected queue and activity views outside the chain
+  - event-driven projection that uses indexed events as triggers and
+    authoritative contract reads as hydration
+  - richer API service for queue summaries, item catalogs, and workflow
+    activity
 
 ### Output Shape
 
@@ -501,6 +512,6 @@ Each pack should explain:
 
 With the initial solution-pack set in place:
 
-1. decide the Workflow Backend deeper reference-app scope
-2. keep the docs and roadmap updated as that slice lands
-3. only add more pack variety after the deeper reference-app pattern is proven
+1. review the resulting three-pack deeper reference-app set
+2. identify the strongest next major product slice based on those packs
+3. keep the docs and roadmap aligned with that next choice
