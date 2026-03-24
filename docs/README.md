@@ -25,3 +25,4 @@ Files:
 - `XIAN_MISSION_AND_PRODUCT_STRATEGY.md`: shared mission, principles, and product direction for Xian
 - `GOLDEN_PATH_ROADMAP.md`: phased cross-repo implementation roadmap for the product thesis
 - `SOLUTION_PACKS.md`: canonical definition of the reference solution-pack set and the first pack scope
+- `WHOLE_STACK_VALIDATION_PLAN.md`: resumable whole-stack validation and hardening plan
