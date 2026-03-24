@@ -278,3 +278,24 @@ It still does not need:
 - a separate frontend
 - a separate repo
 - new protocol features
+
+## Second Deeper Reference-App Slice: Registry / Approval
+
+After the Credits Ledger reference-app slice, the next deeper slice should
+build on Registry / Approval.
+
+That deeper slice should demonstrate:
+
+- indexed events as workflow triggers
+- authoritative contract reads used to hydrate richer proposal and record
+  projections
+- a resumable local read model for pending approvals, registry records, and
+  audit activity
+- an API service that serves both on-chain reads and projected workflow views
+
+It still does not need:
+
+- a separate frontend
+- a separate repo
+- generalized governance machinery
+- new protocol features

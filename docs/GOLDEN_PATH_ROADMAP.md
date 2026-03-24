@@ -426,8 +426,12 @@ products but more meaningful than toy demos.
   application slice
 - done: turn the Credits Ledger Pack into a fuller reference application with
   a projected read model and richer service flow
-- next: decide whether Registry / Approval or Workflow Backend should become
-  the next deeper reference app
+- done: choose Registry / Approval as the second deeper reference application
+  slice
+- done: turn the Registry / Approval Pack into a fuller reference application
+  with an event-driven hydrated read model
+- next: decide how far to deepen the Workflow Backend Pack as the third deeper
+  reference-app slice
 
 ### Initial Candidate Packs
 
@@ -450,6 +454,11 @@ products but more meaningful than toy demos.
 - approval or governance layer
 - Python admin flow
 - monitoring and recovery guidance
+- deeper reference-app direction:
+  - projected proposal and record views outside the chain
+  - event-driven projection that uses indexed events as triggers and
+    authoritative contract reads as hydration
+  - richer API service for pending approvals, records, and audit activity
 
 #### Workflow Backend Pack
 
@@ -492,7 +501,6 @@ Each pack should explain:
 
 With the initial solution-pack set in place:
 
-1. compare the Registry / Approval and Workflow Backend packs as the next
-   deeper reference-app target
-2. keep the docs and roadmap updated as that next slice lands
+1. decide the Workflow Backend deeper reference-app scope
+2. keep the docs and roadmap updated as that slice lands
 3. only add more pack variety after the deeper reference-app pattern is proven
