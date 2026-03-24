@@ -321,8 +321,12 @@ healthy.
 - done: add explicit endpoint discovery in `xian-cli` and `xian-stack`
 - done: make `doctor` perform live health checks by default
 - done: keep offline preflight available via `--skip-live-checks`
+- done: add dedicated machine-readable health commands in `xian-stack` and
+  `xian-cli`
+- done: expose state-sync readiness and snapshot-bootstrap visibility in the
+  operator surface
 - next: standardize template-aware monitoring defaults and deepen recovery
-  diagnostics
+  diagnostics further
 
 ### Deliverables
 
@@ -460,7 +464,7 @@ Continue Phase 3 by standardizing monitoring defaults and broadening recovery
 diagnostics:
 
 1. decide which monitoring defaults should vary by template class
-2. extend diagnostics around disk, spool, and state-sync readiness
-3. decide whether `xian-stack` should expose a dedicated machine-readable
-   health command
+2. extend diagnostics around BDS queue / spool health for service nodes
+3. tighten state-sync and snapshot recovery guidance around concrete operator
+   flows
 4. update the roadmap and docs log as each slice lands
