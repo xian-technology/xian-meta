@@ -227,3 +227,25 @@ After repo-level validation is green, run real workflow checks covering:
     - `consortium-3`
     - snapshot and recovery flows
     - at least one solution-pack walkthrough against a live node
+  - live `single-node-indexed` workflow then exposed two service-node bugs in
+    `xian-abci`:
+    - BDS wrote Python `dict` and `list` values directly into asyncpg JSONB
+      parameters during genesis and normal indexed persistence, which caused
+      startup failure with `expected str, got dict`
+    - BDS storage initialization happened during `Xian.create()` on a different
+      event loop than the ABCI runtime loop, which caused asyncpg pool usage to
+      fail at runtime with `Future attached to a different loop`
+  - fixes implemented and validated locally:
+    - JSONB persistence now serializes all direct asyncpg JSONB parameters
+      through canonical JSON text before execution
+    - BDS storage initialization is deferred into `start_runtime()` so pool
+      creation and usage stay on the same runtime loop
+  - regression coverage added in `xian-abci` for:
+    - genesis and transaction JSONB serialization in BDS persistence
+    - runtime-loop-safe BDS startup initialization
+  - validation after the indexed-path fixes:
+    - targeted BDS/runtime/query tests passed
+    - full `xian-abci` validation passed with `260 passed`
+  - next step:
+    - rerun the live `single-node-indexed` stack against a clean rebuilt image
+      and continue to consortium and recovery scenarios once it is healthy
