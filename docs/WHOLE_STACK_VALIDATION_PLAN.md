@@ -357,6 +357,32 @@ After repo-level validation is green, run real workflow checks covering:
       authoritative contract reads
     - after pausing the processor, a second submitted item was cancelled
       through the API and the projected state matched the on-chain item state
-  - next step:
-    - rerun the final relevant validation set for the touched repos and then
-      summarize remaining follow-up work from the whole-stack sweep
+  - final cleanup and rerun:
+    - `xian-stack` backend endpoint discovery now resolves the actual
+      published Docker host ports for running stack services, which fixes
+      overridden-port validation workspaces reporting misleading dashboard URLs
+    - the remaining `utcfromtimestamp()` deprecation path in
+      `xian-abci/tests/abci_methods/test_abci_state_patches.py` was removed
+    - targeted reruns after cleanup:
+      - `xian-abci/tests/abci_methods/test_abci_state_patches.py`: `12 passed`
+      - `xian-stack backend.py validate`: passed
+      - runtime endpoint introspection verified against the live indexed stack:
+        dashboard resolved correctly to `http://127.0.0.1:18080`
+  - whole-stack sweep final state:
+    - repo-level validation is green across the main repos in scope
+    - the validated golden path now includes:
+      - template-driven network creation
+      - local operator status / endpoints / health / doctor flows
+      - remote deploy health and recovery runbooks
+      - three deeper reference apps validated against a live indexed node
+    - docs were updated incrementally with each user-facing change instead of
+      being deferred to a later cleanup pass
+  - prioritized follow-up after the sweep:
+    - package the validated reference apps into easier starter flows
+    - add reusable SDK projection / projector primitives so reference-app logic
+      is less copy-pasted
+    - deepen remote deployment parity for the reference-app and monitoring
+      flows
+    - add template-specific monitoring dashboards and alert presets
+    - keep protocol / VM / performance work deferred until one of those
+      product slices is actually blocked by current execution semantics

@@ -117,6 +117,19 @@ Outcome:
 - Xian is demonstrated through concrete backend-oriented use cases instead of
   generic toy examples
 
+## Current Next Priorities
+
+The whole-stack validation sweep is complete enough to move back to product
+building. The next slices should be:
+
+1. package the validated reference apps into easier starter flows
+2. extract reusable projector / projection helpers in `xian-py`
+3. mirror more of the local reference-app and monitoring flow into
+   `xian-deploy`
+4. add template-specific monitoring dashboards and alert presets
+5. only revisit protocol or VM work if one of those product slices hits a
+   real blocker
+
 ## Phase 1: SDK And Integration Maturity
 
 ### Goal
@@ -434,8 +447,10 @@ products but more meaningful than toy demos.
   slice
 - done: turn the Workflow Backend Pack into a fuller reference application
   with separate processor and projector workers
-- next: review the resulting three-pack deeper reference-app set and choose
-  the next major product slice from that stronger base
+- done: validate all three deeper reference apps end to end against a live
+  indexed node
+- next: package the resulting validated flows into easier starter paths and
+  extract the reusable SDK/runtime pieces they revealed
 
 ### Initial Candidate Packs
 
