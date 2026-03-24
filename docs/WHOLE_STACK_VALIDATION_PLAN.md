@@ -246,6 +246,17 @@ After repo-level validation is green, run real workflow checks covering:
   - validation after the indexed-path fixes:
     - targeted BDS/runtime/query tests passed
     - full `xian-abci` validation passed with `260 passed`
+  - rerunning the clean indexed service-node stack exposed one last operator bug:
+    - BDS status and spool health were live and persisted blocks correctly, but
+      `/bds_status` failed over `abci_query` because the query JSON path did not
+      normalize builtin Python `datetime` values before encoding the response
+  - final indexed-path fix:
+    - ABCI JSON normalization now handles builtin `datetime` values and query
+      dict/list responses use the canonical ABCI JSON encoder
+  - regression coverage extended in `xian-abci`:
+    - `test_bds_status_and_spool_queries_use_bds` now exercises a status object
+      containing a timezone-aware `datetime`
   - next step:
-    - rerun the live `single-node-indexed` stack against a clean rebuilt image
-      and continue to consortium and recovery scenarios once it is healthy
+    - rebuild and rerun the live `single-node-indexed` stack once more so the
+      live health surface reflects the final query fix
+    - then continue to consortium and recovery scenarios once it is healthy
