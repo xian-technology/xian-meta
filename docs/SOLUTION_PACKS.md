@@ -107,6 +107,38 @@ and service layer around it.
 - Python admin/service flow
 - monitoring and recovery walkthrough
 
+## Second Pack Scope: Registry / Approval
+
+The second implementation slice should stay narrow and complete enough to be a
+real shared-state pattern.
+
+It should include:
+
+- a reusable registry contract asset in `xian-configs`
+- a reusable approval-policy contract asset in `xian-configs`
+- pack-specific integration examples in `xian-py`
+- a public docs walkthrough in `xian-docs-web`
+- alignment with the existing `single-node-indexed` and `consortium-3`
+  operator flows
+
+It should not need:
+
+- a full UI
+- generalized on-chain governance
+- large role-management subsystems
+- protocol changes
+
+## Completion Criteria For The Registry / Approval Pack
+
+The second pack is considered done when:
+
+- the registry and approval contract assets exist in a stable repo location
+- the SDK examples show bootstrap, proposal, approval, and event-consumption
+  patterns
+- the docs explain the use case, deployment path, approval path, and
+  monitoring/recovery path
+- the roadmap and docs log are updated so the third pack can start cleanly
+
 ### 3. Workflow Backend Pack
 
 #### Use Case

@@ -416,7 +416,10 @@ products but more meaningful than toy demos.
 - done: define the canonical solution-pack set and the first-pack scope
 - done: implement the Credits Ledger Pack across shared assets, SDK examples,
   and public docs
-- next: start the Registry / Approval Pack
+- done: define the Registry / Approval Pack scope
+- done: implement the Registry / Approval Pack across shared assets, SDK
+  examples, and public docs
+- next: start the Workflow Backend Pack
 
 ### Initial Candidate Packs
 
@@ -473,9 +476,9 @@ Each pack should explain:
 
 ## Current Next Action
 
-Start the Registry / Approval Pack as the next concrete reference pattern:
+Start the Workflow Backend Pack as the next concrete reference pattern:
 
-1. define the registry and approval contract split
-2. tie it to the `consortium-3` operator path
-3. add the matching SDK/admin integration example
+1. define the workflow state-machine contract split
+2. decide when it should use `embedded-backend` vs `consortium-3`
+3. add the matching SDK service and worker examples
 4. keep the docs and roadmap updated incrementally as the pack lands
