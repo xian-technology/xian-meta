@@ -259,4 +259,15 @@ After repo-level validation is green, run real workflow checks covering:
   - next step:
     - rebuild and rerun the live `single-node-indexed` stack once more so the
       live health surface reflects the final query fix
-    - then continue to consortium and recovery scenarios once it is healthy
+  - final live indexed result:
+    - `single-node-indexed` now succeeds from a clean isolated workspace
+    - `xian node start`, `status`, `endpoints`, `health`, and `doctor`
+      succeed against the rebuilt service-node profile
+    - BDS persists live blocks and both `/bds_status` and `/bds_spool` answer
+      correctly over `abci_query`
+    - GraphQL, Prometheus, Grafana, dashboard status, and host metrics are all
+      reachable in the live run
+  - next live scenarios:
+    - `consortium-3`
+    - snapshot and recovery flows
+    - at least one solution-pack walkthrough against a live node
