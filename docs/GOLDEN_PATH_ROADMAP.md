@@ -419,7 +419,11 @@ products but more meaningful than toy demos.
 - done: define the Registry / Approval Pack scope
 - done: implement the Registry / Approval Pack across shared assets, SDK
   examples, and public docs
-- next: start the Workflow Backend Pack
+- done: define the Workflow Backend Pack scope
+- done: implement the Workflow Backend Pack across shared assets, SDK
+  examples, and public docs
+- next: decide whether to deepen one pack into a fuller end-to-end reference
+  application or return to stack/product refinement
 
 ### Initial Candidate Packs
 
@@ -476,9 +480,8 @@ Each pack should explain:
 
 ## Current Next Action
 
-Start the Workflow Backend Pack as the next concrete reference pattern:
+With the initial solution-pack set in place:
 
-1. define the workflow state-machine contract split
-2. decide when it should use `embedded-backend` vs `consortium-3`
-3. add the matching SDK service and worker examples
-4. keep the docs and roadmap updated incrementally as the pack lands
+1. decide which pack should become the first fuller end-to-end reference app
+2. keep the docs and roadmap updated as that deeper slice lands
+3. only then add more pack variety if a real gap remains

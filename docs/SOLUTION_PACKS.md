@@ -178,6 +178,44 @@ user-facing systems query current state and history through indexed reads.
 - Python worker consuming events
 - indexed-read examples
 
+## Third Pack Scope: Workflow Backend
+
+The third implementation slice should stay narrow and complete enough to show
+Xian as a decentralized backend coordination layer.
+
+It should include:
+
+- a reusable workflow state-machine contract asset in `xian-configs`
+- pack-specific integration examples in `xian-py`
+- a public docs walkthrough in `xian-docs-web`
+- alignment with the existing `single-node-indexed` and `embedded-backend`
+  operator flows
+
+The concrete story for `v1` is a job-style workflow backend:
+
+- clients submit workflow items
+- workers claim them for processing
+- workers complete or fail them
+- off-chain systems consume the emitted events and current state
+
+It does not need:
+
+- a full UI
+- generalized BPM/workflow tooling
+- a second governance/approval layer
+- protocol changes
+
+## Completion Criteria For The Workflow Backend Pack
+
+The third pack is considered done when:
+
+- the workflow contract asset exists in a stable repo location
+- the SDK examples show bootstrap, service submission/query, and worker
+  processing patterns
+- the docs explain the use case, deployment path, integration path, and
+  monitoring/recovery path
+- the roadmap and docs log are updated to mark the initial pack set complete
+
 ## Recommended Order
 
 Implement the packs in this order:
