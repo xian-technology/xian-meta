@@ -329,8 +329,10 @@ healthy.
   `operator_profile` and `monitoring_profile` metadata
 - done: deepen service-node diagnostics around BDS queue, spool, lag, and
   database state
-- next: tighten state-sync and snapshot recovery flows around concrete operator
+- done: tighten state-sync and snapshot recovery flows around concrete operator
   runbooks and remote deployment checks
+- next: start the first reference solution pack on top of the completed golden
+  path foundations
 
 ### Deliverables
 
@@ -464,11 +466,11 @@ Each pack should explain:
 
 ## Current Next Action
 
-Continue Phase 3 by standardizing monitoring defaults and broadening recovery
-diagnostics:
+Start Phase 4 with the first reference solution pack:
 
-1. decide which monitoring defaults should vary by template class
-2. extend diagnostics around BDS queue / spool health for service nodes
-3. tighten state-sync and snapshot recovery guidance around concrete operator
-   flows
-4. update the roadmap and docs log as each slice lands
+1. define the Credits Ledger Pack as the first concrete Xian use case
+2. base it on the existing `single-node-indexed` and `embedded-backend`
+   operator paths
+3. wire it through `xian-py`, `xian-configs`, `xian-stack`, and
+   `xian-docs-web`
+4. keep the docs and roadmap updated incrementally as the pack lands
