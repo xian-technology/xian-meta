@@ -315,6 +315,15 @@ Update `xian-docs-web` as template support lands:
 Make it easy to understand what a node is doing and what to do when it is not
 healthy.
 
+### Progress
+
+- done: add unified local operator status summary in `xian-cli`
+- done: add explicit endpoint discovery in `xian-cli` and `xian-stack`
+- done: make `doctor` perform live health checks by default
+- done: keep offline preflight available via `--skip-live-checks`
+- next: standardize template-aware monitoring defaults and deepen recovery
+  diagnostics
+
 ### Deliverables
 
 #### 1. Unified Status Commands
@@ -447,9 +456,11 @@ Each pack should explain:
 
 ## Current Next Action
 
-Begin the deeper Phase 3 operator-health slice:
+Continue Phase 3 by standardizing monitoring defaults and broadening recovery
+diagnostics:
 
-1. strengthen `doctor` with runtime health and endpoint checks
-2. expose a clearer machine-readable health summary for local nodes
-3. decide which monitoring defaults should vary by template class
+1. decide which monitoring defaults should vary by template class
+2. extend diagnostics around disk, spool, and state-sync readiness
+3. decide whether `xian-stack` should expose a dedicated machine-readable
+   health command
 4. update the roadmap and docs log as each slice lands
