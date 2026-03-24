@@ -40,7 +40,7 @@ scope again.
 
 ## Current Local Workspace Caveats
 
-These were present when the sweep started and must be handled explicitly:
+These were present when the sweep started and had to be handled explicitly:
 
 - `xian-contracting`
   - local `AGENTS.md` update matching the shared workflow convention
@@ -49,11 +49,10 @@ These were present when the sweep started and must be handled explicitly:
     - `tests/integration/test_stamp_deduction.py`
     - `tests/unit/test_revert_on_exception.py`
 - `xian-cli`
-  - local `uv.lock` drift adding `prometheus-client`, but the dependency must
-    be checked against the declared package metadata before keeping it
+  - local `uv.lock` drift adding `prometheus-client`, which needed to be
+    verified against the real `xian-abci` dependency graph before keeping it
 
-These local differences should be either pushed intentionally during the sweep
-or discarded after review. Do not leave them ambiguous.
+Both caveats were resolved during Phase 2 and should not be reintroduced.
 
 ## Validation Matrix
 
@@ -196,3 +195,35 @@ After repo-level validation is green, run real workflow checks covering:
   - baseline result:
     - repo-level validation now green across the major codebases
     - next phase is live node/network and workflow validation
+  - local caveats resolved:
+    - `xian-contracting` drift reviewed and pushed intentionally
+    - `xian-cli` lock drift confirmed valid because `xian-abci` now depends on
+      `prometheus-client`
+  - live `single-node-dev` workflow executed from an isolated validation
+    workspace using a dedicated `xian-stack` worktree
+  - workflow bugs found and fixed:
+    - `xian-cli` JSON writes could not serialize generated genesis payloads
+      containing `Datetime`, decimals, or bytes
+    - `xian-cli` backend command wrapper hid real `xian-stack` stderr behind a
+      generic `CalledProcessError`
+    - `xian-stack` runtime readiness probe invoked Docker Compose without first
+      loading the stack environment, which broke container startup checks
+    - `xian-cli node init` rendered `metrics_host = "127.0.0.1"` into the
+      node config, which made the published Docker metrics port unreachable
+      from the host even though the exporter itself was healthy
+  - regression coverage added in `xian-cli` for:
+    - JSON normalization when local genesis contains `Datetime`
+    - backend stderr surfacing
+    - stack-compatible metrics binding during node initialization
+  - live validation result after fixes:
+    - `xian network create --init-node` succeeds for a generated
+      `single-node-dev` network
+    - `xian node start`, `status`, `endpoints`, `health`, `doctor`, and `stop`
+      succeed against the isolated node
+    - host metrics endpoint `http://127.0.0.1:9108/metrics` is now reachable
+    - dashboard status endpoint on the configured host port is reachable
+  - next live scenarios:
+    - `single-node-indexed` with BDS enabled
+    - `consortium-3`
+    - snapshot and recovery flows
+    - at least one solution-pack walkthrough against a live node
