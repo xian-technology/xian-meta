@@ -221,6 +221,18 @@ Also maintain `xian-py/docs/SDK_REVIEW_BACKLOG.md` as slices are completed.
 Make network creation feel intentional and productized instead of assembled
 from lower-level pieces.
 
+### Progress
+
+- done: define canonical starter template names and intent
+- done: add the initial canonical template catalog in `xian-configs`
+- done: expose `network template list/show` and `--template` in `xian-cli`
+- done: flow template defaults into created node profiles, including
+  monitoring
+- done: align the `xian-stack` backend contract with template-driven
+  monitoring state
+- next: tighten template-aware docs and start the first operator status /
+  endpoint-discovery slice
+
 ### Initial Template Set
 
 #### `single-node-dev`
@@ -433,12 +445,10 @@ Each pack should explain:
 
 ## Current Next Action
 
-Phase 1 is now complete. Begin Phase 2 with the first template-driven network
-slice in `xian-configs`, `xian-cli`, `xian-stack`, and `xian-docs-web`.
+Continue Phase 2 by tightening the operator-facing template docs and then move
+into the first monitoring/control slice:
 
-When that slice is complete:
-
-1. update this roadmap if the scope changed
-2. mark the implemented items in the owning repo backlog/docs files
-3. record the docs updates in `xian-docs-web`
-4. move to the next template or operator workflow slice
+1. unified local stack status summary
+2. endpoint discovery for dashboard / metrics / Prometheus / Grafana
+3. template-aware operator docs and examples
+4. updated roadmap and docs log once that slice lands
