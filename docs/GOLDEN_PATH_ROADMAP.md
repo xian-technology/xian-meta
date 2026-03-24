@@ -411,6 +411,13 @@ Keep `xian-docs-web` current for:
 Prove the product thesis with realistic examples that are smaller than full
 products but more meaningful than toy demos.
 
+### Progress
+
+- done: define the canonical solution-pack set and the first-pack scope
+- done: implement the Credits Ledger Pack across shared assets, SDK examples,
+  and public docs
+- next: start the Registry / Approval Pack
+
 ### Initial Candidate Packs
 
 #### Credits Ledger Pack
@@ -466,11 +473,9 @@ Each pack should explain:
 
 ## Current Next Action
 
-Start Phase 4 with the first reference solution pack:
+Start the Registry / Approval Pack as the next concrete reference pattern:
 
-1. define the Credits Ledger Pack as the first concrete Xian use case
-2. base it on the existing `single-node-indexed` and `embedded-backend`
-   operator paths
-3. wire it through `xian-py`, `xian-configs`, `xian-stack`, and
-   `xian-docs-web`
+1. define the registry and approval contract split
+2. tie it to the `consortium-3` operator path
+3. add the matching SDK/admin integration example
 4. keep the docs and roadmap updated incrementally as the pack lands

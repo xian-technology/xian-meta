@@ -24,3 +24,4 @@ Files:
 - `XIAN_VM_EXECUTION_MODEL.md`: target design for a Xian-owned VM and bytecode execution model
 - `XIAN_MISSION_AND_PRODUCT_STRATEGY.md`: shared mission, principles, and product direction for Xian
 - `GOLDEN_PATH_ROADMAP.md`: phased cross-repo implementation roadmap for the product thesis
+- `SOLUTION_PACKS.md`: canonical definition of the reference solution-pack set and the first pack scope
