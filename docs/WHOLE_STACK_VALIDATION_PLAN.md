@@ -256,8 +256,51 @@ After repo-level validation is green, run real workflow checks covering:
   - regression coverage extended in `xian-abci`:
     - `test_bds_status_and_spool_queries_use_bds` now exercises a status object
       containing a timezone-aware `datetime`
+  - follow-up indexed-path and SDK workflow fixes:
+    - `xian-cli` stack-backed node lifecycle commands now pass the selected
+      `XIAN_COMETBFT_HOME`, so `start`, `stop`, `status`, `endpoints`, and
+      `health` operate on the chosen node profile instead of the stack default
+      home
+    - `xian-py` now exposes an optional `app` extra for the documented FastAPI
+      and uvicorn examples
+    - `xian-configs` solution-pack contracts now have an explicit lint gate via
+      `scripts/validate-solution-pack-contracts.py`, and the Credits Ledger
+      pack contract was fixed to satisfy the current linter rules
+    - `xian-py` solution-pack write examples now fail loudly on rejected or
+      failed submissions instead of printing false-success hashes
+    - `xian-py` simulation and stamp-estimation now canonicalize payloads with
+      runtime encoding, which fixed Decimal-valued argument simulation
+    - `xian-contracting` stamp deduction now coerces decimal-ish balance values
+      from storage before metering and deduction
+  - live indexed-network validation completed on the corrected stack-backed
+    single-node network `xian-validate-indexed-fixed-1`
+  - live Credits Ledger validation found and fixed additional real bugs:
+    - BDS transaction persistence assumed `rewards` was always a dict; failed
+      transactions could emit `null`, which stalled indexing until restart
+    - `IndexedEvent` in `xian-py` preserved `data` and `data_indexed` as raw
+      JSON strings instead of decoding them once at the SDK boundary
+    - the Credits Ledger projector assumed actor and account fields always
+      lived in `event.data`, but indexed events split them into `data_indexed`
+    - the Credits Ledger projector did not accept runtime fixed-point payloads
+      like `{\"__fixed__\": \"50.5\"}` in event amounts
+    - indexed models in `xian-py` only looked at `created`, while BDS returns
+      `created_at`
+    - stack endpoint output advertised wildcard dashboard hosts like
+      `0.0.0.0`; user-facing endpoint discovery now normalizes those to
+      loopback URLs
+  - live indexed-network validation result after those fixes:
+    - `xian node start`, `status`, `endpoints`, `health`, and `stop` work
+      against the intended selected node home
+    - BDS indexed and caught up cleanly through the live Credits Ledger
+      workflow
+    - the Credits Ledger admin job, projector worker, and FastAPI service all
+      ran successfully against the live indexed node
+    - live API writes for issue, burn, and transfer produced matching on-chain
+      balances, indexed events, and projected balances/activity
   - next step:
-    - rebuild and rerun the live `single-node-indexed` stack once more so the
+    - run the full relevant validation set for all touched repos, push the
+      fixes, and then summarize any remaining follow-up risk after the
+      whole-stack sweep
       live health surface reflects the final query fix
   - final live indexed result:
     - `single-node-indexed` now succeeds from a clean isolated workspace
