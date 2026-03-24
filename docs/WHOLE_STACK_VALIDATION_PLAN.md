@@ -341,3 +341,22 @@ After repo-level validation is green, run real workflow checks covering:
       authoritative on-chain registry state
   - next live scenario:
     - `Workflow Backend` reference-app validation at the same depth
+  - live `Workflow Backend` reference-app validation then completed against the
+    same indexed single-node network
+  - workflow validation exposed and resolved the remaining pack-level issues:
+    - workflow event processors and projections were still assuming decisive
+      fields like `item_id` and `worker` lived only in `event.data`; they now
+      merge `data_indexed` and `data`, which matches the live BDS event shape
+    - the workflow bootstrap job added workers but did not fund them with
+      enough native balance to pay for `claim_item` and `complete_item`; it now
+      tops up configured workers by default, with `0` disabling the top-up
+  - live workflow validation result after fixes:
+    - the processor claimed and completed a submitted item through the live
+      node
+    - the projector rebuilt queue and activity state that matched the
+      authoritative contract reads
+    - after pausing the processor, a second submitted item was cancelled
+      through the API and the projected state matched the on-chain item state
+  - next step:
+    - rerun the final relevant validation set for the touched repos and then
+      summarize remaining follow-up work from the whole-stack sweep
