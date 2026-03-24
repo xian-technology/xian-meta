@@ -325,8 +325,12 @@ healthy.
   `xian-cli`
 - done: expose state-sync readiness and snapshot-bootstrap visibility in the
   operator surface
-- next: standardize template-aware monitoring defaults and deepen recovery
-  diagnostics further
+- done: standardize template-aware monitoring defaults through explicit
+  `operator_profile` and `monitoring_profile` metadata
+- done: deepen service-node diagnostics around BDS queue, spool, lag, and
+  database state
+- next: tighten state-sync and snapshot recovery flows around concrete operator
+  runbooks and remote deployment checks
 
 ### Deliverables
 
