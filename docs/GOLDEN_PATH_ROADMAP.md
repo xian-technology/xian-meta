@@ -230,8 +230,10 @@ from lower-level pieces.
   monitoring
 - done: align the `xian-stack` backend contract with template-driven
   monitoring state
-- next: tighten template-aware docs and start the first operator status /
-  endpoint-discovery slice
+- done: add unified local operator status summary in `xian-cli`
+- done: add endpoint discovery in `xian-cli` and the `xian-stack` backend
+- done: update template-aware operator docs and examples
+- next: begin the deeper Phase 3 doctor / health-check slice
 
 ### Initial Template Set
 
@@ -445,10 +447,9 @@ Each pack should explain:
 
 ## Current Next Action
 
-Continue Phase 2 by tightening the operator-facing template docs and then move
-into the first monitoring/control slice:
+Begin the deeper Phase 3 operator-health slice:
 
-1. unified local stack status summary
-2. endpoint discovery for dashboard / metrics / Prometheus / Grafana
-3. template-aware operator docs and examples
-4. updated roadmap and docs log once that slice lands
+1. strengthen `doctor` with runtime health and endpoint checks
+2. expose a clearer machine-readable health summary for local nodes
+3. decide which monitoring defaults should vary by template class
+4. update the roadmap and docs log as each slice lands
