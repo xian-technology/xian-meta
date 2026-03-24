@@ -259,3 +259,22 @@ The first pack is considered done when:
 - the docs explain the use case, deployment path, integration path, and
   monitoring/recovery path
 - the roadmap and docs log are updated so the next pack can start cleanly
+
+## First Deeper Reference-App Slice: Credits Ledger
+
+After the initial three-pack set is complete, the first deeper reference-app
+slice should still build on Credits Ledger.
+
+That deeper slice should demonstrate:
+
+- the chain as the authoritative credits ledger
+- a local projected read model outside the chain
+- a resumable projector that rebuilds projections from indexed events
+- an API service that combines authoritative chain reads and projected
+  application reads
+
+It still does not need:
+
+- a separate frontend
+- a separate repo
+- new protocol features

@@ -422,8 +422,12 @@ products but more meaningful than toy demos.
 - done: define the Workflow Backend Pack scope
 - done: implement the Workflow Backend Pack across shared assets, SDK
   examples, and public docs
-- next: decide whether to deepen one pack into a fuller end-to-end reference
-  application or return to stack/product refinement
+- done: choose the Credits Ledger Pack as the first deeper reference
+  application slice
+- done: turn the Credits Ledger Pack into a fuller reference application with
+  a projected read model and richer service flow
+- next: decide whether Registry / Approval or Workflow Backend should become
+  the next deeper reference app
 
 ### Initial Candidate Packs
 
@@ -433,6 +437,12 @@ products but more meaningful than toy demos.
 - Python service using `xian-py`
 - event watcher
 - indexed read examples
+- deeper reference-app direction:
+  - projected activity and summary read model outside the chain
+  - richer API service that combines authoritative chain reads and projected
+    application reads
+  - a resumable projector worker that rebuilds the projection from indexed
+    events
 
 #### Registry / Approval Pack
 
@@ -482,6 +492,7 @@ Each pack should explain:
 
 With the initial solution-pack set in place:
 
-1. decide which pack should become the first fuller end-to-end reference app
-2. keep the docs and roadmap updated as that deeper slice lands
-3. only then add more pack variety if a real gap remains
+1. compare the Registry / Approval and Workflow Backend packs as the next
+   deeper reference-app target
+2. keep the docs and roadmap updated as that next slice lands
+3. only add more pack variety after the deeper reference-app pattern is proven
