@@ -2,13 +2,15 @@
 
 ## Goal
 
-The main `xian-technology` repos should be easy to traverse quickly for both humans and AI agents.
+The main `xian-technology` repos should be easy to traverse quickly for both
+humans and AI agents.
 
 The convention is designed around:
 
 - predictable root files
 - a stable place for future work and architecture notes
 - short folder-level entrypoints at architectural boundaries
+- human-first root READMEs that describe current usage clearly
 
 ## `xian-meta` Scope
 
@@ -56,31 +58,47 @@ Exception:
 - `docs/ARCHITECTURE.md`: major components, ownership, dependency direction
 - `docs/BACKLOG.md`: future work, open problems, follow-up items, and links to deeper notes
 
-## Root README Template
+## Root README Standard
 
-Every main repo root `README.md` should use the same top-level structure:
+Every main repo root `README.md` should be optimized for a human engineer who
+is evaluating or using the repo professionally.
+
+The root README should describe:
+
+1. what the repo is for
+2. how to use it first
+3. the important principles or boundaries of the repo
+4. where to go deeper
+
+The README should describe the current repo, not the path taken to get there.
+Avoid change-log wording such as:
+
+- `now`
+- `old`
+- `new`
+- `still`
+- `no longer`
+
+unless the historical contrast is necessary for safe use.
+
+Recommended top-level structure:
 
 1. repo title and one-paragraph summary
-2. `## Scope`
-3. `## Key Directories`
-4. `## Validation`
-5. `## Related Docs`
+2. `## Quick Start` or `## Common Workflows`
+3. `## Principles` or `## Scope`
+4. `## Key Directories`
+5. `## Validation`
+6. `## Related Docs`
 
-Additional repo-specific sections are expected after those shared sections.
+Only `## Validation` and `## Related Docs` are mandatory as stable headings.
+The rest may vary by repo as long as the README remains short, current-state
+oriented, and useful to humans.
 
-The shared sections should answer:
-
-- `Scope`: what the repo owns and what it intentionally does not own
-- `Key Directories`: where the important code, docs, tests, and scripts live
-- `Validation`: the preferred local commands to run before push
-- `Related Docs`: links to `AGENTS.md`, `docs/ARCHITECTURE.md`, `docs/BACKLOG.md`,
-  and any other high-value repo notes
-
-The docs site repo follows the same structure, but its internal links should
-point to `.meta/ARCHITECTURE.md` and `.meta/BACKLOG.md` instead of `docs/`.
-If the root README is part of a published docs build, those `.meta/` references
-may need to be plain path references instead of markdown links so the build
-does not treat them as public-site dead links.
+The docs site repo follows the same idea, but its internal links should point
+to `.meta/ARCHITECTURE.md` and `.meta/BACKLOG.md` instead of `docs/`. If the
+root README is part of a published docs build, those `.meta/` references may
+need to be plain path references instead of markdown links so the build does
+not treat them as public-site dead links.
 
 ## Change Workflow
 

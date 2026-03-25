@@ -292,6 +292,25 @@ This is optional, not mandatory.
 4. plan the `xian-abci -> xian-py` dependency removal before adding more
    features
 
+## Progress
+
+Completed:
+
+- Stage 1 shared convention reset in `xian-meta`
+- root README rewrites for:
+  - `xian-py`
+  - `xian-cli`
+  - `xian-stack`
+  - `xian-abci`
+  - `xian-contracting`
+
+Next:
+
+- continue the README cleanup across the remaining repos as needed
+- plan and execute the `xian-abci -> xian-py` dependency removal
+- decide whether the deeper reference apps should stay in `xian-py` or move to
+  a dedicated reference-app repo if they keep growing
+
 ## Non-Goals
 
 This cleanup is not about:

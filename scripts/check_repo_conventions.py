@@ -20,9 +20,7 @@ MAIN_REPOS = (
     "xian-stack",
 )
 
-REQUIRED_README_HEADINGS = (
-    "## Scope",
-    "## Key Directories",
+REQUIRED_README_MARKERS = (
     "## Validation",
     "## Related Docs",
 )
@@ -55,9 +53,9 @@ def check_repo(repo_root: Path, repo_name: str) -> list[str]:
     readme_path = repo / "README.md"
     if readme_path.exists():
         readme_text = read_text(readme_path)
-        for heading in REQUIRED_README_HEADINGS:
-            if heading not in readme_text:
-                errors.append(f"{repo_name}: README.md missing heading {heading}")
+        for marker in REQUIRED_README_MARKERS:
+            if marker not in readme_text:
+                errors.append(f"{repo_name}: README.md missing heading {marker}")
 
     return errors
 
