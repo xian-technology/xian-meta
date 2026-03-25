@@ -167,13 +167,19 @@ more clear.
 
 ## Decision
 
-Extracting `xian-runtime-types` into its own repo makes sense.
-
-Adding signing/key helpers to `xian-runtime-types` does not.
-
 The immediate cleanup should focus on dependency direction and package
-responsibility first. Repo extraction can follow once those boundaries are
-clean.
+responsibility first. That work is now complete.
+
+Repo extraction is intentionally deferred for now.
+
+Current stance:
+
+- keep `xian-runtime-types` inside `xian-contracting`
+- keep `xian-accounts` inside `xian-contracting`
+- revisit extraction later once the shared package APIs and scope have settled
+
+Adding signing/key helpers to `xian-runtime-types` still does not make sense.
+Those concerns should remain separate even if extraction happens later.
 
 ## Progress
 
@@ -199,6 +205,6 @@ Completed:
 
 Next:
 
-- decide whether to extract `xian-runtime-types` into its own repo
-- decide whether `xian-accounts` should stay in `xian-contracting` or later
-  become its own repo alongside `xian-runtime-types`
+- keep package scope narrow and stable
+- revisit extraction only when the criteria in
+  `SHARED_PACKAGE_EXTRACTION_PLAN.md` are met
