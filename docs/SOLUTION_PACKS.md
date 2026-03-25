@@ -11,6 +11,10 @@ application patterns.
 
 Each pack should stay opinionated, narrow, and repeatable.
 
+Each pack now also owns a machine-readable `pack.json` starter-flow manifest in
+`xian-configs`. Those manifests are the canonical source for the packaged
+`xian-cli solution-pack` entrypoints.
+
 ## What A Solution Pack Must Include
 
 Every solution pack should ship with:
@@ -21,6 +25,7 @@ Every solution pack should ship with:
 - one recommended remote/operator template
 - one Python integration surface
 - one operator/recovery story
+- one machine-readable starter-flow manifest
 - one docs walkthrough
 
 It should not try to be a customizable framework.

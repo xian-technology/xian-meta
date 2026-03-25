@@ -122,11 +122,10 @@ Outcome:
 The whole-stack validation sweep is complete enough to move back to product
 building. The next slices should be:
 
-1. package the validated reference apps into easier starter flows
-2. mirror more of the local reference-app and monitoring flow into
+1. mirror more of the local reference-app and monitoring flow into
    `xian-deploy`
-3. add template-specific monitoring dashboards and alert presets
-4. only revisit protocol or VM work if one of those product slices hits a
+2. add template-specific monitoring dashboards and alert presets
+3. only revisit protocol or VM work if one of those product slices hits a
    real blocker
 
 ## Phase 1: SDK And Integration Maturity
@@ -450,8 +449,10 @@ products but more meaningful than toy demos.
   indexed node
 - done: extract reusable projector / projection helpers in `xian-py` from the
   three validated reference apps
-- next: package the resulting validated flows into easier starter paths and
-  extract the reusable SDK/runtime pieces they revealed
+- done: package the resulting validated flows into machine-readable starter
+  paths through canonical solution-pack manifests and `xian-cli`
+- next: mirror those starter paths more directly into `xian-deploy` and the
+  remaining operator presets
 
 ### Initial Candidate Packs
 
@@ -528,6 +529,7 @@ Each pack should explain:
 
 With the initial solution-pack set in place:
 
-1. review the resulting three-pack deeper reference-app set
-2. identify the strongest next major product slice based on those packs
-3. keep the docs and roadmap aligned with that next choice
+1. mirror the starter-flow solution-pack path more directly into
+   `xian-deploy`
+2. add template-specific monitoring dashboards and alert presets
+3. keep the docs and roadmap aligned as those operator slices land
