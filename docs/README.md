@@ -32,3 +32,4 @@ Files:
 - `CONTRACT_SOURCE_STORAGE.md`: design for storing exact submitted contract source alongside canonical runtime code
 - `CONTRACT_FACTORY_DEPLOYMENT.md`: design for restoring contract factories with explicit constructor semantics, provenance, metering, and BDS indexing
 - `DYNAMIC_CONTRACT_CALLS.md`: design for safe dynamic exported-function dispatch without exposing generic reflection
+- `DETERMINISTIC_RANDOMNESS.md`: design for a Xian-owned deterministic contract randomness model and simulation alignment
