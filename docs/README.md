@@ -31,3 +31,4 @@ Files:
 - `SHARED_PACKAGE_EXTRACTION_PLAN.md`: deferred extraction criteria and migration path for shared packages that currently live in `xian-contracting`
 - `CONTRACT_SOURCE_STORAGE.md`: design for storing exact submitted contract source alongside canonical runtime code
 - `CONTRACT_FACTORY_DEPLOYMENT.md`: design for restoring contract factories with explicit constructor semantics, provenance, metering, and BDS indexing
+- `DYNAMIC_CONTRACT_CALLS.md`: design for safe dynamic exported-function dispatch without exposing generic reflection
