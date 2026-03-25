@@ -27,3 +27,4 @@ Files:
 - `SOLUTION_PACKS.md`: canonical definition of the reference solution-pack set and the first pack scope
 - `WHOLE_STACK_VALIDATION_PLAN.md`: resumable whole-stack validation and hardening plan
 - `CORE_REPO_CLEANUP_PLAN.md`: staged cleanup plan for keeping the core repos human-first, minimal, and correctly layered
+- `SHARED_FOUNDATIONS_PLAN.md`: cleanup plan for neutral shared Python foundations and removing the `xian-abci -> xian-py` dependency

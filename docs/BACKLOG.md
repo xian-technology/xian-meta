@@ -4,6 +4,9 @@ Open follow-up items for `xian-meta` itself:
 
 - execute the staged cleanup in `docs/CORE_REPO_CLEANUP_PLAN.md`, starting with
   the shared README convention reset
+- execute the shared-foundations cleanup in
+  `docs/SHARED_FOUNDATIONS_PLAN.md`, starting with moving the decompiler out of
+  `xian-py`
 - add lightweight CI for `scripts/check_repo_conventions.py`
 - decide whether the convention checker should also validate boundary-folder
   `README.md` coverage, not just root structure
