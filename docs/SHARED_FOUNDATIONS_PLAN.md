@@ -11,7 +11,7 @@ Clean up the low-level shared Python code in the Xian workspace so that:
 
 ## Current Problem
 
-`xian-abci` currently depends on `xian-py` for two unrelated things:
+`xian-abci` previously depended on `xian-py` for two unrelated things:
 
 - `Wallet`
 - `ContractDecompiler`
@@ -77,8 +77,8 @@ Recommended home:
 
 Preferred shape:
 
-- move it into a clearly non-consensus-sensitive tool module such as
-  `contracting.tools.decompiler`
+- keep it in the `xian-contracting` repo as a clearly non-consensus-sensitive
+  standalone package, `xian-contract-tools`
 
 ### 3. Signing And Key Helpers Need Their Own Neutral Home
 
@@ -187,9 +187,18 @@ Completed:
   instead of owning the implementation itself
 - release metadata and trusted publisher docs were updated for
   `xian-contract-tools`
+- `xian-accounts` was added as a standalone shared package in the
+  `xian-contracting` repo
+- `xian-py.Wallet` now wraps `xian-accounts` for Ed25519 signing and public-key
+  derivation
+- `xian-abci` now uses `xian-accounts` directly for transaction verification,
+  genesis signing, and state export signing
+- `xian-abci` no longer depends on `xian-py` at runtime or in its validation
+  workflow
+- release metadata and trusted publisher docs were updated for `xian-accounts`
 
 Next:
 
-- create `xian-accounts`
-- migrate `Wallet` internals to it
-- remove the remaining `xian-abci -> xian-py` dependency
+- decide whether to extract `xian-runtime-types` into its own repo
+- decide whether `xian-accounts` should stay in `xian-contracting` or later
+  become its own repo alongside `xian-runtime-types`
