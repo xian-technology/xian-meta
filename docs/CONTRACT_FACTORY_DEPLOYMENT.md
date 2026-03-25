@@ -1,12 +1,15 @@
 # Contract Factory Deployment
 
-Status: proposed
+Status: implemented
 
 This document defines the design for re-enabling contracts deploying contracts
 in Xian.
 
 The goal is to restore contract factories in a way that is explicit,
 deterministic, indexable, and safe enough for production use.
+
+Implementation landed on `2026-03-25` across `xian-contracting`,
+`xian-abci`, and `xian-docs-web`.
 
 ## Decision
 
