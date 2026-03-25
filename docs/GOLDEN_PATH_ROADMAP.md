@@ -122,9 +122,10 @@ Outcome:
 The whole-stack validation sweep is complete enough to move back to product
 building. The next slices should be:
 
-1. mirror more of the local reference-app and monitoring flow into
-   `xian-deploy`
-2. add template-specific monitoring dashboards and alert presets
+1. decide how far to automate pack-aware remote deployment beyond the current
+   preset and runbook layer
+2. decide whether the monitoring preset layer should grow into notifier or
+   Alertmanager integration
 3. only revisit protocol or VM work if one of those product slices hits a
    real blocker
 
@@ -342,8 +343,12 @@ healthy.
   database state
 - done: tighten state-sync and snapshot recovery flows around concrete operator
   runbooks and remote deployment checks
-- next: start the first reference solution pack on top of the completed golden
-  path foundations
+- done: mirror the starter-flow solution-pack path into `xian-deploy` through
+  reusable remote presets and example host layouts
+- done: add template-specific monitoring dashboards and alert presets in
+  `xian-stack` and `xian-deploy`
+- next: decide whether to keep the remote operator layer thin and explicit or
+  add more pack-aware deployment automation
 
 ### Deliverables
 
@@ -529,7 +534,8 @@ Each pack should explain:
 
 With the initial solution-pack set in place:
 
-1. mirror the starter-flow solution-pack path more directly into
-   `xian-deploy`
-2. add template-specific monitoring dashboards and alert presets
+1. decide whether to automate pack-aware remote inventory generation or keep
+   the current preset/runbook layer intentionally thin
+2. decide whether the monitoring preset layer should grow into notifier or
+   Alertmanager integration
 3. keep the docs and roadmap aligned as those operator slices land
