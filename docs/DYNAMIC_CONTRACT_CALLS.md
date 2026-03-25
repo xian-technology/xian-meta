@@ -1,6 +1,6 @@
 # Dynamic Contract Calls
 
-Status: proposed
+Status: implemented in `xian-contracting` and documented in `xian-docs-web`
 
 This document defines a secure way to let contracts call exported functions by
 string name at runtime.
