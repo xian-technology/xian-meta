@@ -174,3 +174,22 @@ Adding signing/key helpers to `xian-runtime-types` does not.
 The immediate cleanup should focus on dependency direction and package
 responsibility first. Repo extraction can follow once those boundaries are
 clean.
+
+## Progress
+
+Completed:
+
+- `ContractDecompiler` moved into the `xian-contracting` repo as the standalone
+  `xian-contract-tools` package
+- `xian-abci` BDS and dashboard paths now import decompiler tooling from
+  `xian-contract-tools` instead of `xian-py`
+- `xian-py` now depends on `xian-contract-tools` for clean contract rendering
+  instead of owning the implementation itself
+- release metadata and trusted publisher docs were updated for
+  `xian-contract-tools`
+
+Next:
+
+- create `xian-accounts`
+- migrate `Wallet` internals to it
+- remove the remaining `xian-abci -> xian-py` dependency
