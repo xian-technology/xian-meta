@@ -1,9 +1,18 @@
 # Real Privacy Token Architecture
 
-Status: proposed
+Status: in progress
 
 This document defines the path for turning Xian's current experimental
 privacy-token work into a real shielded token design.
+
+Current implementation status:
+
+- native zk verifier runtime exists in `xian-contracting`
+- registry-backed contract verification by `vk_id` exists through `zk_registry`
+- first shielded-note contract package exists in
+  `xian-contracts/contracts/shielded-note-token`
+- proving circuits, witness tooling, and wallet/indexing support are still
+  missing
 
 ## Decision
 
