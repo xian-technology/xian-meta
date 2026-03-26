@@ -11,7 +11,9 @@ Current implementation status:
 - registry-backed contract verification by `vk_id` exists through `zk_registry`
 - first shielded-note contract package exists in
   `xian-contracts/contracts/shielded-note-token`
-- proving circuits, witness tooling, and wallet/indexing support are still
+- proving circuits and deterministic end-to-end proof fixtures now exist for
+  deposit / transfer / withdraw
+- wallet-side note scanning, proving UX, and broader indexing support are still
   missing
 
 ## Decision
@@ -132,17 +134,16 @@ If the proof circuit enforces:
 - note membership under `old_root`
 - nullifier correctness
 - output commitment correctness
-- hidden amount conservation
+- hidden amount conservation with bounded note amounts
 - authorized spend
-- Merkle-root transition from `old_root` to `new_root`
 
 then the on-chain contract does not need to implement those cryptographic
 checks itself. It only needs to:
 
 - verify the proof
 - reject reused nullifiers
-- advance the accepted root set
 - append or record emitted commitments
+- derive and advance the next canonical root from its own stored note state
 
 This keeps the contract small and deterministic.
 
@@ -183,20 +184,18 @@ Public input:
 - public amount
 - proof
 - old root
-- new root
 
 Effect:
 
 - public reserve / supply increases
 - new shielded notes are created
-- new root becomes accepted
+- contract derives the next root and accepts it
 
 ### 2. Shielded Transfer
 
 Public input:
 
 - old root
-- new root
 - input nullifiers
 - output commitments
 - proof
@@ -206,13 +205,13 @@ Effect:
 - input notes become unspendable through nullifier marking
 - output notes are created
 - no public amount is revealed
+- contract derives the next root and accepts it
 
 ### 3. Withdraw / Burn
 
 Public input:
 
 - old root
-- new root
 - input nullifiers
 - optional change note commitments
 - public recipient
@@ -223,6 +222,7 @@ Effect:
 
 - shielded value is destroyed inside the note set
 - public token amount is released to a visible address
+- contract derives the next root and accepts it
 
 ## Security Requirements
 
