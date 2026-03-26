@@ -32,12 +32,15 @@ Current implementation status:
 - pure Rust verifier core is testable with cargo without Python linkage
 - Python bindings are exposed through a narrow package API
 - deterministic fixture vectors are in place for package-level tests
+- contract runtime exposes `zk.verify_groth16_bn254(...)`
+- contract-side verification is explicitly metered
+- contract-side verification validates payload sizes before invoking the native verifier
 
 Still pending:
 
-- runtime `zk.verify_groth16(...)` contract bridge
 - verifying-key registry / `vk_id` lookup path
-- proof metering inside contract execution
+- `zk.verify_groth16(vk_id, proof, public_inputs)` higher-level API
+- prepared verifying-key cache keyed by `(vk_id, vk_hash)`
 
 ## Why Not A Pure Python Package
 
