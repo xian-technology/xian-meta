@@ -1,6 +1,6 @@
 # ZK Verifier Runtime
 
-Status: proposed
+Status: implemented prototype
 
 This document defines the first runtime verifier surface required for a real
 privacy token in Xian.
@@ -21,6 +21,23 @@ The first supported proof family should be:
 
 The verifier should be implemented as a native Rust-backed package exposed to
 the Python runtime, not as a pure-Python cryptography package.
+
+The first implementation now exists in:
+
+- `xian-contracting/packages/xian-zk`
+
+Current implementation status:
+
+- native Groth16 BN254 verifier package exists
+- pure Rust verifier core is testable with cargo without Python linkage
+- Python bindings are exposed through a narrow package API
+- deterministic fixture vectors are in place for package-level tests
+
+Still pending:
+
+- runtime `zk.verify_groth16(...)` contract bridge
+- verifying-key registry / `vk_id` lookup path
+- proof metering inside contract execution
 
 ## Why Not A Pure Python Package
 
