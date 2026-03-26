@@ -32,6 +32,7 @@ Current implementation status:
 - pure Rust verifier core is testable with cargo without Python linkage
 - Python bindings are exposed through a narrow package API
 - deterministic fixture vectors are in place for package-level tests
+- first external shielded-note proving toolkit now exists in `xian-zk`
 - contract runtime exposes `zk.verify_groth16_bn254(...)`
 - contract runtime exposes registry-backed `zk.verify_groth16(vk_id, ...)`
 - contract runtime exposes `zk.has_verifying_key(vk_id)`
@@ -67,7 +68,7 @@ Python packages can still be useful for:
 
 - developer experiments
 - reference implementations
-- wallet-side tooling
+- wallet-side proving and note-scanning tooling
 
 They should not be the primary validator verifier.
 

@@ -13,8 +13,8 @@ Current implementation status:
   `xian-contracts/contracts/shielded-note-token`
 - proving circuits and deterministic end-to-end proof fixtures now exist for
   deposit / transfer / withdraw
-- wallet-side note scanning, proving UX, and broader indexing support are still
-  missing
+- first external proving and note-scanning helpers now exist in `xian-zk`
+- note encryption, viewing keys, and broader indexed support are still missing
 
 ## Decision
 
