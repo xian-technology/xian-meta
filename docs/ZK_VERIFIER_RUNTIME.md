@@ -1,6 +1,6 @@
 # ZK Verifier Runtime
 
-Status: implemented prototype
+Status: implemented v1 runtime surface
 
 This document defines the first runtime verifier surface required for a real
 privacy token in Xian.
@@ -33,14 +33,13 @@ Current implementation status:
 - Python bindings are exposed through a narrow package API
 - deterministic fixture vectors are in place for package-level tests
 - contract runtime exposes `zk.verify_groth16_bn254(...)`
+- contract runtime exposes registry-backed `zk.verify_groth16(vk_id, ...)`
+- contract runtime exposes `zk.has_verifying_key(vk_id)`
 - contract-side verification is explicitly metered
 - contract-side verification validates payload sizes before invoking the native verifier
-
-Still pending:
-
-- verifying-key registry / `vk_id` lookup path
-- `zk.verify_groth16(vk_id, proof, public_inputs)` higher-level API
-- prepared verifying-key cache keyed by `(vk_id, vk_hash)`
+- verifying-key registry contract exists as `zk_registry`
+- prepared verifying-key cache is keyed by `(vk_id, vk_hash)`
+- native package exposes prepared verifying-key helpers for runtime reuse
 
 ## Why Not A Pure Python Package
 
@@ -379,10 +378,13 @@ Do not start with more than that.
 
 ## Immediate Next Step
 
-Implement the native verifier package prototype in `xian-contracting` and prove
-that:
+Build the first real shielded-note contract on top of the implemented runtime
+surface.
 
-- a fixed verifying key can be loaded
-- a fixed proof can be verified
-- malformed proofs are rejected deterministically
-- Python binding overhead is acceptable for validator execution
+That contract should use:
+
+- `zk.verify_groth16(vk_id, proof, public_inputs)`
+- accepted-root tracking
+- nullifier storage
+- note commitment insertion
+- explicit proof-circuit versioning through registry-managed `vk_id`s

@@ -358,11 +358,11 @@ The correct path is a new implementation built on real proof verification.
 
 The next concrete step is not editing the current contract.
 
-The next step is to write the runtime verifier design for `xian-contracting`,
-including:
+The runtime verifier path now exists. The next step is to build the first
+shielded-note token contract on top of it, including:
 
-- the exact verifier interface
-- proof encoding
-- verification-key registration model
-- metering
-- deterministic test-vector strategy
+- note commitment state
+- nullifier state
+- accepted Merkle roots
+- registry-managed verifying-key ids
+- proof-verified mint, transfer, and withdraw transitions
