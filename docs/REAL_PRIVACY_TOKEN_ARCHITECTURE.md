@@ -14,7 +14,11 @@ Current implementation status:
 - proving circuits and deterministic end-to-end proof fixtures now exist for
   deposit / transfer / withdraw
 - first external proving and note-scanning helpers now exist in `xian-zk`
-- note encryption, viewing keys, and broader indexed support are still missing
+- encrypted note payload delivery and separated viewing keys now exist
+- wallet-side sync, snapshots, and request-planning helpers now exist
+- operator-side random bundle and registry-manifest generation now exist
+- the remaining product gaps are tracked separately in
+  `PRIVACY_ASSET_STACK_FOLLOW_UPS.md`
 
 ## Decision
 
@@ -301,10 +305,10 @@ Add:
 
 Add:
 
-- note wallet model
-- witness management
-- proof-generation integration surface
-- deposit / transfer / withdraw builders
+- higher-level privacy-wallet integration surface if Xian decides the public
+  SDK should absorb what currently lives in `xian-zk`
+- end-user-facing transport and submission flows around shielded actions
+- product-quality recovery UX rather than only developer-facing helpers
 
 ### `xian-contracts`
 
@@ -322,6 +326,7 @@ Add:
 - shielded-token model docs
 - wallet / witness lifecycle docs
 - clear privacy guarantees and non-guarantees
+- operator docs for random-bundle generation and verifying-key registration
 
 ## Recommended Phases
 
@@ -334,6 +339,8 @@ Add:
 
 ### Phase 2: Minimal shielded token
 
+Completed
+
 - one asset
 - deposit
 - shielded transfer
@@ -343,17 +350,23 @@ Add:
 
 ### Phase 3: Wallet and indexing
 
+Partially completed
+
 - witness sync
 - note scanning
 - nullifier tracking
-- SDK transaction builders
+- wallet-side request builders
+- remaining: richer indexer / BDS integration and higher-level SDK surfacing
 
 ### Phase 4: Product hardening
+
+In progress
 
 - performance review
 - operator documentation
 - threat model review
 - privacy caveat documentation
+- ceremony-grade proving-material flow
 
 ## Explicit Non-goal
 
@@ -365,13 +378,8 @@ The correct path is a new implementation built on real proof verification.
 
 ## Immediate Next Step
 
-The next concrete step is not editing the current contract.
+The next concrete step is no longer building the first shielded-note token.
+That exists already.
 
-The runtime verifier path now exists. The next step is to build the first
-shielded-note token contract on top of it, including:
-
-- note commitment state
-- nullifier state
-- accepted Merkle roots
-- registry-managed verifying-key ids
-- proof-verified mint, transfer, and withdraw transitions
+The next high-value follow-up is ceremony-grade proving-material handling and
+network rollout policy, tracked in `PRIVACY_ASSET_STACK_FOLLOW_UPS.md`.
