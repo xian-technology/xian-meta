@@ -26,6 +26,7 @@ Files:
 - `GOLDEN_PATH_ROADMAP.md`: phased cross-repo implementation roadmap for the product thesis
 - `SOLUTION_PACKS.md`: canonical definition of the reference solution-pack set and the first pack scope
 - `WHOLE_STACK_VALIDATION_PLAN.md`: resumable whole-stack validation and hardening plan
+- `LOCALNET_4_NODE_E2E_RUNBOOK.md`: the canonical 4-node localnet runbook for whole-stack live validation across runtime, governance, BDS, DEX, logging, and shielded-note flows
 - `CORE_REPO_CLEANUP_PLAN.md`: staged cleanup plan for keeping the core repos human-first, minimal, and correctly layered
 - `SHARED_FOUNDATIONS_PLAN.md`: cleanup plan for neutral shared Python foundations and removing the `xian-abci -> xian-py` dependency
 - `SHARED_PACKAGE_EXTRACTION_PLAN.md`: deferred extraction criteria and migration path for shared packages that currently live in `xian-contracting`
