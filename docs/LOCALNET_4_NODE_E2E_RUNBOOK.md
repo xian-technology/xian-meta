@@ -49,7 +49,7 @@ python3 ./scripts/backend.py localnet-e2e
 The runner writes machine-readable artifacts under:
 
 ```text
-xian-stack/.localnet/e2e/<run-id>/
+xian-stack/.artifacts/localnet-e2e/<run-id>/
 ```
 
 The top-level result is:
@@ -81,6 +81,8 @@ Recommended local workspace assumptions:
 Optional but recommended for the shielded phase:
 
 - `xian-contracting/packages/xian-zk` is buildable/importable in the local env
+- the local validator image also includes `xian-zk`, not just the host-side
+  prover utilities
 
 ## Important Local-Only Detail
 
@@ -277,7 +279,7 @@ Pass criteria:
 
 Exercises the current privacy-stack candidate:
 
-- deploy `zk_registry`
+- use the governed system `zk_registry`
 - deploy shielded-note-token
 - register and bind dev verifying keys
 - mint public supply
@@ -298,6 +300,11 @@ Important current boundary:
   shielded-note-token public interface uses integer amounts
 - that integration should be treated as a separate compatibility project, not a
   quick add-on to the canonical whole-stack validation run
+- the canonical shielded flow uses explicit transaction stamp ceilings, because
+  readonly simulation is intentionally capped below proof-backed shielded
+  execution cost
+- hex-looking public addresses are valid withdraw recipients, so the toolkit and
+  contract must stay aligned on the same recipient-digest hashing semantics
 
 ## Recommended Execution Matrix
 
