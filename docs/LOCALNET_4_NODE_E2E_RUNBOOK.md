@@ -13,6 +13,7 @@ software stack in a shape that is close to real operator behavior:
 - optional BDS/indexed-read path on one service node
 - governance-driven validator-set changes
 - governance-driven forward state patching
+- nested contract deployment and dynamic call routing
 - realistic load, conflict, retrieval, logging, DEX, and shielded-token flows
 
 ## Why This Exists
@@ -142,7 +143,27 @@ Pass criteria:
 - receipt handling works
 - state reads and simulation results are sane
 
-### 03 Periodic Load
+### 03 Contract Orchestration
+
+Exercises cross-contract behavior that is easy to miss in isolated repo tests:
+
+- a contract submits multiple child contracts in one transaction
+- child deployment metadata is checked for `__developer__`, `__deployer__`,
+  `__initiator__`, and constructor context
+- a routed contract dynamically chooses both contract name and function name
+- a multi-hop root -> router -> mid -> leaf call chain preserves
+  `ctx.caller`, `ctx.signer`, and `ctx.entry`
+- a nested child-constructor failure rolls back the whole batch deployment
+
+Pass criteria:
+
+- both factory-deployed children exist after the success path
+- child deployment metadata points at the factory contract and original signer
+- dynamic routing succeeds for allowed exports
+- private or non-exported dynamic calls fail
+- the failed batch deployment leaves no child contracts behind
+
+### 04 Periodic Load
 
 Sends low-rate periodic transfers from multiple nodes and multiple senders.
 
@@ -153,7 +174,7 @@ Pass criteria:
 - all transfers finalize successfully
 - the runner captures approximate TPS
 
-### 04 Burst Load
+### 05 Burst Load
 
 Runs the existing deterministic burst workload against the live localnet.
 
@@ -163,7 +184,7 @@ Pass criteria:
 - receipts resolve correctly
 - approximate TPS is captured
 
-### 05 Conflict / Invalid
+### 06 Conflict / Invalid
 
 Exercises intentionally conflicting and invalid behavior:
 
@@ -176,7 +197,7 @@ Pass criteria:
 - exactly one of the conflicting txs succeeds
 - invalid txs fail for the right reason class
 
-### 06 DEX Mixed
+### 07 DEX Mixed
 
 Deploys and exercises the DEX contract pack with a richer mixed workload.
 
@@ -186,7 +207,7 @@ Pass criteria:
 - approvals, liquidity, swaps, and failure cases execute
 - DEX contracts become available for later phases
 
-### 07 Simulator Load
+### 08 Simulator Load
 
 Hammer-tests readonly simulation with many concurrent requests against the live
 DEX state.
@@ -197,7 +218,32 @@ Pass criteria:
 - the runner captures approximate simulator QPS
 - no silent failure class appears
 
-### 08 Retrieval Surfaces
+### 09 BDS Catch-Up
+
+Intentionally forces the indexed path behind live chain execution:
+
+- stop the local Postgres service
+- keep submitting real transactions while the chain continues advancing
+- verify BDS reports lag, backlog, or spool activity
+- restart Postgres
+- wait for BDS to catch up to the validator height again
+- verify lagged transactions become queryable through the indexed surface
+
+Pass criteria:
+
+- live block production continues while Postgres is down
+- BDS shows clear evidence of falling behind
+- BDS returns to `indexed_height == current height`
+- lagged tx/event/state records are queryable again after recovery
+
+Operational note:
+
+- use indexed height, spool state, and DB health as the real recovery
+  indicators. On the current service-node runtime, `queue_depth` can remain
+  nonzero in steady state and should not be treated as a hard failure by
+  itself.
+
+### 10 Retrieval Surfaces
 
 Validates the main read paths:
 
@@ -214,13 +260,14 @@ Pass criteria:
 - all retrieval surfaces return coherent data
 - a newly-triggered event is seen through both indexed and live watch paths
 
-### 09 Determinism
+### 11 Determinism
 
 Performs a focused determinism check after meaningful state exists:
 
 - recent app-hash equality
 - direct state equality across all validators
 - same simulation on every validator produces the same result and stamp usage
+- sampled state from the orchestration phase remains identical across validators
 
 Pass criteria:
 
@@ -228,7 +275,7 @@ Pass criteria:
 - all validators agree on recent app hashes
 - simulation outputs do not drift by node
 
-### 10 Validator Governance
+### 12 Validator Governance
 
 Exercises real on-chain validator governance with the local validator keys:
 
@@ -243,7 +290,7 @@ Pass criteria:
 - power changes actually propagate
 - reward/power metadata stays coherent
 
-### 11 State Patch
+### 13 State Patch
 
 Exercises the full governed forward-patch flow:
 
@@ -259,7 +306,7 @@ Pass criteria:
 - the patch target contract state changes only at activation
 - indexed patch history is present
 
-### 12 Logging
+### 14 Logging
 
 Validates practical operator logging behavior:
 
@@ -275,7 +322,7 @@ Pass criteria:
 - `DEBUG` emits compact tx-stage logs
 - `TRACE` emits deeper finalize payload traces
 
-### 13 Shielded Note Token
+### 15 Shielded Note Token
 
 Exercises the current privacy-stack candidate:
 
@@ -293,6 +340,12 @@ Pass criteria:
 - note payload recovery works for intended viewers
 - public and shielded supply accounting remains coherent
 
+Operational note:
+
+- this is typically the slowest phase in the full run. Real proving work can
+  keep the runner in this phase for several minutes even when the phase is
+  succeeding.
+
 Important current boundary:
 
 - the runbook does not currently list the shielded token on the DEX
@@ -305,6 +358,14 @@ Important current boundary:
   execution cost
 - hex-looking public addresses are valid withdraw recipients, so the toolkit and
   contract must stay aligned on the same recipient-digest hashing semantics
+
+Useful resume command after a partial run:
+
+```bash
+python3 ./scripts/backend.py localnet-e2e \
+  --start-phase 10-retrieval-surfaces \
+  --resume-dir xian-stack/.artifacts/localnet-e2e/<run-id>
+```
 
 ## Recommended Execution Matrix
 
