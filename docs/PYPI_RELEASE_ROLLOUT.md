@@ -44,9 +44,9 @@ Official references:
 
 | PyPI project | GitHub repo | Workflow | Environment | Tag shape |
 | --- | --- | --- | --- | --- |
-| `xian-abci` | `xian-technology/xian-abci` | `.github/workflows/release.yml` | `pypi` | `v*` |
+| `xian-tech-abci` | `xian-technology/xian-abci` | `.github/workflows/release.yml` | `pypi` | `v*` |
 | `xian-tech-cli` | `xian-technology/xian-cli` | `.github/workflows/release.yml` | `pypi` | `v*` |
-| `xian-py` | `xian-technology/xian-py` | `.github/workflows/release.yml` | `pypi` | `v*` |
+| `xian-tech-py` | `xian-technology/xian-py` | `.github/workflows/release.yml` | `pypi` | `v*` |
 | `xian-linter` | `xian-technology/xian-linter` | `.github/workflows/release.yml` | `pypi` | `v*` |
 
 ### Multi-package repo
@@ -70,17 +70,17 @@ Release bottom-up so dependency constraints stay satisfiable.
 3. `xian-tech-native-tracer`
 4. `xian-tech-zk`
 5. `xian-tech-contracting`
-6. `xian-py`
-7. `xian-abci`
+6. `xian-tech-py`
+7. `xian-tech-abci`
 8. `xian-tech-cli`
 9. `xian-linter`
 
 Notes:
 
-- `xian-py` depends on `xian-tech-accounts` and `xian-tech-runtime-types`.
-- `xian-abci` depends on `xian-tech-contracting`, `xian-tech-accounts`, and
+- `xian-tech-py` depends on `xian-tech-accounts` and `xian-tech-runtime-types`.
+- `xian-tech-abci` depends on `xian-tech-contracting`, `xian-tech-accounts`, and
   `xian-tech-runtime-types`.
-- `xian-tech-cli` depends on `xian-abci`.
+- `xian-tech-cli` depends on `xian-tech-abci`.
 - `xian-linter` depends on `xian-tech-contracting`.
 
 ## Current Version Baseline
@@ -94,18 +94,18 @@ As of March 29, 2026, the local package versions are:
 | `xian-tech-native-tracer` | `0.1.1` |
 | `xian-tech-zk` | `0.1.1` |
 | `xian-tech-contracting` | `1.0.1` |
-| `xian-py` | `0.4.8` |
-| `xian-abci` | `0.8.4` |
+| `xian-tech-py` | `0.4.8` |
+| `xian-tech-abci` | `0.8.4` |
 | `xian-tech-cli` | `0.1.0` |
 | `xian-linter` | `0.3.0` |
 
 The legacy project names currently return `404` from the public PyPI JSON API,
 so there is no evidence of an already-published version collision on:
 
-- `xian-py`
+- `xian-tech-py`
 - `xian-tech-contracting`
 - `xian-linter`
-- `xian-abci`
+- `xian-tech-abci`
 - `xian-tech-native-tracer`
 - `xian-tech-zk`
 
@@ -122,8 +122,8 @@ Already published:
 Already staged in PyPI as pending trusted publishers:
 
 - `xian-tech-cli`
-- `xian-tech-native-tracer`
-- `xian-tech-zk`
+- `xian-tech-py`
+- `xian-tech-abci`
 
 Still unresolved on the PyPI side:
 
@@ -188,11 +188,11 @@ After the contracting package is published, create the next publisher batch:
 
 Then publish:
 
-1. `xian-py`
+1. `xian-tech-py`
    - repo: `xian-py`
    - tag: `v0.4.8`
    - workflow environment: `pypi`
-2. `xian-abci`
+2. `xian-tech-abci`
    - repo: `xian-abci`
    - tag: `v0.8.4`
    - workflow environment: `pypi`
@@ -203,7 +203,7 @@ Then publish:
 
 ### Batch 5
 
-Once `xian-abci` is live, publish the remaining already-registered CLI package:
+Once `xian-tech-abci` is live, publish the remaining already-registered CLI package:
 
 1. `xian-tech-cli`
    - repo: `xian-cli`
