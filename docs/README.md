@@ -27,9 +27,11 @@ Files:
 - `SOLUTION_PACKS.md`: canonical definition of the reference solution-pack set and the first pack scope
 - `WHOLE_STACK_VALIDATION_PLAN.md`: resumable whole-stack validation and hardening plan
 - `LOCALNET_4_NODE_E2E_RUNBOOK.md`: the canonical 4-node localnet runbook for whole-stack live validation across runtime, governance, BDS, DEX, logging, and shielded-note flows
+- `PYPI_RELEASE_ROLLOUT.md`: one-time PyPI Trusted Publishing registration map, release order, and maintainer checklist for the Python package set
 - `CORE_REPO_CLEANUP_PLAN.md`: staged cleanup plan for keeping the core repos human-first, minimal, and correctly layered
 - `SHARED_FOUNDATIONS_PLAN.md`: cleanup plan for neutral shared Python foundations and removing the `xian-abci -> xian-py` dependency
 - `SHARED_PACKAGE_EXTRACTION_PLAN.md`: deferred extraction criteria and migration path for shared packages that currently live in `xian-contracting`
+- `INTENTKIT_STACK_INTEGRATION.md`: cross-repo contract for keeping `xian-intentkit` independent while attaching it cleanly to the stack and CLI
 - `CONTRACT_SOURCE_STORAGE.md`: design for storing exact submitted contract source alongside canonical runtime code
 - `CONTRACT_FACTORY_DEPLOYMENT.md`: design for restoring contract factories with explicit constructor semantics, provenance, metering, and BDS indexing
 - `DYNAMIC_CONTRACT_CALLS.md`: design for safe dynamic exported-function dispatch without exposing generic reflection
