@@ -14,8 +14,8 @@ The GitHub side is already mostly set up:
   - `xian-tech-accounts`
   - `xian-contracting`
   - `xian-tech-runtime-types`
-  - `xian-native-tracer`
-  - `xian-zk`
+  - `xian-tech-native-tracer`
+  - `xian-tech-zk`
 
 That means the missing work is primarily on the PyPI side:
 
@@ -58,8 +58,8 @@ Official references:
 | `xian-tech-accounts` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-accounts` | `accounts-v*` |
 | `xian-contracting` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-contracting` | `contracting-v*` |
 | `xian-tech-runtime-types` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-runtime-types` | `runtime-types-v*` |
-| `xian-native-tracer` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-native-tracer` | `native-tracer-v*` |
-| `xian-zk` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-zk` | `zk-v*` |
+| `xian-tech-native-tracer` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-native-tracer` | `native-tracer-v*` |
+| `xian-tech-zk` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-zk` | `zk-v*` |
 
 ## Recommended Release Order
 
@@ -67,8 +67,8 @@ Release bottom-up so dependency constraints stay satisfiable.
 
 1. `xian-tech-runtime-types`
 2. `xian-tech-accounts`
-3. `xian-native-tracer`
-4. `xian-zk`
+3. `xian-tech-native-tracer`
+4. `xian-tech-zk`
 5. `xian-contracting`
 6. `xian-py`
 7. `xian-abci`
@@ -91,8 +91,8 @@ As of March 29, 2026, the local package versions are:
 | --- | --- |
 | `xian-tech-runtime-types` | `0.1.0` |
 | `xian-tech-accounts` | `0.1.0` |
-| `xian-native-tracer` | `0.1.0` |
-| `xian-zk` | `0.1.0` |
+| `xian-tech-native-tracer` | `0.1.0` |
+| `xian-tech-zk` | `0.1.0` |
 | `xian-contracting` | `1.0.1` |
 | `xian-py` | `0.4.8` |
 | `xian-abci` | `0.8.4` |
@@ -106,28 +106,37 @@ so there is no evidence of an already-published version collision on:
 - `xian-contracting`
 - `xian-linter`
 - `xian-abci`
-- `xian-native-tracer`
-- `xian-zk`
+- `xian-tech-native-tracer`
+- `xian-tech-zk`
 
 That means the first release wave can use the current local versions without a
 preemptive version bump.
 
-## Current Pending Publishers
+## Current Publisher State
 
-The first three pending trusted publishers are already staged:
+Already published:
 
 - `xian-tech-runtime-types`
 - `xian-tech-accounts`
-- `xian-tech-cli`
 
-Because PyPI only allows three pending publishers at once, publish in batches
-that free those slots before creating the next set.
+Already staged in PyPI as pending trusted publishers:
+
+- `xian-tech-cli`
+- `xian-tech-native-tracer`
+- `xian-tech-zk`
+
+Still unresolved on the PyPI side:
+
+- `xian-contracting`
+
+Because PyPI only allows three pending publishers at once, keep working in
+batches that free those slots before creating the next set.
 
 ## Exact First Release Wave
 
 ### Batch 1
 
-These two are ready to publish immediately and should go first:
+Completed:
 
 1. `xian-tech-runtime-types`
    - repo: `xian-contracting`
@@ -138,35 +147,35 @@ These two are ready to publish immediately and should go first:
    - tag: `accounts-v0.1.0`
    - workflow environment: `pypi-xian-accounts`
 
-Do not publish `xian-tech-cli` yet. Its publisher is registered, but it depends
-on `xian-abci`, which should land later in the chain.
-
 ### Batch 2
 
-After Batch 1 succeeds, create the next three trusted publishers:
+The next two are ready once the repo-side rename is in place:
 
-- `xian-native-tracer`
-- `xian-zk`
-- `xian-contracting`
-
-Then publish:
-
-1. `xian-native-tracer`
+1. `xian-tech-native-tracer`
    - repo: `xian-contracting`
    - tag: `native-tracer-v0.1.0`
    - workflow environment: `pypi-xian-native-tracer`
-2. `xian-zk`
+2. `xian-tech-zk`
    - repo: `xian-contracting`
    - tag: `zk-v0.1.0`
    - workflow environment: `pypi-xian-zk`
-3. `xian-contracting`
+
+Do not publish `xian-tech-cli` yet. Its publisher is registered, but it depends
+on `xian-abci`, which should land later in the chain.
+
+### Batch 3
+
+After `xian-tech-native-tracer` and `xian-tech-zk` are live, resolve the core
+runtime package name on PyPI and then publish:
+
+1. `xian-contracting` or `xian-tech-contracting`
    - repo: `xian-contracting`
    - tag: `contracting-v1.0.1`
    - workflow environment: `pypi-xian-contracting`
 
-### Batch 3
+### Batch 4
 
-After Batch 2 succeeds, create the next publisher batch:
+After the contracting package is published, create the next publisher batch:
 
 - `xian-py`
 - `xian-abci`
@@ -187,7 +196,7 @@ Then publish:
    - tag: `v0.3.0`
    - workflow environment: `pypi`
 
-### Batch 4
+### Batch 5
 
 Once `xian-abci` is live, publish the remaining already-registered CLI package:
 
@@ -250,8 +259,8 @@ publishable:
 - `xian-contracting`
 - `xian-accounts`
 - `xian-runtime-types`
-- `xian-native-tracer`
-- `xian-zk`
+- `xian-tech-native-tracer`
+- `xian-tech-zk`
 
 ## Wheel Coverage
 
