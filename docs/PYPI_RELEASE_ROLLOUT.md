@@ -91,8 +91,8 @@ As of March 29, 2026, the local package versions are:
 | --- | --- |
 | `xian-tech-runtime-types` | `0.1.0` |
 | `xian-tech-accounts` | `0.1.0` |
-| `xian-tech-native-tracer` | `0.1.0` |
-| `xian-tech-zk` | `0.1.0` |
+| `xian-tech-native-tracer` | `0.1.1` |
+| `xian-tech-zk` | `0.1.1` |
 | `xian-contracting` | `1.0.1` |
 | `xian-py` | `0.4.8` |
 | `xian-abci` | `0.8.4` |
@@ -153,12 +153,17 @@ The next two are ready once the repo-side rename is in place:
 
 1. `xian-tech-native-tracer`
    - repo: `xian-contracting`
-   - tag: `native-tracer-v0.1.0`
+   - tag: `native-tracer-v0.1.1`
    - workflow environment: `pypi-xian-native-tracer`
 2. `xian-tech-zk`
    - repo: `xian-contracting`
-   - tag: `zk-v0.1.0`
+   - tag: `zk-v0.1.1`
    - workflow environment: `pypi-xian-zk`
+
+The `0.1.0` native release attempts failed because PyPI rejected the raw
+single-runner Linux wheels (`linux_x86_64`). The workflow now publishes source
+distributions for the Rust-backed packages until a proper manylinux/macOS wheel
+matrix is added.
 
 Do not publish `xian-tech-cli` yet. Its publisher is registered, but it depends
 on `xian-abci`, which should land later in the chain.
@@ -268,13 +273,13 @@ Pure Python packages already build normal `py3-none-any` wheels cleanly.
 
 The Rust-backed packages:
 
-- `xian-native-tracer`
-- `xian-zk`
+- `xian-tech-native-tracer`
+- `xian-tech-zk`
 
-already build valid native wheels through `maturin`, but the current release
-workflow still builds them on a single GitHub runner platform per release. That
-is enough to start publishing, but broad platform wheel coverage should still be
-treated as a follow-up improvement.
+currently publish source distributions first. The earlier `0.1.0` attempts
+showed that PyPI rejects the raw `linux_x86_64` wheels produced by the
+single-runner workflow. Proper manylinux/macOS wheel coverage remains a
+follow-up improvement.
 
 Highest-value next step:
 
