@@ -83,6 +83,135 @@ Notes:
 - `xian-tech-cli` depends on `xian-abci`.
 - `xian-linter` depends on `xian-contracting`.
 
+## Current Version Baseline
+
+As of March 29, 2026, the local package versions are:
+
+| Project | Local version |
+| --- | --- |
+| `xian-tech-runtime-types` | `0.1.0` |
+| `xian-tech-accounts` | `0.1.0` |
+| `xian-native-tracer` | `0.1.0` |
+| `xian-zk` | `0.1.0` |
+| `xian-contracting` | `1.0.1` |
+| `xian-py` | `0.4.8` |
+| `xian-abci` | `0.8.4` |
+| `xian-tech-cli` | `0.1.0` |
+| `xian-linter` | `0.3.0` |
+
+The legacy project names currently return `404` from the public PyPI JSON API,
+so there is no evidence of an already-published version collision on:
+
+- `xian-py`
+- `xian-contracting`
+- `xian-linter`
+- `xian-abci`
+- `xian-native-tracer`
+- `xian-zk`
+
+That means the first release wave can use the current local versions without a
+preemptive version bump.
+
+## Current Pending Publishers
+
+The first three pending trusted publishers are already staged:
+
+- `xian-tech-runtime-types`
+- `xian-tech-accounts`
+- `xian-tech-cli`
+
+Because PyPI only allows three pending publishers at once, publish in batches
+that free those slots before creating the next set.
+
+## Exact First Release Wave
+
+### Batch 1
+
+These two are ready to publish immediately and should go first:
+
+1. `xian-tech-runtime-types`
+   - repo: `xian-contracting`
+   - tag: `runtime-types-v0.1.0`
+   - workflow environment: `pypi-xian-runtime-types`
+2. `xian-tech-accounts`
+   - repo: `xian-contracting`
+   - tag: `accounts-v0.1.0`
+   - workflow environment: `pypi-xian-accounts`
+
+Do not publish `xian-tech-cli` yet. Its publisher is registered, but it depends
+on `xian-abci`, which should land later in the chain.
+
+### Batch 2
+
+After Batch 1 succeeds, create the next three trusted publishers:
+
+- `xian-native-tracer`
+- `xian-zk`
+- `xian-contracting`
+
+Then publish:
+
+1. `xian-native-tracer`
+   - repo: `xian-contracting`
+   - tag: `native-tracer-v0.1.0`
+   - workflow environment: `pypi-xian-native-tracer`
+2. `xian-zk`
+   - repo: `xian-contracting`
+   - tag: `zk-v0.1.0`
+   - workflow environment: `pypi-xian-zk`
+3. `xian-contracting`
+   - repo: `xian-contracting`
+   - tag: `contracting-v1.0.1`
+   - workflow environment: `pypi-xian-contracting`
+
+### Batch 3
+
+After Batch 2 succeeds, create the next publisher batch:
+
+- `xian-py`
+- `xian-abci`
+- `xian-linter`
+
+Then publish:
+
+1. `xian-py`
+   - repo: `xian-py`
+   - tag: `v0.4.8`
+   - workflow environment: `pypi`
+2. `xian-abci`
+   - repo: `xian-abci`
+   - tag: `v0.8.4`
+   - workflow environment: `pypi`
+3. `xian-linter`
+   - repo: `xian-linter`
+   - tag: `v0.3.0`
+   - workflow environment: `pypi`
+
+### Batch 4
+
+Once `xian-abci` is live, publish the remaining already-registered CLI package:
+
+1. `xian-tech-cli`
+   - repo: `xian-cli`
+   - tag: `v0.1.0`
+   - workflow environment: `pypi`
+
+## Release Commands
+
+From a clean checkout, the first tag wave is:
+
+```bash
+cd /path/to/xian-contracting
+git tag runtime-types-v0.1.0
+git push origin runtime-types-v0.1.0
+
+git tag accounts-v0.1.0
+git push origin accounts-v0.1.0
+```
+
+Then wait for both release workflows to publish successfully before adding the
+next trusted-publisher batch in PyPI.
+
 ## One-Time PyPI Setup
 
 Do this once per package.
