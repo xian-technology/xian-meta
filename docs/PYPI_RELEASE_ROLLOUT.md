@@ -7,7 +7,7 @@ release workflows into real PyPI publication across the Xian Python packages.
 
 The GitHub side is already mostly set up:
 
-- `xian-abci`, `xian-cli`, `xian-py`, and `xian-linter` already publish through
+- `xian-abci`, `xian-cli`, `xian-py`, and `xian-tech-linter` already publish through
   GitHub Actions release workflows using PyPI Trusted Publishing
   (`pypa/gh-action-pypi-publish` with `id-token: write`).
 - `xian-contracting` already has a multi-package release workflow for:
@@ -47,7 +47,7 @@ Official references:
 | `xian-tech-abci` | `xian-technology/xian-abci` | `.github/workflows/release.yml` | `pypi` | `v*` |
 | `xian-tech-cli` | `xian-technology/xian-cli` | `.github/workflows/release.yml` | `pypi` | `v*` |
 | `xian-tech-py` | `xian-technology/xian-py` | `.github/workflows/release.yml` | `pypi` | `v*` |
-| `xian-linter` | `xian-technology/xian-linter` | `.github/workflows/release.yml` | `pypi` | `v*` |
+| `xian-tech-linter` | `xian-technology/xian-linter` | `.github/workflows/release.yml` | `pypi` | `v*` |
 
 ### Multi-package repo
 
@@ -73,7 +73,7 @@ Release bottom-up so dependency constraints stay satisfiable.
 6. `xian-tech-py`
 7. `xian-tech-abci`
 8. `xian-tech-cli`
-9. `xian-linter`
+9. `xian-tech-linter`
 
 Notes:
 
@@ -81,7 +81,7 @@ Notes:
 - `xian-tech-abci` depends on `xian-tech-contracting`, `xian-tech-accounts`, and
   `xian-tech-runtime-types`.
 - `xian-tech-cli` depends on `xian-tech-abci`.
-- `xian-linter` depends on `xian-tech-contracting`.
+- `xian-tech-linter` depends on `xian-tech-contracting`.
 
 ## Current Version Baseline
 
@@ -97,14 +97,14 @@ As of March 29, 2026, the local package versions are:
 | `xian-tech-py` | `0.4.8` |
 | `xian-tech-abci` | `0.8.4` |
 | `xian-tech-cli` | `0.1.0` |
-| `xian-linter` | `0.3.0` |
+| `xian-tech-linter` | `0.3.1` |
 
 The legacy project names currently return `404` from the public PyPI JSON API,
 so there is no evidence of an already-published version collision on:
 
 - `xian-tech-py`
 - `xian-tech-contracting`
-- `xian-linter`
+- `xian-tech-linter`
 - `xian-tech-abci`
 - `xian-tech-native-tracer`
 - `xian-tech-zk`
@@ -182,9 +182,9 @@ runtime package name on PyPI and then publish:
 
 After the contracting package is published, create the next publisher batch:
 
-- `xian-py`
-- `xian-abci`
-- `xian-linter`
+- `xian-tech-py`
+- `xian-tech-abci`
+- `xian-tech-linter`
 
 Then publish:
 
@@ -196,9 +196,9 @@ Then publish:
    - repo: `xian-abci`
    - tag: `v0.8.4`
    - workflow environment: `pypi`
-3. `xian-linter`
+3. `xian-tech-linter`
    - repo: `xian-linter`
-   - tag: `v0.3.0`
+   - tag: `v0.3.1`
    - workflow environment: `pypi`
 
 ### Batch 5
@@ -260,7 +260,7 @@ publishable:
 - `xian-abci`
 - `xian-cli`
 - `xian-py`
-- `xian-linter`
+- `xian-tech-linter`
 - `xian-contracting`
 - `xian-accounts`
 - `xian-runtime-types`
