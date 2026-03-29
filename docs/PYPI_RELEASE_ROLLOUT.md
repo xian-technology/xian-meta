@@ -11,9 +11,9 @@ The GitHub side is already mostly set up:
   GitHub Actions release workflows using PyPI Trusted Publishing
   (`pypa/gh-action-pypi-publish` with `id-token: write`).
 - `xian-contracting` already has a multi-package release workflow for:
-  - `xian-accounts`
+  - `xian-tech-accounts`
   - `xian-contracting`
-  - `xian-runtime-types`
+  - `xian-tech-runtime-types`
   - `xian-native-tracer`
   - `xian-zk`
 
@@ -45,7 +45,7 @@ Official references:
 | PyPI project | GitHub repo | Workflow | Environment | Tag shape |
 | --- | --- | --- | --- | --- |
 | `xian-abci` | `xian-technology/xian-abci` | `.github/workflows/release.yml` | `pypi` | `v*` |
-| `xian-cli` | `xian-technology/xian-cli` | `.github/workflows/release.yml` | `pypi` | `v*` |
+| `xian-tech-cli` | `xian-technology/xian-cli` | `.github/workflows/release.yml` | `pypi` | `v*` |
 | `xian-py` | `xian-technology/xian-py` | `.github/workflows/release.yml` | `pypi` | `v*` |
 | `xian-linter` | `xian-technology/xian-linter` | `.github/workflows/release.yml` | `pypi` | `v*` |
 
@@ -55,9 +55,9 @@ Official references:
 
 | PyPI project | GitHub repo | Workflow | Environment | Tag shape |
 | --- | --- | --- | --- | --- |
-| `xian-accounts` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-accounts` | `accounts-v*` |
+| `xian-tech-accounts` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-accounts` | `accounts-v*` |
 | `xian-contracting` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-contracting` | `contracting-v*` |
-| `xian-runtime-types` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-runtime-types` | `runtime-types-v*` |
+| `xian-tech-runtime-types` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-runtime-types` | `runtime-types-v*` |
 | `xian-native-tracer` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-native-tracer` | `native-tracer-v*` |
 | `xian-zk` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-zk` | `zk-v*` |
 
@@ -65,22 +65,22 @@ Official references:
 
 Release bottom-up so dependency constraints stay satisfiable.
 
-1. `xian-runtime-types`
-2. `xian-accounts`
+1. `xian-tech-runtime-types`
+2. `xian-tech-accounts`
 3. `xian-native-tracer`
 4. `xian-zk`
 5. `xian-contracting`
 6. `xian-py`
 7. `xian-abci`
-8. `xian-cli`
+8. `xian-tech-cli`
 9. `xian-linter`
 
 Notes:
 
-- `xian-py` depends on `xian-accounts` and `xian-runtime-types`.
-- `xian-abci` depends on `xian-contracting`, `xian-accounts`, and
-  `xian-runtime-types`.
-- `xian-cli` depends on `xian-abci`.
+- `xian-py` depends on `xian-tech-accounts` and `xian-tech-runtime-types`.
+- `xian-abci` depends on `xian-contracting`, `xian-tech-accounts`, and
+  `xian-tech-runtime-types`.
+- `xian-tech-cli` depends on `xian-abci`.
 - `xian-linter` depends on `xian-contracting`.
 
 ## One-Time PyPI Setup
