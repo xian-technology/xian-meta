@@ -12,7 +12,7 @@ The GitHub side is already mostly set up:
   (`pypa/gh-action-pypi-publish` with `id-token: write`).
 - `xian-contracting` already has a multi-package release workflow for:
   - `xian-tech-accounts`
-  - `xian-contracting`
+  - `xian-tech-contracting`
   - `xian-tech-runtime-types`
   - `xian-tech-native-tracer`
   - `xian-tech-zk`
@@ -56,7 +56,7 @@ Official references:
 | PyPI project | GitHub repo | Workflow | Environment | Tag shape |
 | --- | --- | --- | --- | --- |
 | `xian-tech-accounts` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-accounts` | `accounts-v*` |
-| `xian-contracting` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-contracting` | `contracting-v*` |
+| `xian-tech-contracting` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-contracting` | `contracting-v*` |
 | `xian-tech-runtime-types` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-runtime-types` | `runtime-types-v*` |
 | `xian-tech-native-tracer` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-native-tracer` | `native-tracer-v*` |
 | `xian-tech-zk` | `xian-technology/xian-contracting` | `.github/workflows/release.yml` | `pypi-xian-zk` | `zk-v*` |
@@ -69,7 +69,7 @@ Release bottom-up so dependency constraints stay satisfiable.
 2. `xian-tech-accounts`
 3. `xian-tech-native-tracer`
 4. `xian-tech-zk`
-5. `xian-contracting`
+5. `xian-tech-contracting`
 6. `xian-py`
 7. `xian-abci`
 8. `xian-tech-cli`
@@ -78,10 +78,10 @@ Release bottom-up so dependency constraints stay satisfiable.
 Notes:
 
 - `xian-py` depends on `xian-tech-accounts` and `xian-tech-runtime-types`.
-- `xian-abci` depends on `xian-contracting`, `xian-tech-accounts`, and
+- `xian-abci` depends on `xian-tech-contracting`, `xian-tech-accounts`, and
   `xian-tech-runtime-types`.
 - `xian-tech-cli` depends on `xian-abci`.
-- `xian-linter` depends on `xian-contracting`.
+- `xian-linter` depends on `xian-tech-contracting`.
 
 ## Current Version Baseline
 
@@ -93,7 +93,7 @@ As of March 29, 2026, the local package versions are:
 | `xian-tech-accounts` | `0.1.0` |
 | `xian-tech-native-tracer` | `0.1.1` |
 | `xian-tech-zk` | `0.1.1` |
-| `xian-contracting` | `1.0.1` |
+| `xian-tech-contracting` | `1.0.1` |
 | `xian-py` | `0.4.8` |
 | `xian-abci` | `0.8.4` |
 | `xian-tech-cli` | `0.1.0` |
@@ -103,7 +103,7 @@ The legacy project names currently return `404` from the public PyPI JSON API,
 so there is no evidence of an already-published version collision on:
 
 - `xian-py`
-- `xian-contracting`
+- `xian-tech-contracting`
 - `xian-linter`
 - `xian-abci`
 - `xian-tech-native-tracer`
@@ -127,7 +127,7 @@ Already staged in PyPI as pending trusted publishers:
 
 Still unresolved on the PyPI side:
 
-- `xian-contracting`
+- no additional project registrations are needed before the contracting release
 
 Because PyPI only allows three pending publishers at once, keep working in
 batches that free those slots before creating the next set.
@@ -173,7 +173,7 @@ on `xian-abci`, which should land later in the chain.
 After `xian-tech-native-tracer` and `xian-tech-zk` are live, resolve the core
 runtime package name on PyPI and then publish:
 
-1. `xian-contracting` or `xian-tech-contracting`
+1. `xian-tech-contracting`
    - repo: `xian-contracting`
    - tag: `contracting-v1.0.1`
    - workflow environment: `pypi-xian-contracting`
