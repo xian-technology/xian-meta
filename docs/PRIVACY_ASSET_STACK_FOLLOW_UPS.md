@@ -25,9 +25,15 @@ As of `2026-03-27`, the stack already has:
 - optional disclosed viewers per output payload
 - wallet-side seed backup, state snapshots, record sync, note selection, and
   request planning
+- browser and mobile wallet flows for storing shielded `state_snapshot`
+  backups, exporting them directly, and including them in full encrypted wallet
+  backups
 - exact withdraw support with zero outputs when no change note is required
 - operator tooling to generate a random trusted-setup bundle and a
   registry-ready verifying-key manifest
+- a first protocol-shaped shielded light-wallet history feed in `xian-abci`
+  plus typed `xian-py` helpers and `xian-zk` wallet integration
+- a standardized `xian-stack` operator path for BDS snapshot export/import
 
 That is a serious candidate stack. It is not yet the final production shape.
 
@@ -78,6 +84,8 @@ Current state:
 
 - `xian-zk` now has a real Python wallet abstraction
 - it supports note sync, planning, and recovery
+- browser and mobile wallets now expose shielded snapshot backup/import/export
+  flows directly in the product UI
 
 Still needed:
 
@@ -100,8 +108,10 @@ Current state:
   proof-bound payload hashes
 - wallets now recover note payloads from indexed transaction history via BDS or
   another equivalent indexer feed
-- the `zk-runtime-optimization` branches add a first selective
-  `shielded_output_tags` query path in `xian-abci` and `xian-py`
+- the current branches now expose a first protocol-shaped
+  `shielded_wallet_history` feed in `xian-abci` and `xian-py`
+- `xian-stack` now standardizes BDS snapshot export/import as part of the
+  operator recovery path
 
 Still needed:
 
@@ -109,13 +119,13 @@ Still needed:
 - pagination and watcher guidance for large live pools
 - operational guidance for archive / retention expectations around encrypted
   payload blobs
-- a stable high-level wallet-facing read surface so product UIs do not depend on
-  ad hoc indexed transaction polling forever
+- durable network-level compatibility commitments for the
+  `shielded_wallet_history` feed and related wallet sync surfaces
 
 Why it matters:
 
 - indexed transaction recovery is the right architecture, but it still needs a
-  more polished app-facing read surface
+  more polished and more explicitly versioned app-facing read surface
 
 ### 5. Threat model and privacy-review pass
 

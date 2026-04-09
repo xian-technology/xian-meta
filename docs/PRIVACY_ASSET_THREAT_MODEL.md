@@ -167,8 +167,11 @@ Current state:
 
 - wallet recovery now uses indexed transaction history instead of reading
   payloads from contract state
-- the `zk-runtime-optimization` branches add a first selective output-tag query
-  path in `xian-abci` and `xian-py`
+- the current branches add a first protocol-shaped `shielded_wallet_history`
+  feed in `xian-abci` and `xian-py`
+- browser and mobile wallets now expose first-class shielded `state_snapshot`
+  backup/import/export flows
+- `xian-stack` now exposes a standardized BDS snapshot export/import path
 - encrypted payload blobs and discovery metadata therefore matter operationally
   outside consensus state
 
