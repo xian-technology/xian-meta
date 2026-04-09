@@ -96,23 +96,24 @@ Why it matters:
 
 Current state:
 
-- the contract exposes `list_note_records(...)`, commitment paging, payloads,
-  root state, and nullifier status
-- wallets can sync directly from contract state
+- the contract exposes root state, nullifier status, note count, and
+  proof-bound payload hashes
+- wallets now recover note payloads from indexed transaction history via BDS or
+  another equivalent indexer feed
 
 Still needed:
 
-- better indexer / BDS exposure for shielded token metadata and note records
+- better indexer / BDS exposure for shielded token metadata and note history
 - pagination and watcher guidance for large live pools
 - operational guidance for archive / retention expectations around encrypted
   payload blobs
-- app-facing query helpers so wallet sync does not depend on ad hoc direct
-  contract polling forever
+- app-facing query helpers so wallet sync does not depend on ad hoc indexed
+  transaction polling forever
 
 Why it matters:
 
-- direct contract paging works, but it is not yet the most ergonomic or most
-  scalable app-facing read path
+- indexed transaction recovery is the right architecture, but it still needs a
+  more polished app-facing read surface
 
 ### 5. Threat model and privacy-review pass
 
