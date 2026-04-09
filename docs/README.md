@@ -39,4 +39,6 @@ Files:
 - `DETERMINISTIC_RANDOMNESS.md`: design for a Xian-owned deterministic contract randomness model and simulation alignment
 - `REAL_PRIVACY_TOKEN_ARCHITECTURE.md`: architecture for replacing the current experimental privacy-token contract with a real shielded-note token backed by native proof verification
 - `PRIVACY_ASSET_STACK_FOLLOW_UPS.md`: deferred cross-repo gap list for what still remains before the shielded-note stack can be treated as fully finished
+- `PRIVACY_ASSET_THREAT_MODEL.md`: first explicit threat-model and privacy-review pass for the current shielded asset stack
+- `ZK_RUNTIME_OPTIMIZATION_MERGE_READINESS.md`: repo-by-repo merge guidance and ordering for the current shielded runtime and wallet-sync branches
 - `ZK_VERIFIER_RUNTIME.md`: runtime design for a native Groth16/BN254 verifier bridge, key registry, encoding rules, and metering

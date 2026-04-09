@@ -100,6 +100,8 @@ Current state:
   proof-bound payload hashes
 - wallets now recover note payloads from indexed transaction history via BDS or
   another equivalent indexer feed
+- the `zk-runtime-optimization` branches add a first selective
+  `shielded_output_tags` query path in `xian-abci` and `xian-py`
 
 Still needed:
 
@@ -107,8 +109,8 @@ Still needed:
 - pagination and watcher guidance for large live pools
 - operational guidance for archive / retention expectations around encrypted
   payload blobs
-- app-facing query helpers so wallet sync does not depend on ad hoc indexed
-  transaction polling forever
+- a stable high-level wallet-facing read surface so product UIs do not depend on
+  ad hoc indexed transaction polling forever
 
 Why it matters:
 
@@ -121,14 +123,16 @@ Current state:
 
 - the implementation has tests and correctness hardening
 - docs now explain privacy guarantees and non-guarantees
+- a first explicit review now exists in `PRIVACY_ASSET_THREAT_MODEL.md`
 
 Still needed:
 
-- explicit written threat model for what this stack does and does not hide
-- side-channel review of metadata leakage, timing, payload handling, and root
-  rollover behavior
-- operator review of proving-bundle custody and key-loss consequences
+- address the concrete findings from `PRIVACY_ASSET_THREAT_MODEL.md`
+- operator policy for proving-bundle custody, provenance, and key-loss
+  consequences
 - public language for privacy expectations that avoids overclaiming
+- network and product policy work for disclosure, metadata leakage, and
+  retention-sensitive recovery paths
 
 Why it matters:
 
@@ -159,7 +163,7 @@ If work resumes later, the best order is:
 
 1. external ceremony artifact import and verification
 2. canonical network packaging and rollout policy
-3. threat model and privacy-review pass
+3. address the findings from `PRIVACY_ASSET_THREAT_MODEL.md`
 4. network-level viewing / disclosure policy
 5. end-user wallet product layer
 6. richer indexer / BDS integration
