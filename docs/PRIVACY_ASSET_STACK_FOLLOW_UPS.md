@@ -25,9 +25,17 @@ As of `2026-03-27`, the stack already has:
 - optional disclosed viewers per output payload
 - wallet-side seed backup, state snapshots, record sync, note selection, and
   request planning
+- browser and mobile wallet flows for storing shielded `state_snapshot`
+  backups, exporting them directly, and including them in full encrypted wallet
+  backups
+- browser and mobile wallet checks that tell users whether indexed shielded
+  history has advanced beyond a stored snapshot
 - exact withdraw support with zero outputs when no change note is required
 - operator tooling to generate a random trusted-setup bundle and a
   registry-ready verifying-key manifest
+- a first protocol-shaped shielded light-wallet history feed in `xian-abci`
+  plus typed `xian-py` helpers and `xian-zk` wallet integration
+- a standardized `xian-stack` operator path for BDS snapshot export/import
 
 That is a serious candidate stack. It is not yet the final production shape.
 
@@ -43,10 +51,10 @@ Current state:
 
 Still needed:
 
-- import path for externally generated ceremony artifacts
-- artifact validation and metadata checks before bundle acceptance
 - operator documentation for ceremony provenance, custody, and rotation
 - clear policy for which proving material is allowed on which network
+- packaging / release discipline so imported ceremony artifacts map cleanly to
+  network-approved manifests
 
 Why it matters:
 
@@ -72,12 +80,48 @@ Why it matters:
 - the cryptographic mechanism exists, but the product and governance rules do
   not
 
-### 3. End-user wallet product layer
+### 3. Network-origin privacy
+
+Current state:
+
+- the stack supports hidden-sender and relayed shielded execution inside the
+  proof and contract path
+- the stack now also has a concrete relayer / submission architecture:
+  - typed relayer clients in `xian-py` and `xian-js`
+  - a stack-managed `xian-shielded-relayer` service in `xian-stack`
+  - canonical single- and multi-relayer discovery in network manifests
+- the relayer defaults to loopback bind and now requires a bearer token for
+  non-loopback binds
+ - the relayer now also has baseline operational controls:
+   - public-route policy
+   - in-memory rate limits
+   - bounded job-retention TTL
+   - Prometheus-style metrics
+   - an operator runbook
+- that is still not a full anonymity-network or relay-mesh design
+
+Still needed:
+
+- stronger trust-reduction and failover policy for multiple relayers beyond
+  static discovery ordering
+- client auth lifecycle and token-distribution policy for shared relayers
+- a fuller privacy analysis of timing, metadata, and operator visibility across
+  the relayer boundary
+
+Why it matters:
+
+- shielded balance privacy and network-origin privacy are different properties
+- without the second one, a user's own node or RPC path can still leak that
+  they initiated the transaction
+
+### 4. End-user wallet product layer
 
 Current state:
 
 - `xian-zk` now has a real Python wallet abstraction
 - it supports note sync, planning, and recovery
+- browser and mobile wallets now expose shielded snapshot backup/import/export
+  flows directly in the product UI
 
 Still needed:
 
@@ -92,7 +136,7 @@ Why it matters:
 
 - today the stack is operator- and developer-usable, not mainstream-user-usable
 
-### 4. Indexing and data-access hardening
+### 5. Indexing and data-access hardening
 
 Current state:
 
@@ -100,8 +144,12 @@ Current state:
   proof-bound payload hashes
 - wallets now recover note payloads from indexed transaction history via BDS or
   another equivalent indexer feed
-- the `zk-runtime-optimization` branches add a first selective
-  `shielded_output_tags` query path in `xian-abci` and `xian-py`
+- the current branches now expose a first protocol-shaped
+  `shielded_wallet_history` feed in `xian-abci` and `xian-py`
+- `xian-stack` now standardizes BDS snapshot export/import as part of the
+  operator recovery path
+- browser and mobile wallets can now check indexed history after a stored
+  `state_snapshot` to detect stale restore material
 
 Still needed:
 
@@ -109,13 +157,13 @@ Still needed:
 - pagination and watcher guidance for large live pools
 - operational guidance for archive / retention expectations around encrypted
   payload blobs
-- a stable high-level wallet-facing read surface so product UIs do not depend on
-  ad hoc indexed transaction polling forever
+- durable network-level compatibility commitments for the
+  `shielded_wallet_history` feed and related wallet sync surfaces
 
 Why it matters:
 
 - indexed transaction recovery is the right architecture, but it still needs a
-  more polished app-facing read surface
+  more polished and more explicitly versioned app-facing read surface
 
 ### 5. Threat model and privacy-review pass
 
@@ -161,12 +209,13 @@ Why it matters:
 
 If work resumes later, the best order is:
 
-1. external ceremony artifact import and verification
+1. ceremony provenance / network approval policy for imported artifacts
 2. canonical network packaging and rollout policy
 3. address the findings from `PRIVACY_ASSET_THREAT_MODEL.md`
 4. network-level viewing / disclosure policy
-5. end-user wallet product layer
-6. richer indexer / BDS integration
+5. relayer threat model / abuse controls / operator policy
+6. end-user wallet product layer
+7. richer indexer / BDS integration
 
 ## Boundary
 

@@ -1,6 +1,6 @@
 # Privacy Asset Threat Model
 
-Status: first review on 2026-04-09
+Status: updated review on 2026-04-10
 
 This note is the first explicit threat-model and privacy-review pass for the
 current Xian shielded asset stack after the `zk-runtime-optimization` work in:
@@ -9,6 +9,9 @@ current Xian shielded asset stack after the `zk-runtime-optimization` work in:
 - `xian-contracts`
 - `xian-abci`
 - `xian-py`
+- `xian-stack`
+- `xian-cli`
+- `xian-configs`
 
 It is intentionally blunt. The goal is to state what the stack does and does
 not protect, where the real trust boundaries still are, and what follow-up work
@@ -22,7 +25,7 @@ remaining risks are not "does the proof arithmetic exist?" but:
 
 1. proving-material trust
 2. prover-service trust
-3. network-origin privacy
+3. relayer / network-origin privacy
 4. indexed recovery and retention policy
 5. disclosure policy and operator rules
 
@@ -53,6 +56,7 @@ The current design does not fully hide:
 
 - transaction submission timing
 - network origin or first-hop source
+- relayer operator visibility into submitted proof material
 - target contract activity and public side effects
 - public mint / withdraw effects
 - proving-material provenance risk
@@ -71,6 +75,7 @@ This review covers:
 - `shielded-commands` and relayed shielded transfers
 - `xian-zk` wallet, prover, bundle, and prover-service tooling
 - `zk_registry`
+- the stack-managed shielded relayer and its manifest discovery path
 - the BDS / indexed-query recovery path
 - browser / mobile wallet integration expectations
 
@@ -136,28 +141,50 @@ Required follow-up:
 - do not market the service as equivalent to split proving
 - design a true split-prover protocol if witness-exposure reduction is required
 
-### 3. High: network-origin privacy is still incomplete
+### 3. High: relayer submission improves origin privacy, but it is still a single trusted hop
 
 Current state:
 
-- on-chain sender privacy is stronger than network-origin privacy
-- the current design still assumes a normal transaction submission path
-- the docs already acknowledge that hidden on-chain sender is incomplete if the
-  first peer can still identify the source
+- the stack now has a concrete private-submission layer:
+  - a stack-managed `xian-shielded-relayer` service
+  - typed relayer clients in `xian-py` and `xian-js`
+  - pool clients with deterministic catalog ordering and read-side failover for
+    `info` and `quote`
+  - canonical single- and multi-relayer discovery in network manifests
+- the relayer defaults to `127.0.0.1`
+- non-loopback relayer binds now require a bearer token
+- the relayer now has baseline operational controls:
+  - public-route policy
+  - in-memory rate limits
+  - bounded job-retention TTL
+  - Prometheus-style metrics
+  - an operator runbook
+- this is still a single-service submission hop, not a relay mesh or anonymity
+  network
 
 Risk:
 
-- an observer near the transaction origin can correlate a supposedly private
-  action to the submitting wallet or relayer
-- on-chain shielding does not stop mempool / ingress metadata correlation
+- the relayer can still observe source IP / transport metadata unless another
+  anonymity layer exists in front of it
+- the relayer also sees proof material, nullifiers, commitments, payload
+  hashes, and submission timing
+- a compromised or over-logging relayer can weaken user privacy even though the
+  on-chain sender is hidden
+- a single public relayer endpoint becomes a central operator trust point
 
 Implication:
 
-- the current stack is shielded on-chain, not network-anonymous
+- the current stack is better than direct wallet submission for origin privacy,
+  but it is not network-anonymous and it is not trustless at the submission
+  layer
 
 Required follow-up:
 
-- private submission layer such as relayer-mesh or Dandelion++ style propagation
+- mesh-style or otherwise trust-reducing multi-relayer submission beyond the
+  current deterministic read-side failover and explicit submit/job routing
+- client auth lifecycle and token-distribution policy
+- private submission layer such as relayer-mesh or Dandelion++ style
+  propagation
 - explicit user-facing language that separates on-chain privacy from network
   privacy
 
@@ -167,8 +194,13 @@ Current state:
 
 - wallet recovery now uses indexed transaction history instead of reading
   payloads from contract state
-- the `zk-runtime-optimization` branches add a first selective output-tag query
-  path in `xian-abci` and `xian-py`
+- the current branches add a first protocol-shaped `shielded_wallet_history`
+  feed in `xian-abci` and `xian-py`
+- browser and mobile wallets now expose first-class shielded `state_snapshot`
+  backup/import/export flows
+- `xian-stack` now exposes a standardized BDS snapshot export/import path
+- wallet flows can now tell users whether indexed history has advanced beyond a
+  stored `state_snapshot`
 - encrypted payload blobs and discovery metadata therefore matter operationally
   outside consensus state
 
@@ -288,6 +320,7 @@ Inaccurate claims:
 1. Land ceremony-artifact import and validation.
 2. Write operator policy for bundle custody, provenance, and rotation.
 3. Keep the prover service explicitly local and trusted-only.
-4. Write the network-level disclosure policy.
-5. Finish the retention / archival guidance for indexed encrypted payloads.
-6. Keep wallet messaging conservative about what is and is not hidden.
+4. Write relayer operator policy for retention, logging, and abuse controls.
+5. Write the network-level disclosure policy.
+6. Finish the retention / archival guidance for indexed encrypted payloads.
+7. Keep wallet messaging conservative about what is and is not hidden.
