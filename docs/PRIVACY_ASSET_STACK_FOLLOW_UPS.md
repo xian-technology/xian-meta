@@ -28,6 +28,8 @@ As of `2026-03-27`, the stack already has:
 - browser and mobile wallet flows for storing shielded `state_snapshot`
   backups, exporting them directly, and including them in full encrypted wallet
   backups
+- browser and mobile wallet checks that tell users whether indexed shielded
+  history has advanced beyond a stored snapshot
 - exact withdraw support with zero outputs when no change note is required
 - operator tooling to generate a random trusted-setup bundle and a
   registry-ready verifying-key manifest
@@ -49,10 +51,10 @@ Current state:
 
 Still needed:
 
-- import path for externally generated ceremony artifacts
-- artifact validation and metadata checks before bundle acceptance
 - operator documentation for ceremony provenance, custody, and rotation
 - clear policy for which proving material is allowed on which network
+- packaging / release discipline so imported ceremony artifacts map cleanly to
+  network-approved manifests
 
 Why it matters:
 
@@ -112,6 +114,8 @@ Current state:
   `shielded_wallet_history` feed in `xian-abci` and `xian-py`
 - `xian-stack` now standardizes BDS snapshot export/import as part of the
   operator recovery path
+- browser and mobile wallets can now check indexed history after a stored
+  `state_snapshot` to detect stale restore material
 
 Still needed:
 
@@ -171,7 +175,7 @@ Why it matters:
 
 If work resumes later, the best order is:
 
-1. external ceremony artifact import and verification
+1. ceremony provenance / network approval policy for imported artifacts
 2. canonical network packaging and rollout policy
 3. address the findings from `PRIVACY_ASSET_THREAT_MODEL.md`
 4. network-level viewing / disclosure policy

@@ -22,6 +22,8 @@ Current branches now have all of the following:
   `state_snapshot`
 - browser and mobile wallet flows that can store shielded snapshots, include
   them in encrypted wallet backups, export them directly, and remove them
+- browser and mobile wallet checks that can ask the indexed history feed
+  whether newer notes exist after a stored snapshot
 - a first protocol-shaped `shielded_wallet_history` feed in `xian-abci`
 - typed `xian-py` support for that feed
 - `xian-zk` wallet sync that prefers the higher-level history feed and falls
@@ -100,6 +102,8 @@ all of the following should be treated as required, not optional:
    a full BDS snapshot
 3. explicit operator validation of BDS snapshot import/recovery
 4. first-class wallet UX for exporting and restoring `state_snapshot` backups
+5. first-class wallet UX for checking whether a stored snapshot is already
+   stale relative to indexed history
 
 The first two protect the network/service side.
 
