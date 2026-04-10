@@ -80,7 +80,29 @@ Why it matters:
 - the cryptographic mechanism exists, but the product and governance rules do
   not
 
-### 3. End-user wallet product layer
+### 3. Network-origin privacy
+
+Current state:
+
+- the stack supports hidden-sender and relayed shielded execution inside the
+  proof and contract path
+- that is still not a full network-level private submission system
+
+Still needed:
+
+- a concrete relayer / submission architecture for users who do not want to
+  originate shielded transactions directly from their own network endpoint
+- explicit trust and abuse controls for that relayer layer
+- a protocol or network compatibility story for private submission beyond
+  "run a custom relayer yourself"
+
+Why it matters:
+
+- shielded balance privacy and network-origin privacy are different properties
+- without the second one, a user's own node or RPC path can still leak that
+  they initiated the transaction
+
+### 4. End-user wallet product layer
 
 Current state:
 
@@ -102,7 +124,7 @@ Why it matters:
 
 - today the stack is operator- and developer-usable, not mainstream-user-usable
 
-### 4. Indexing and data-access hardening
+### 5. Indexing and data-access hardening
 
 Current state:
 
@@ -179,8 +201,9 @@ If work resumes later, the best order is:
 2. canonical network packaging and rollout policy
 3. address the findings from `PRIVACY_ASSET_THREAT_MODEL.md`
 4. network-level viewing / disclosure policy
-5. end-user wallet product layer
-6. richer indexer / BDS integration
+5. network-origin privacy / relayer architecture
+6. end-user wallet product layer
+7. richer indexer / BDS integration
 
 ## Boundary
 
