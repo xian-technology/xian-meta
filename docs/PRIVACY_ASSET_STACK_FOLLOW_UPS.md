@@ -86,15 +86,27 @@ Current state:
 
 - the stack supports hidden-sender and relayed shielded execution inside the
   proof and contract path
-- that is still not a full network-level private submission system
+- the stack now also has a concrete relayer / submission architecture:
+  - typed relayer clients in `xian-py` and `xian-js`
+  - a stack-managed `xian-shielded-relayer` service in `xian-stack`
+  - canonical single- and multi-relayer discovery in network manifests
+- the relayer defaults to loopback bind and now requires a bearer token for
+  non-loopback binds
+ - the relayer now also has baseline operational controls:
+   - public-route policy
+   - in-memory rate limits
+   - bounded job-retention TTL
+   - Prometheus-style metrics
+   - an operator runbook
+- that is still not a full anonymity-network or relay-mesh design
 
 Still needed:
 
-- a concrete relayer / submission architecture for users who do not want to
-  originate shielded transactions directly from their own network endpoint
-- explicit trust and abuse controls for that relayer layer
-- a protocol or network compatibility story for private submission beyond
-  "run a custom relayer yourself"
+- stronger trust-reduction and failover policy for multiple relayers beyond
+  static discovery ordering
+- client auth lifecycle and token-distribution policy for shared relayers
+- a fuller privacy analysis of timing, metadata, and operator visibility across
+  the relayer boundary
 
 Why it matters:
 
@@ -201,7 +213,7 @@ If work resumes later, the best order is:
 2. canonical network packaging and rollout policy
 3. address the findings from `PRIVACY_ASSET_THREAT_MODEL.md`
 4. network-level viewing / disclosure policy
-5. network-origin privacy / relayer architecture
+5. relayer threat model / abuse controls / operator policy
 6. end-user wallet product layer
 7. richer indexer / BDS integration
 

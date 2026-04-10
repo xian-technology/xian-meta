@@ -38,8 +38,10 @@ Files:
 - `DYNAMIC_CONTRACT_CALLS.md`: design for safe dynamic exported-function dispatch without exposing generic reflection
 - `DETERMINISTIC_RANDOMNESS.md`: design for a Xian-owned deterministic contract randomness model and simulation alignment
 - `REAL_PRIVACY_TOKEN_ARCHITECTURE.md`: architecture for replacing the current experimental privacy-token contract with a real shielded-note token backed by native proof verification
+- `PRIVATE_SUBMISSION_RELAYER_ARCHITECTURE.md`: current network-layer relayer service, discovery shape, and trust boundary for proof-bound private submission
 - `PRIVACY_ASSET_STACK_FOLLOW_UPS.md`: deferred cross-repo gap list for what still remains before the shielded-note stack can be treated as fully finished
 - `PRIVACY_ASSET_THREAT_MODEL.md`: first explicit threat-model and privacy-review pass for the current shielded asset stack
+- `SHIELDED_RELAYER_OPERATOR_RUNBOOK.md`: baseline operating posture, auth/rate-limit policy, retention guidance, metrics, and manifest publication rules for relayer operators
 - `SHIELDED_WALLET_RECOVERY_MODEL.md`: current operational recovery model for shielded wallets, including BDS history requirements, wallet `state_snapshot` backups, and snapshot-based recovery expectations
 - `ZK_RUNTIME_OPTIMIZATION_MERGE_READINESS.md`: repo-by-repo merge guidance and ordering for the current shielded runtime and wallet-sync branches
 - `ZK_VERIFIER_RUNTIME.md`: runtime design for a native Groth16/BN254 verifier bridge, key registry, encoding rules, and metering
