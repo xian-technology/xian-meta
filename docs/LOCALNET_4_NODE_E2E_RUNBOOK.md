@@ -348,11 +348,11 @@ Operational note:
 
 Important current boundary:
 
-- the runbook does not currently list the shielded token on the DEX
-- the present DEX fixture expects float-based token semantics, while the
-  shielded-note-token public interface uses integer amounts
-- that integration should be treated as a separate compatibility project, not a
-  quick add-on to the canonical whole-stack validation run
+- contract-level DEX coverage now includes integer-precision tokens, including
+  the public-balance surface of `shielded-note-token`
+- the canonical whole-stack run still does not auto-list the shielded token on
+  the DEX; adding that workload remains a separate scenario extension for the
+  end-to-end runner rather than a contract compatibility blocker
 - the canonical shielded flow uses explicit transaction stamp ceilings, because
   readonly simulation is intentionally capped below proof-backed shielded
   execution cost
