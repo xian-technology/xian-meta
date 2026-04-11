@@ -98,7 +98,7 @@ For shielded commands, the relayer submits:
 - function: `execute_command`
 
 The relayer uses the normal `xian-py` transaction path, including nonce
-reservation, stamp estimation, broadcast mode selection, and optional
+reservation, chi estimation, broadcast mode selection, and optional
 wait-for-receipt behavior.
 
 Submission responses are stored as relayer jobs with:

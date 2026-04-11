@@ -290,7 +290,7 @@ Add:
 
 - native `zk` verification bridge
 - deterministic verifier wiring
-- explicit gas / stamp pricing for proof verification
+- explicit gas / chi pricing for proof verification
 - tests with fixed proof vectors
 
 ### `xian-abci`

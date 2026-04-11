@@ -243,7 +243,7 @@ documented alongside it.
 
 ## Metering
 
-Proof verification must have explicit stamp pricing.
+Proof verification must have explicit chi pricing.
 
 The first design should charge:
 

@@ -266,7 +266,7 @@ Performs a focused determinism check after meaningful state exists:
 
 - recent app-hash equality
 - direct state equality across all validators
-- same simulation on every validator produces the same result and stamp usage
+- same simulation on every validator produces the same result and chi usage
 - sampled state from the orchestration phase remains identical across validators
 
 Pass criteria:
@@ -353,7 +353,7 @@ Important current boundary:
 - the canonical whole-stack run still does not auto-list the shielded token on
   the DEX; adding that workload remains a separate scenario extension for the
   end-to-end runner rather than a contract compatibility blocker
-- the canonical shielded flow uses explicit transaction stamp ceilings, because
+- the canonical shielded flow uses explicit transaction chi ceilings, because
   readonly simulation is intentionally capped below proof-backed shielded
   execution cost
 - hex-looking public addresses are valid withdraw recipients, so the toolkit and

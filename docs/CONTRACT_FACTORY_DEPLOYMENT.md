@@ -327,7 +327,7 @@ The redesign continues to rely on:
 
 - recursion limit in [runtime.py](/Users/endogen/Projekte/xian/xian-contracting/src/contracting/execution/runtime.py)
 - write cap in the runtime
-- total transaction stamp budget
+- total transaction chi budget
 
 ### No extra count cap in v1
 
@@ -335,7 +335,7 @@ v1 does not introduce a separate `max_contract_deployments_per_tx` cap.
 
 Reason:
 
-- stamps
+- chi
 - write cap
 - recursion limit
 - raw-source size limit
@@ -515,7 +515,7 @@ Risk:
 
 Mitigation:
 
-- transaction stamps
+- transaction chi
 - runtime write cap
 - recursion limit
 - raw-source size limit
@@ -637,7 +637,7 @@ The implementation is not complete until all of these exist.
 
 - oversize raw source is rejected
 - comment-heavy source is charged by raw-source size
-- repeated child deployments consume measurable extra stamps
+- repeated child deployments consume measurable extra chi
 
 ### ABCI / BDS tests
 

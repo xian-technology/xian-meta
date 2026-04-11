@@ -84,7 +84,7 @@ This design applies to:
 - `execution engine`: a concrete runtime implementation, for example the
   existing CPython-backed engine or a future `xian_vm_v1`.
 - `gas schedule`: the versioned mapping from VM instructions and syscalls to
-  stamps.
+  chi.
 
 ## Why Python Becomes A Frontend
 
@@ -180,7 +180,7 @@ The Xian VM:
 - creates a call frame
 - executes instructions
 - issues host syscalls when required
-- charges stamps per instruction and syscall
+- charges chi per instruction and syscall
 - returns a deterministic result or revert
 
 ## Language Boundary
@@ -269,7 +269,7 @@ Each call frame contains:
 Each execution instance contains:
 
 - current frame stack
-- remaining stamp budget
+- remaining chi budget
 - host interface handle
 - execution engine version
 - gas schedule version
@@ -448,12 +448,12 @@ The VM must distinguish at least these classes:
 - contract-level revert
 - deterministic runtime error
 - host syscall failure
-- stamp exhaustion
+- chi exhaustion
 - invalid bytecode or invalid execution state
 
 ### Required Rules
 
-- stamp exhaustion always aborts execution deterministically
+- chi exhaustion always aborts execution deterministically
 - invalid host access always aborts execution deterministically
 - overflow and illegal type operations fail explicitly
 - revert behavior must specify which state changes and emitted events are
@@ -499,7 +499,7 @@ execution:
 ```
 
 All validators on a network must use the same execution engine mode and gas
-schedule when those choices affect consensus or stamps.
+schedule when those choices affect consensus or chi.
 
 ## Determinism Rules
 
@@ -516,7 +516,7 @@ must always produce:
 - the same result
 - the same state writes
 - the same event set
-- the same stamp usage
+- the same chi usage
 
 ### Explicit Determinism Constraints
 
@@ -624,7 +624,7 @@ The VM should not replace the current engine abruptly.
    - return values
    - decimal semantics
    - error behavior
-   - stamp usage
+   - chi usage
 7. Add `xian_vm_v1` as an optional network engine only after parity and
    workload confidence are strong.
 

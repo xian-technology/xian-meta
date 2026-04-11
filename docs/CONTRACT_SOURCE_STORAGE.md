@@ -214,7 +214,7 @@ Write metering in Xian is byte-based.
 
 That means:
 
-- if raw commented source were stored in state, comments would cost stamps
+- if raw commented source were stored in state, comments would cost chi
 
 This is one of the main reasons `__source__` should be canonicalized without
 comments before storage.
@@ -260,4 +260,4 @@ Recommended stance:
 - remove the decompiler once the stack no longer needs it
 
 That is the cleanest way to get direct contract source retrieval without
-introducing decompilation heuristics or paying stamp costs for comments.
+introducing decompilation heuristics or paying chi costs for comments.

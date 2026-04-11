@@ -189,7 +189,7 @@ new transaction format, not as an implicit extension of the legacy one.
   "payload": {
     "sender": "<canonical account id>",
     "nonce": 1,
-    "stamps_supplied": 1000,
+    "chi_supplied": 1000,
     "contract": "currency",
     "function": "transfer",
     "kwargs": {
@@ -268,7 +268,7 @@ The signable projection is exactly:
   "kwargs": "<payload.kwargs>",
   "nonce": "<payload.nonce>",
   "sender": "<payload.sender>",
-  "stamps_supplied": "<payload.stamps_supplied>"
+  "chi_supplied": "<payload.chi_supplied>"
 }
 ```
 
@@ -632,7 +632,7 @@ These points were verified locally while preparing this design:
   - `kwargs`
   - `nonce`
   - `sender`
-  - `stamps_supplied`
+  - `chi_supplied`
 
 ## Final Recommendation
 

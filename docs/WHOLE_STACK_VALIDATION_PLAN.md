@@ -44,9 +44,9 @@ These were present when the sweep started and had to be handled explicitly:
 
 - `xian-contracting`
   - local `AGENTS.md` update matching the shared workflow convention
-  - local rename drift from `STAMPS_PER_TAU` to `STAMPS_PER_T` in:
+  - local rename drift from `CHI_PER_TAU` to `CHI_PER_T` in:
     - `src/contracting/constants.py`
-    - `tests/integration/test_stamp_deduction.py`
+    - `tests/integration/test_chi_deduction.py`
     - `tests/unit/test_revert_on_exception.py`
 - `xian-cli`
   - local `uv.lock` drift adding `prometheus-client`, which needed to be
@@ -268,9 +268,9 @@ After repo-level validation is green, run real workflow checks covering:
       pack contract was fixed to satisfy the current linter rules
     - `xian-py` solution-pack write examples now fail loudly on rejected or
       failed submissions instead of printing false-success hashes
-    - `xian-py` simulation and stamp-estimation now canonicalize payloads with
+    - `xian-py` simulation and chi estimation now canonicalize payloads with
       runtime encoding, which fixed Decimal-valued argument simulation
-    - `xian-contracting` stamp deduction now coerces decimal-ish balance values
+    - `xian-contracting` chi deduction now coerces decimal-ish balance values
       from storage before metering and deduction
   - live indexed-network validation completed on the corrected stack-backed
     single-node network `xian-validate-indexed-fixed-1`
