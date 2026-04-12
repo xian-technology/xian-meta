@@ -180,6 +180,15 @@ The native path is now materially more self-contained than the earlier slices:
   - it stages contract metadata/code/source/IR writes directly
   - it executes child constructors natively instead of delegating deploy-time
     contract execution back through Python `Contract.deploy(...)`
+- native deployment no longer has a local-time fallback:
+  if deterministic `now` context is missing, deployment fails explicitly
+  instead of reading wall-clock time from the host machine
+- artifact validation is now hardened against forged bundles by recomputing
+  canonical compiler output from source; that means deploy execution stays
+  native, but artifact validation is not yet fully Rust-native
+- `xian_vm_v1` rollout now enforces artifact-backed deployment even in
+  `authority = "python"` shadow mode, so source-only submissions are rejected
+  instead of creating state that native-authority mode would later refuse
 - the remaining live on-chain factory flow, `token_factory`, now materializes
   and submits canonical child deployment artifacts, so native-authority
   contract creation is no longer limited to direct client submissions
