@@ -22,6 +22,7 @@ Files:
 - `FOLDER_README_TEMPLATE.md`: the short per-folder entrypoint template
 - `MULTI_ACCOUNT_SUPPORT.md`: protocol-level design for multi-scheme transaction accounts
 - `XIAN_VM_EXECUTION_MODEL.md`: target design for a Xian-owned VM and bytecode execution model
+- `XIAN_VM_FOUNDATION_BASELINE.md`: current implementation baseline for the VM-front-end subset, explicit execution-policy config shape, structural IR lowering, explicit runtime host ops, first Rust-side VM crate, and authored-contract audit status
 - `COMETBFT_TO_SEI_MIGRATION_MEMO.md`: evaluation of what a move from CometBFT to Sei's integrated chain stack would actually mean for Xian and why it is not a drop-in swap
 - `XIAN_MISSION_AND_PRODUCT_STRATEGY.md`: shared mission, principles, and product direction for Xian
 - `GOLDEN_PATH_ROADMAP.md`: phased cross-repo implementation roadmap for the product thesis
