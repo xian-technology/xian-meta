@@ -219,6 +219,9 @@ The native path is now materially more self-contained than the earlier slices:
   - the main monitoring stack now ships VM-specific alert rules and a dedicated
     Grafana dashboard (`Xian VM Runtime`) in addition to summary panels on the
     existing overview/preset dashboards
+  - the monitoring stack also now ships a dedicated `Xian BDS Recovery`
+    dashboard plus Alertmanager routing examples so VM mismatch alerts and BDS
+    recovery alerts can be separated operationally
 - `token_factory.s.py` is now rendered from a clean template plus generated
   artifact block, so the large child-contract artifact payload is derived
   output rather than hand-maintained contract source
