@@ -205,6 +205,23 @@ The native path is now materially more self-contained than the earlier slices:
 - the current native-authority soak baseline is no longer theoretical:
   `make localnet-vm-e2e` now completes the full 16-phase run successfully,
   including shielded-note-token and parallel prefix-scan workloads
+- `xian-abci` now also ships an explicit legacy-network replay audit tool:
+  `xian-legacy-replay-audit`
+  - it seeds local replay state from the legacy chain `GENESIS`
+    pseudo-transaction exposed through BDS GraphQL
+  - it reads ordered transactions and finalized tx results from CometBFT RPC
+    block data instead of relying on the legacy BDS ordering model
+  - it distinguishes strict historical parity from logic parity, so
+    metering/reward drift is visible without hiding whether current Python or
+    `xian_vm_v1` can still execute the same contract call path
+  - it also supports a `--logic-only` mode for “can the new VM still process
+    this old successful transaction path?” audits where exact legacy fee
+    economics are not the target
+  - it also supports a `--native-only` mode so large historical audits can
+    focus directly on VM readiness without paying the extra Python control-path
+    cost on every transaction
+  - it writes a structured replay report plus a normalized transaction log for
+    later widening from small audit windows to larger historical ranges
 - VM rollout observability is now first-class instead of log-only:
   - `xian-abci` exports shadow/native comparison counters and latest-mismatch
     context through Prometheus metrics
@@ -381,19 +398,29 @@ operations like:
 
 ## Frozen Frontend Decisions In This Slice
 
-The first `xian_vm_v1` compatibility profile currently makes these decisions:
+The current `xian_vm_v1` compatibility profile currently makes these decisions:
 
 - Python remains the authoring language frontend.
 - Current contract lint rules still apply first.
-- `while` loops are outside the first VM subset.
-- comprehensions and generator expressions are outside the first VM subset.
-- set literals and `set` / `frozenset` builtins are outside the first VM
-  subset.
-- `list` and `dict` remain allowed for now and are inventoried, not rejected.
+- `while` loops are allowed and executed natively.
+- list and dict comprehensions are allowed and executed natively.
+- generator expressions remain outside the contract language because they are
+  still illegal in the shared Python Contracting surface.
+- set literals, set comprehensions, and `set` / `frozenset` builtins are now
+  explicitly banned in the shared contract language rather than being
+  VM-specific restrictions, because the common runtime/state encoding surface
+  does not yet define a safe canonical representation for them.
+- `list` and `dict` remain first-class allowed value types.
 - helper usage such as `len`, `range`, `sorted`, `sum`, `min`, `max`, `all`,
   and `any` is inventoried for future narrowing decisions.
+- the current widened conformance matrix now also covers all public env exports
+  and all non-excluded allowed builtins; the remaining explicit exclusions are
+  `bytes`, `bytearray`, `map`, and `filter`, which need dedicated value-model
+  or higher-order iterator design before they should become part of the
+  permanent contract surface
 
-This is intentionally conservative.
+This is still intentionally conservative, but it is now a contract-language
+decision rather than only a VM-internal subset freeze.
 
 The point is to freeze a real first subset, run it against the authored
 contract corpus, and surface the exact blockers instead of leaving the subset
