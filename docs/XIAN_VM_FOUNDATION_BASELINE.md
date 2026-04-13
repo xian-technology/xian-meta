@@ -205,6 +205,17 @@ The native path is now materially more self-contained than the earlier slices:
 - the current native-authority soak baseline is no longer theoretical:
   `make localnet-vm-e2e` now completes the full 16-phase run successfully,
   including shielded-note-token and parallel prefix-scan workloads
+- VM rollout observability is now first-class instead of log-only:
+  - `xian-abci` exports shadow/native comparison counters and latest-mismatch
+    context through Prometheus metrics
+  - mismatch records are appended to
+    `storage/logs/xian-vm-shadow-mismatches.jsonl`
+  - `xian-stack/scripts/localnet_vm_rollout.py` collects those signals from a
+    running localnet and summarizes rollout consistency as JSON
+  - localnet now exposes the Xian app metrics exporter separately from the
+    CometBFT metrics port, so rollout validation reads the actual VM metrics
+  - `make localnet-vm-e2e` now writes `vm_rollout.json` and fails by default if
+    the mismatch budget is exceeded
 - `token_factory.s.py` is now rendered from a clean template plus generated
   artifact block, so the large child-contract artifact payload is derived
   output rather than hand-maintained contract source
