@@ -216,6 +216,9 @@ The native path is now materially more self-contained than the earlier slices:
     CometBFT metrics port, so rollout validation reads the actual VM metrics
   - `make localnet-vm-e2e` now writes `vm_rollout.json` and fails by default if
     the mismatch budget is exceeded
+  - the main monitoring stack now ships VM-specific alert rules and a dedicated
+    Grafana dashboard (`Xian VM Runtime`) in addition to summary panels on the
+    existing overview/preset dashboards
 - `token_factory.s.py` is now rendered from a clean template plus generated
   artifact block, so the large child-contract artifact payload is derived
   output rather than hand-maintained contract source
