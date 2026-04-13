@@ -183,9 +183,13 @@ The native path is now materially more self-contained than the earlier slices:
 - native deployment no longer has a local-time fallback:
   if deterministic `now` context is missing, deployment fails explicitly
   instead of reading wall-clock time from the host machine
-- artifact validation is now hardened against forged bundles by recomputing
-  canonical compiler output from source; that means deploy execution stays
-  native, but artifact validation is not yet fully Rust-native
+- artifact validation on the native deployment path now runs in Rust and
+  rejects malformed or internally inconsistent bundles, including IR/source
+  hash mismatches
+- canonical source-to-runtime recompilation is still provided by the Python
+  artifact validator used by the Python deployment path and offline tooling,
+  so the native path is Rust-native for bundle validation but not yet a full
+  Rust recompiler
 - `xian_vm_v1` rollout now enforces artifact-backed deployment even in
   `authority = "python"` shadow mode, so source-only submissions are rejected
   instead of creating state that native-authority mode would later refuse
@@ -195,6 +199,15 @@ The native path is now materially more self-contained than the earlier slices:
 - `authority = "native"` no longer depends on Python for chi accounting or
   contract reward weights, and it no longer requires Python shadow comparison
   to be configured
+- `xian-stack` now exposes a first-class `make localnet-vm-e2e` path that
+  boots a 5-node integrated localnet with `xian_vm_v1` in native-authority
+  mode plus Python shadow comparison for soak and replay-style validation
+- the current native-authority soak baseline is no longer theoretical:
+  `make localnet-vm-e2e` now completes the full 16-phase run successfully,
+  including shielded-note-token and parallel prefix-scan workloads
+- `token_factory.s.py` is now rendered from a clean template plus generated
+  artifact block, so the large child-contract artifact payload is derived
+  output rather than hand-maintained contract source
 
 It is now a real engine boundary with an explicit authoritative native mode,
 not only a shadow probe path.
