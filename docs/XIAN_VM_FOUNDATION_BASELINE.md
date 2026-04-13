@@ -49,15 +49,8 @@ Current behavior is still deliberately strict:
 
 - current tracer-backed engines continue to run normally
 - `xian_vm_v1` now performs native capability probing against `xian-vm-core`
-- `xian_vm_v1` now requires an explicit `authority` choice:
-  - `authority = "python"` keeps Python authoritative and runs the native VM
-    in shadow for comparison
-  - `authority = "native"` makes the native VM authoritative
-- `shadow_tracer_mode` is now optional when `authority = "native"`:
-  - in `authority = "python"` it is still required, because native execution is
-    only meaningful if Python remains available as the explicit comparison path
-  - in `authority = "native"` it is an optional rollout-time Python comparison
-    backend; native execution and native metering can now run without it
+- `xian_vm_v1` is now native-authoritative only on this branch
+- `shadow_tracer_mode` is no longer part of the `xian_vm_v1` runtime model
 - the node does not silently “try native first and fall back to Python” for
   consensus execution; native execution remains an explicit rollout mode, not
   an invisible fallback
@@ -148,20 +141,16 @@ probing:
   when `xian_vm_v1` is enabled
 - readonly simulation workers do the same preflight before executing the Python
   path
-- explicit simulation requests support both rollout modes:
-  - `authority = "python"`: Python authoritative, native shadow
-  - `authority = "native"`: native authoritative, Python comparison
-- real transaction processing now supports both rollout modes on the
-  authoritative tx path:
-  - `authority = "python"`: Python authoritative, native shadow
-  - `authority = "native"`: native authoritative, Python comparison
-- speculative parallel workers carry the same execution-runtime configuration,
-  so shadow-mode preflight is consistent across serial and parallel execution
+- explicit simulation requests and real transaction processing now run the
+  same native-authoritative `xian_vm_v1` path
+- speculative parallel workers carry the same native execution-runtime
+  configuration across serial and parallel execution
 
 The native path is now materially more self-contained than the earlier slices:
 
 - authored contract submission and governed `__source__` patches now persist
-  `__xian_ir_v1__` alongside `__source__` and `__code__`
+  `__xian_ir_v1__` alongside `__source__`; `__code__` is no longer part of
+  the VM-native state path
 - the Python VM host and the `xian-abci` preflight path now require persisted
   `xian_ir_v1` for `xian_vm_v1` execution; stored `__source__` remains
   inspection/debug metadata and is no longer an execution fallback
@@ -177,7 +166,7 @@ The native path is now materially more self-contained than the earlier slices:
   changes, and returns those staged writes/events as part of native execution
 - native deployment is now artifact-driven end to end:
   - the native host validates `deployment_artifacts`
-  - it stages contract metadata/code/source/IR writes directly
+  - it stages contract metadata/source/IR writes directly
   - it executes child constructors natively instead of delegating deploy-time
     contract execution back through Python `Contract.deploy(...)`
 - native deployment no longer has a local-time fallback:
@@ -190,9 +179,8 @@ The native path is now materially more self-contained than the earlier slices:
   artifact validator used by the Python deployment path and offline tooling,
   so the native path is Rust-native for bundle validation but not yet a full
   Rust recompiler
-- `xian_vm_v1` rollout now enforces artifact-backed deployment even in
-  `authority = "python"` shadow mode, so source-only submissions are rejected
-  instead of creating state that native-authority mode would later refuse
+- `xian_vm_v1` rollout now enforces artifact-backed deployment unconditionally,
+  so source-only submissions are rejected instead of being compiled on-node
 - the remaining live on-chain factory flow, `token_factory`, now materializes
   and submits canonical child deployment artifacts, so native-authority
   contract creation is no longer limited to direct client submissions
