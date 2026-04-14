@@ -46,6 +46,8 @@ The current branch now has:
 - a coverage gate for all public env exports
 - a coverage gate for all non-excluded allowed builtins
 - explicit exclusions instead of implicit gaps
+- deterministic `bytes` / `bytearray` value support
+- deterministic `set()` / `frozenset()` value support with canonical encoding
 
 The current explicit exclusions are:
 
@@ -54,9 +56,6 @@ The current explicit exclusions are:
   - `False`
   - `None`
   - `import`
-- binary-value surface not yet modeled end to end:
-  - `bytes`
-  - `bytearray`
 - higher-order lazy iterator surface not yet modeled end to end:
   - `map`
   - `filter`
@@ -65,6 +64,16 @@ These are not "forgotten".
 
 They are excluded because they need deliberate VM/value-model design rather
 than small interpreter patches.
+
+The current intentional syntax exclusions are:
+
+- set literal syntax
+- set comprehension syntax
+
+Those stay banned for now because the Python control path would create native
+CPython sets for that syntax, which breaks the shared deterministic contract
+value model. The supported surface is constructor-based `set()` /
+`frozenset()`, not raw `{...}` set syntax.
 
 ## Expansion Buckets
 
@@ -104,41 +113,30 @@ Why these belong here:
 - straightforward to serialize
 - easy to differential-test against the Python control path
 
-### Bucket B: Add After Value-Model Design
+### Bucket B: Design Before Syntax Expansion
 
-These are useful, but they need an explicit protocol-level representation and
-cannot be treated as "just another Python object".
+These are useful, but they need deeper syntax/runtime agreement than the
+current shared Python/Xian-VM surface provides.
 
 Candidates:
 
-- `bytes`
-- `bytearray`
-- `set`
-- `frozenset`
+- set literal syntax
+- set comprehension syntax
 
 Required design work:
 
-- canonical runtime representation
-- canonical JSON/state/result encoding
-- deterministic semantics for ordering-sensitive operations
-- explicit conformance rules for equality, hashing, membership, and repr
-- metering rules for large-value behavior
+- a shared source-level translation or other mechanism that avoids native
+  CPython set objects on the Python control path
+- parity rules for comprehension semantics
+- a decision on whether raw set syntax is valuable enough to justify that extra
+  machinery
 
 Important point:
 
-The new VM makes these possible.
+The value model is now solved.
 
-It does **not** make them free.
-
-For example, `set` is no longer dangerous because of CPython escape risk, but
-it is still a bad protocol feature unless we define:
-
-- how it is encoded
-- how it is compared
-- how it is represented in events/results/state
-- whether any iteration order is observable
-
-So these should be added only after the value model is written down first.
+The remaining issue is not state encoding anymore. It is shared source-surface
+compatibility.
 
 ### Bucket C: Add After Callable/Iterator Design
 
@@ -195,33 +193,20 @@ Do first:
 
 This gives a lot of developer value for low protocol risk.
 
-### 2. Design a binary value model
+### 2. Decide whether set syntax is worth a source-level translation layer
 
 Do next:
 
-- `bytes`
-- `bytearray`
+- raw set literal syntax
+- set comprehension syntax
 
 Reason:
 
-- they unlock useful hashing/serialization patterns
-- they are more broadly valuable than sets
-- they force the shared encoding model to become more explicit
+- the deterministic value semantics already exist
+- the remaining question is whether source-surface parity should grow to include
+  syntax that the Python path cannot share natively
 
-### 3. Decide whether sets are worth protocol surface
-
-Only after binary/value-model work:
-
-- `set`
-- `frozenset`
-
-Reason:
-
-- they are convenient
-- but less essential than binary values
-- and they are easy to get subtly wrong from a determinism/encoding standpoint
-
-### 4. Decide whether higher-order iterators belong at all
+### 3. Decide whether higher-order iterators belong at all
 
 Last:
 
@@ -255,8 +240,11 @@ If the goal is maximum value with low risk, the next slice should be:
 
 If the goal is maximum capability expansion, the next slice should be:
 
-1. binary value model (`bytes` / `bytearray`)
-2. then deterministic set/frozenset design
+1. `map` / `filter` design
+2. decide whether raw set syntax deserves explicit translation support
+2. then a decision on `map` / `filter`
+`bytes` / `bytearray` are no longer future design work on this branch; they are
+part of the implemented VM and shared contract surface now.
 
 My recommendation is the first path, then the second.
 
