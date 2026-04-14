@@ -43,6 +43,8 @@ The current branch now has:
 
 - Python-vs-`xian_vm_v1` conformance tests for the supported contract-language
   surface
+- authored-contract audits that fail when real contracts use tracked feature
+  families without matching conformance coverage
 - a coverage gate for all public env exports
 - a coverage gate for all non-excluded allowed builtins
 - explicit exclusions instead of implicit gaps
