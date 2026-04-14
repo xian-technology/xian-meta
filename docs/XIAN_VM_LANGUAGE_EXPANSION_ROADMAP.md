@@ -60,6 +60,8 @@ The current branch now has:
   changes and imported token event sequencing
 - a DEX-style router/pair/token permanent probe for multi-module swap/event
   behavior
+- a governance/state-patch permanent probe for proposal approval, imported
+  execution, and patch-state persistence
 
 The current explicit exclusions are:
 
