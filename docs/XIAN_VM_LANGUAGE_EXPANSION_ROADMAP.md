@@ -48,6 +48,8 @@ The current branch now has:
 - explicit exclusions instead of implicit gaps
 - deterministic `bytes` / `bytearray` value support
 - deterministic `set()` / `frozenset()` value support with canonical encoding
+- eager deterministic `map()` / `filter()` support that materializes lists in
+  both engines
 
 The current explicit exclusions are:
 
@@ -56,14 +58,6 @@ The current explicit exclusions are:
   - `False`
   - `None`
   - `import`
-- higher-order lazy iterator surface not yet modeled end to end:
-  - `map`
-  - `filter`
-
-These are not "forgotten".
-
-They are excluded because they need deliberate VM/value-model design rather
-than small interpreter patches.
 
 The current intentional syntax exclusions are:
 
@@ -138,15 +132,17 @@ The value model is now solved.
 The remaining issue is not state encoding anymore. It is shared source-surface
 compatibility.
 
-### Bucket C: Add After Callable/Iterator Design
+### Bucket C: Add After Further Callable/Iterator Design
 
-These are useful, but they require a clearer first-class callable and iterator
-model than the VM currently exposes.
+The low-risk higher-order helpers now exist with eager deterministic list
+semantics. More advanced callable or iterator work should still wait until the
+language actually needs it.
 
 Candidates:
 
-- `map`
-- `filter`
+- lazy iterator values
+- richer first-class callable values beyond local functions and builtins
+- additional higher-order helpers if they justify the semantic complexity
 
 Required design work:
 
@@ -158,7 +154,7 @@ Required design work:
 
 Recommendation:
 
-- if we add them, prefer eager deterministic semantics first
+- keep `map()` / `filter()` eager
 - do not introduce a half-implicit lazy iterator model casually
 
 ### Bucket D: Keep Banned
@@ -206,16 +202,16 @@ Reason:
 - the remaining question is whether source-surface parity should grow to include
   syntax that the Python path cannot share natively
 
-### 3. Decide whether higher-order iterators belong at all
+### 3. Decide whether a richer iterator model belongs at all
 
 Last:
 
-- `map`
-- `filter`
+- lazy iterator values
+- additional higher-order helpers built on that model
 
 Reason:
 
-- they are nice, but not essential
+- eager deterministic helpers already cover the low-risk value case
 - they require more semantic machinery than they first appear to
 
 ## Recommended Process For Every New Feature
@@ -240,9 +236,8 @@ If the goal is maximum value with low risk, the next slice should be:
 
 If the goal is maximum capability expansion, the next slice should be:
 
-1. `map` / `filter` design
-2. decide whether raw set syntax deserves explicit translation support
-2. then a decision on `map` / `filter`
+1. decide whether raw set syntax deserves explicit translation support
+2. decide whether a real lazy iterator model is worth adding
 `bytes` / `bytearray` are no longer future design work on this branch; they are
 part of the implemented VM and shared contract surface now.
 
