@@ -58,6 +58,8 @@ The current branch now has:
   token-like approval/event flows
 - replay-derived permanent probes for submission-style deployment/ownership
   changes and imported token event sequencing
+- a DEX-style router/pair/token permanent probe for multi-module swap/event
+  behavior
 
 The current explicit exclusions are:
 
