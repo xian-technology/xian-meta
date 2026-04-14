@@ -62,6 +62,8 @@ The current branch now has:
   behavior
 - a governance/state-patch permanent probe for proposal approval, imported
   execution, and patch-state persistence
+- a validator-membership and epoch-reward permanent probe for operational
+  network-state transitions across modules
 
 The current explicit exclusions are:
 
