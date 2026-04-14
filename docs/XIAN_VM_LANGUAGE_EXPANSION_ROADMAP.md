@@ -56,6 +56,8 @@ The current branch now has:
   both engines
 - authored-style differential probes for static-import reward changes and
   token-like approval/event flows
+- replay-derived permanent probes for submission-style deployment/ownership
+  changes and imported token event sequencing
 
 The current explicit exclusions are:
 
