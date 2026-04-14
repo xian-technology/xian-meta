@@ -45,6 +45,8 @@ The current branch now has:
   surface
 - authored-contract audits that fail when real contracts use tracked feature
   families without matching conformance coverage
+- exact method-level coverage for the string/list helper methods the authored
+  contract corpus actually uses
 - a coverage gate for all public env exports
 - a coverage gate for all non-excluded allowed builtins
 - explicit exclusions instead of implicit gaps
@@ -52,6 +54,8 @@ The current branch now has:
 - deterministic `set()` / `frozenset()` value support with canonical encoding
 - eager deterministic `map()` / `filter()` support that materializes lists in
   both engines
+- authored-style differential probes for static-import reward changes and
+  token-like approval/event flows
 
 The current explicit exclusions are:
 
