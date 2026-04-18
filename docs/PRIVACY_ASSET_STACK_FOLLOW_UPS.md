@@ -150,15 +150,22 @@ Current state:
   operator recovery path
 - browser and mobile wallets can now check indexed history after a stored
   `state_snapshot` to detect stale restore material
+- canonical network manifests now have explicit fields for:
+  - `privacy_artifact_catalog`
+  - `shielded_history_policy`
+  - `privacy_submission_policy`
+- `xian-configs` now carries checksum-pinned privacy artifact catalogs for the
+  canonical local, devnet, and testnet manifests
 
 Still needed:
 
-- better indexer / BDS exposure for shielded token metadata and note history
+- richer indexer / BDS exposure for shielded token metadata and note history
 - pagination and watcher guidance for large live pools
-- operational guidance for archive / retention expectations around encrypted
-  payload blobs
-- durable network-level compatibility commitments for the
-  `shielded_wallet_history` feed and related wallet sync surfaces
+- if a public network enables shielded assets, it should replace the default
+  empty privacy artifact catalog with approved registry manifests instead of
+  relying on out-of-band artifact exchange
+- stronger operational enforcement around whatever
+  `shielded_history_policy.retention_class` the network advertises
 
 Why it matters:
 
@@ -192,13 +199,16 @@ Why it matters:
 Current state:
 
 - operators can generate a bundle and manifest locally
+- canonical network manifests now expose a checksum-pinned
+  `privacy_artifact_catalog` path and accompanying history/submission policy
+  metadata
 
 Still needed:
 
-- network-level packaging of approved verifying keys and contract presets
-- a clear home for approved privacy-token deployment artifacts in network
-  configuration repos
-- release workflow for rotating or superseding proving material when needed
+- publish real approved registry manifests into those catalogs when a network
+  enables shielded assets
+- define the release workflow for rotating or superseding proving material when
+  needed
 
 Why it matters:
 
