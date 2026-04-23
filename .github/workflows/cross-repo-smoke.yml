@@ -1,0 +1,132 @@
+name: Cross Repo Smoke
+
+on:
+  pull_request:
+    branches:
+      - "*"
+  workflow_dispatch:
+  schedule:
+    - cron: "41 3 * * *"
+
+jobs:
+  smoke:
+    name: ${{ matrix.repo }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - repo: xian-wallet-browser
+            runtime: node
+            node-version: "24"
+          - repo: xian-wallet-mobile
+            runtime: node
+            node-version: "24"
+          - repo: xian-tg-bot
+            runtime: python
+            python-version: "3.11"
+          - repo: xian-intentkit
+            runtime: python
+            python-version: "3.13"
+
+    steps:
+      - name: Check out xian-meta
+        uses: actions/checkout@v6
+        with:
+          path: xian-meta
+
+      - name: Check out ${{ matrix.repo }}
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.repository_owner }}/${{ matrix.repo }}
+          path: ${{ matrix.repo }}
+
+      - name: Check out xian-js
+        if: matrix.runtime == 'node'
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.repository_owner }}/xian-js
+          path: xian-js
+
+      - name: Check out xian-py
+        if: matrix.repo == 'xian-tg-bot' || matrix.repo == 'xian-intentkit'
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.repository_owner }}/xian-py
+          path: xian-py
+
+      - name: Check out xian-contracting
+        if: matrix.repo == 'xian-tg-bot'
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.repository_owner }}/xian-contracting
+          path: xian-contracting
+
+      - name: Set up Node.js
+        if: matrix.runtime == 'node'
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: |
+            xian-js/package-lock.json
+            ${{ matrix.repo }}/package-lock.json
+
+      - name: Set up Python
+        if: matrix.runtime == 'python'
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Build xian-js for wallet smoke tests
+        if: matrix.runtime == 'node'
+        working-directory: xian-js
+        run: |
+          npm ci
+          node <<'NODE'
+          const { execFileSync } = require("node:child_process");
+          const { arch, platform } = process;
+
+          if (platform === "linux" && arch === "x64") {
+            const version = require("./node_modules/rollup/package.json").version;
+            execFileSync(
+              "npm",
+              ["install", "--no-save", `@rollup/rollup-linux-x64-gnu@${version}`],
+              { stdio: "inherit" },
+            );
+          }
+          NODE
+          npm run build
+
+      - name: Smoke xian-wallet-browser
+        if: matrix.repo == 'xian-wallet-browser'
+        working-directory: xian-wallet-browser
+        run: |
+          npm ci
+          npm run typecheck
+          npm test -- apps/wallet-extension/src/shared/storage.test.ts packages/wallet-core/tests/controller.test.ts
+
+      - name: Smoke xian-wallet-mobile
+        if: matrix.repo == 'xian-wallet-mobile'
+        working-directory: xian-wallet-mobile
+        run: |
+          npm ci
+          npm run typecheck
+          npm test -- src/lib/__tests__/wallet-controller.test.ts
+
+      - name: Smoke xian-tg-bot
+        if: matrix.repo == 'xian-tg-bot'
+        working-directory: xian-tg-bot
+        run: |
+          python -m pip install poetry
+          poetry install --with dev
+          poetry run ruff check plg/price/price.py plg/chart/chart.py utils.py tests/test_dex_datetime.py
+          poetry run pytest tests/test_smoke.py tests/test_dex_datetime.py
+
+      - name: Smoke xian-intentkit
+        if: matrix.repo == 'xian-intentkit'
+        working-directory: xian-intentkit
+        run: |
+          python -m pip install uv
+          uv run pytest tests/api/team/test_auth_optional.py tests/api/team/test_get_agent_unified.py
