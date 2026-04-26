@@ -26,6 +26,8 @@ Every solution pack should ship with:
 - one Python integration surface
 - one operator/recovery story
 - one machine-readable starter-flow manifest
+- a hash-pinned contract-bundle manifest when the pack has multiple contracts
+  or is consumed by runtime bootstrap tooling
 - one docs walkthrough
 
 It should not try to be a customizable framework.
@@ -73,7 +75,42 @@ state off-chain.
 - Python admin/bootstrap example
 - docs walkthrough covering deploy, integration, monitoring, and recovery
 
-### 2. Registry / Approval Pack
+### 2. DEX Pack
+
+#### Use Case
+
+A local or shared network needs the canonical Xian AMM contract set deployed
+under known names for wallets, the DEX web app, event automation, and
+integration tests.
+
+#### Why Xian Fits
+
+- contract source is Python and easy to audit
+- local bootstrap can be deterministic and idempotent
+- indexed DEX events are useful for agents and automation services
+- contract bundles can be pinned separately from active DEX development
+
+#### Story
+
+The DEX contracts are developed in `xian-dex`, then snapshotted into
+`xian-configs/solution-packs/dex` as a hash-pinned contract bundle. Local and
+remote operators deploy the bundle explicitly instead of adding DEX contracts
+to every base genesis.
+
+#### Recommended Operator Paths
+
+- local: `single-node-indexed`
+- remote: `consortium-3`
+
+#### Expected Components
+
+- DEX contract bundle with `con_pairs`, `con_dex`, `con_dex_helper`, and LP
+  token template sources
+- local demo token and seeded-pool bootstrap path
+- SnakX web frontend in `xian-dex`
+- docs walkthrough covering local bundle deployment and overrides
+
+### 3. Registry / Approval Pack
 
 #### Use Case
 
@@ -144,7 +181,7 @@ The second pack is considered done when:
   monitoring/recovery path
 - the roadmap and docs log are updated so the third pack can start cleanly
 
-### 3. Workflow Backend Pack
+### 4. Workflow Backend Pack
 
 #### Use Case
 
@@ -226,12 +263,15 @@ The third pack is considered done when:
 Implement the packs in this order:
 
 1. Credits Ledger Pack
-2. Registry / Approval Pack
-3. Workflow Backend Pack
+2. DEX Pack
+3. Registry / Approval Pack
+4. Workflow Backend Pack
 
 This order is intentional:
 
 - Credits Ledger validates the core golden path with minimal domain complexity.
+- DEX validates a product-grade multi-contract pack with runtime bootstrap
+  consumers.
 - Registry / Approval validates shared multi-party state and approvals.
 - Workflow Backend validates the broader decentralized-backend thesis.
 
