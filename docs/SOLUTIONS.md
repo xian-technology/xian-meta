@@ -1,23 +1,23 @@
-# Solution Packs
+# Solutions
 
 ## Purpose
 
-This file defines the canonical reference solution-pack set for the Xian
-product direction.
+This file defines the canonical reference solution set for the Xian product
+direction.
 
-These packs are not meant to be polished end-user products. They are meant to
+These solutions are not meant to be polished end-user products. They are meant to
 prove that Xian works as a Python-first decentralized backend for real
 application patterns.
 
-Each pack should stay opinionated, narrow, and repeatable.
+Each solution should stay opinionated, narrow, and repeatable.
 
-Each pack now also owns a machine-readable `pack.json` starter-flow manifest in
+Each solution owns a machine-readable `solution.json` starter-flow manifest in
 `xian-configs`. Those manifests are the canonical source for the packaged
-`xian-cli solution-pack` entrypoints.
+`xian-cli solution` entrypoints.
 
-## What A Solution Pack Must Include
+## What A Solution Must Include
 
-Every solution pack should ship with:
+Every solution should ship with:
 
 - one clear use case
 - one small contract set
@@ -26,15 +26,15 @@ Every solution pack should ship with:
 - one Python integration surface
 - one operator/recovery story
 - one machine-readable starter-flow manifest
-- a hash-pinned contract-bundle manifest when the pack has multiple contracts
+- a hash-pinned contract-bundle manifest when the solution has multiple contracts
   or is consumed by runtime bootstrap tooling
 - one docs walkthrough
 
 It should not try to be a customizable framework.
 
-## Pack Set
+## Solution Set
 
-### 1. Credits Ledger Pack
+### 1. Credits Ledger Solution
 
 #### Use Case
 
@@ -75,7 +75,7 @@ state off-chain.
 - Python admin/bootstrap example
 - docs walkthrough covering deploy, integration, monitoring, and recovery
 
-### 2. DEX Pack
+### 2. DEX Demo Solution
 
 #### Use Case
 
@@ -93,9 +93,9 @@ integration tests.
 #### Story
 
 The DEX contracts are developed in `xian-dex`, then snapshotted into
-`xian-configs/solution-packs/dex` as a hash-pinned contract bundle. Local and
-remote operators deploy the bundle explicitly instead of adding DEX contracts
-to every base genesis.
+`xian-configs/modules/dex` as a hash-pinned module bundle. Local and remote
+operators install the module explicitly instead of adding DEX contracts to
+every base genesis.
 
 #### Recommended Operator Paths
 
@@ -110,7 +110,7 @@ to every base genesis.
 - SnakX web frontend in `xian-dex`
 - docs walkthrough covering local bundle deployment and overrides
 
-### 3. Registry / Approval Pack
+### 3. Registry / Approval Solution
 
 #### Use Case
 
@@ -149,7 +149,7 @@ and service layer around it.
 - Python admin/service flow
 - monitoring and recovery walkthrough
 
-## Second Pack Scope: Registry / Approval
+## Second Solution Scope: Registry / Approval
 
 The second implementation slice should stay narrow and complete enough to be a
 real shared-state pattern.
@@ -158,7 +158,7 @@ It should include:
 
 - a reusable registry contract asset in `xian-configs`
 - a reusable approval-policy contract asset in `xian-configs`
-- pack-specific integration examples in `xian-py`
+- solution-specific integration examples in `xian-py`
 - a public docs walkthrough in `xian-docs-web`
 - alignment with the existing `single-node-indexed` and `consortium-3`
   operator flows
@@ -170,18 +170,18 @@ It should not need:
 - large role-management subsystems
 - protocol changes
 
-## Completion Criteria For The Registry / Approval Pack
+## Completion Criteria For The Registry / Approval Solution
 
-The second pack is considered done when:
+The second solution is considered done when:
 
 - the registry and approval contract assets exist in a stable repo location
 - the SDK examples show bootstrap, proposal, approval, and event-consumption
   patterns
 - the docs explain the use case, deployment path, approval path, and
   monitoring/recovery path
-- the roadmap and docs log are updated so the third pack can start cleanly
+- the roadmap and docs log are updated so the third solution can start cleanly
 
-### 4. Workflow Backend Pack
+### 4. Workflow Backend Solution
 
 #### Use Case
 
@@ -220,7 +220,7 @@ user-facing systems query current state and history through indexed reads.
 - Python worker consuming events
 - indexed-read examples
 
-## Third Pack Scope: Workflow Backend
+## Third Solution Scope: Workflow Backend
 
 The third implementation slice should stay narrow and complete enough to show
 Xian as a decentralized backend coordination layer.
@@ -228,7 +228,7 @@ Xian as a decentralized backend coordination layer.
 It should include:
 
 - a reusable workflow state-machine contract asset in `xian-configs`
-- pack-specific integration examples in `xian-py`
+- solution-specific integration examples in `xian-py`
 - a public docs walkthrough in `xian-docs-web`
 - alignment with the existing `single-node-indexed` and `embedded-backend`
   operator flows
@@ -247,35 +247,35 @@ It does not need:
 - a second governance/approval layer
 - protocol changes
 
-## Completion Criteria For The Workflow Backend Pack
+## Completion Criteria For The Workflow Backend Solution
 
-The third pack is considered done when:
+The third solution is considered done when:
 
 - the workflow contract asset exists in a stable repo location
 - the SDK examples show bootstrap, service submission/query, and worker
   processing patterns
 - the docs explain the use case, deployment path, integration path, and
   monitoring/recovery path
-- the roadmap and docs log are updated to mark the initial pack set complete
+- the roadmap and docs log are updated to mark the initial solution set complete
 
 ## Recommended Order
 
-Implement the packs in this order:
+Implement the solutions in this order:
 
-1. Credits Ledger Pack
-2. DEX Pack
-3. Registry / Approval Pack
-4. Workflow Backend Pack
+1. Credits Ledger Solution
+2. DEX Demo Solution
+3. Registry / Approval Solution
+4. Workflow Backend Solution
 
 This order is intentional:
 
 - Credits Ledger validates the core golden path with minimal domain complexity.
-- DEX validates a product-grade multi-contract pack with runtime bootstrap
+- DEX validates a product-grade multi-contract module with runtime bootstrap
   consumers.
 - Registry / Approval validates shared multi-party state and approvals.
 - Workflow Backend validates the broader decentralized-backend thesis.
 
-## First Pack Scope: Credits Ledger
+## First Solution Scope: Credits Ledger
 
 The first implementation slice should stay narrow and complete enough to be
 real.
@@ -283,7 +283,7 @@ real.
 It should include:
 
 - a reusable credits-ledger contract bundle in `xian-configs`
-- pack-specific integration examples in `xian-py`
+- solution-specific integration examples in `xian-py`
 - a public docs walkthrough in `xian-docs-web`
 - alignment with the existing `single-node-indexed` and
   `embedded-backend` operator flows
@@ -295,19 +295,19 @@ It does not need:
 - protocol changes
 - new runtime features
 
-## Completion Criteria For The Credits Ledger Pack
+## Completion Criteria For The Credits Ledger Solution
 
-The first pack is considered done when:
+The first solution is considered done when:
 
 - the contract assets exist in a stable repo location
 - the SDK examples show bootstrap, service, and worker patterns
 - the docs explain the use case, deployment path, integration path, and
   monitoring/recovery path
-- the roadmap and docs log are updated so the next pack can start cleanly
+- the roadmap and docs log are updated so the next solution can start cleanly
 
 ## First Deeper Reference-App Slice: Credits Ledger
 
-After the initial three-pack set is complete, the first deeper reference-app
+After the initial three-solution set is complete, the first deeper reference-app
 slice should still build on Credits Ledger.
 
 That deeper slice should demonstrate:

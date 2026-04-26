@@ -103,7 +103,7 @@ Outcome:
 
 - running and operating a Xian node feels predictable and observable
 
-### Phase 4: Reference Solution Packs
+### Phase 4: Reference Solutions
 
 Primary repos:
 
@@ -122,7 +122,7 @@ Outcome:
 The whole-stack validation sweep is complete enough to move back to product
 building. The next slices should be:
 
-1. decide how far to automate pack-aware remote deployment beyond the current
+1. decide how far to automate solution-aware remote deployment beyond the current
    preset and runbook layer
 2. decide whether the monitoring preset layer should grow into notifier or
    Alertmanager integration
@@ -343,12 +343,12 @@ healthy.
   database state
 - done: tighten state-sync and snapshot recovery flows around concrete operator
   runbooks and remote deployment checks
-- done: mirror the starter-flow solution-pack path into `xian-deploy` through
+- done: mirror the starter-flow solution path into `xian-deploy` through
   reusable remote presets and example host layouts
 - done: add template-specific monitoring dashboards and alert presets in
   `xian-stack` and `xian-deploy`
 - next: decide whether to keep the remote operator layer thin and explicit or
-  add more pack-aware deployment automation
+  add more solution-aware deployment automation
 
 ### Deliverables
 
@@ -420,7 +420,7 @@ Keep `xian-docs-web` current for:
 - operator workflows
 - recovery and troubleshooting
 
-## Phase 4: Reference Solution Packs
+## Phase 4: Reference Solutions
 
 ### Goal
 
@@ -429,39 +429,39 @@ products but more meaningful than toy demos.
 
 ### Progress
 
-- done: define the canonical solution-pack set and the first-pack scope
-- done: implement the Credits Ledger Pack across shared assets, SDK examples,
+- done: define the canonical solution set and the first solution scope
+- done: implement the Credits Ledger Solution across shared assets, SDK examples,
   and public docs
-- done: define the Registry / Approval Pack scope
-- done: implement the Registry / Approval Pack across shared assets, SDK
+- done: define the Registry / Approval Solution scope
+- done: implement the Registry / Approval Solution across shared assets, SDK
   examples, and public docs
-- done: define the Workflow Backend Pack scope
-- done: implement the Workflow Backend Pack across shared assets, SDK
+- done: define the Workflow Backend Solution scope
+- done: implement the Workflow Backend Solution across shared assets, SDK
   examples, and public docs
-- done: choose the Credits Ledger Pack as the first deeper reference
+- done: choose the Credits Ledger Solution as the first deeper reference
   application slice
-- done: turn the Credits Ledger Pack into a fuller reference application with
+- done: turn the Credits Ledger Solution into a fuller reference application with
   a projected read model and richer service flow
 - done: choose Registry / Approval as the second deeper reference application
   slice
-- done: turn the Registry / Approval Pack into a fuller reference application
+- done: turn the Registry / Approval Solution into a fuller reference application
   with an event-driven hydrated read model
 - done: choose Workflow Backend as the third deeper reference application
   slice
-- done: turn the Workflow Backend Pack into a fuller reference application
+- done: turn the Workflow Backend Solution into a fuller reference application
   with separate processor and projector workers
 - done: validate all three deeper reference apps end to end against a live
   indexed node
 - done: extract reusable projector / projection helpers in `xian-py` from the
   three validated reference apps
 - done: package the resulting validated flows into machine-readable starter
-  paths through canonical solution-pack manifests and `xian-cli`
+  paths through canonical solution manifests and `xian-cli`
 - next: mirror those starter paths more directly into `xian-deploy` and the
   remaining operator presets
 
-### Initial Candidate Packs
+### Initial Candidate Solutions
 
-#### Credits Ledger Pack
+#### Credits Ledger Solution
 
 - token or credits contract
 - Python service using `xian-py`
@@ -474,7 +474,7 @@ products but more meaningful than toy demos.
   - a resumable projector worker that rebuilds the projection from indexed
     events
 
-#### Registry / Approval Pack
+#### Registry / Approval Solution
 
 - registry contract
 - approval or governance layer
@@ -486,7 +486,7 @@ products but more meaningful than toy demos.
     authoritative contract reads as hydration
   - richer API service for pending approvals, records, and audit activity
 
-#### Workflow Backend Pack
+#### Workflow Backend Solution
 
 - state-machine style contract
 - Python worker consuming events
@@ -501,7 +501,7 @@ products but more meaningful than toy demos.
 
 ### Output Shape
 
-Each pack should explain:
+Each solution should explain:
 
 - why Xian fits this problem
 - how to start the network
@@ -522,7 +522,7 @@ Each pack should explain:
 1. add higher-level SDK application helpers
 2. add stronger doctor/health workflows
 3. align `xian-deploy` with the initial template set
-4. build the first reference solution pack
+4. build the first reference solution
 
 ### Do Later
 
@@ -532,9 +532,9 @@ Each pack should explain:
 
 ## Current Next Action
 
-With the initial solution-pack set in place:
+With the initial solution catalog in place:
 
-1. decide whether to automate pack-aware remote inventory generation or keep
+1. decide whether to automate solution-aware remote inventory generation or keep
    the current preset/runbook layer intentionally thin
 2. decide whether the monitoring preset layer should grow into notifier or
    Alertmanager integration

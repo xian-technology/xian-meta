@@ -422,7 +422,7 @@ Audit command:
 uv run --project ../xian-contracting python ../xian-contracting/scripts/audit_vm_compatibility.py \
   ../xian-contracts/contracts \
   ../xian-configs/contracts \
-  ../xian-configs/solution-packs/stable-protocol/contracts \
+  ../xian-configs/modules/stable-protocol/contracts \
   ../xian-stable-protocol/contracts
 ```
 
@@ -452,7 +452,7 @@ Lowering command:
 uv run --project ../xian-contracting python ../xian-contracting/scripts/audit_vm_ir_lowering.py \
   ../xian-contracts/contracts \
   ../xian-configs/contracts \
-  ../xian-configs/solution-packs/stable-protocol/contracts \
+  ../xian-configs/modules/stable-protocol/contracts \
   ../xian-stable-protocol/contracts
 ```
 
@@ -492,7 +492,7 @@ The rewrites in this branch removed the previously incompatible constructs from:
 - `xian-contracts/contracts/turn-based-games/src/con_turn_based_games.py`
 - `xian-configs/contracts/members.s.py`
 - `xian-configs/contracts/rewards.s.py`
-- `xian-configs/solution-packs/stable-protocol/contracts/oracle.s.py`
+- `xian-configs/modules/stable-protocol/contracts/oracle.s.py`
 - `xian-stable-protocol/contracts/oracle.s.py`
 
 ## What This Means

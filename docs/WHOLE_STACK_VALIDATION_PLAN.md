@@ -98,7 +98,7 @@ After repo-level validation is green, run real workflow checks covering:
 4. BDS-enabled node behavior
 5. Snapshot / state-sync / recovery flows
 6. Golden-path SDK workflows
-7. At least one solution-pack walkthrough end to end
+7. At least one solution walkthrough end to end
 
 ## Phases
 
@@ -138,7 +138,7 @@ After repo-level validation is green, run real workflow checks covering:
   - status / endpoints / health / doctor flows
   - BDS ingestion and indexed reads
   - snapshots and state sync
-  - solution-pack examples
+  - solution examples
 - fix bugs or simplify operator flows if the real runs expose them
 
 ### Phase 5: Final Sweep And Summary
@@ -226,7 +226,7 @@ After repo-level validation is green, run real workflow checks covering:
     - `single-node-indexed` with BDS enabled
     - `consortium-3`
     - snapshot and recovery flows
-    - at least one solution-pack walkthrough against a live node
+    - at least one solution walkthrough against a live node
   - live `single-node-indexed` workflow then exposed two service-node bugs in
     `xian-abci`:
     - BDS wrote Python `dict` and `list` values directly into asyncpg JSONB
@@ -263,10 +263,10 @@ After repo-level validation is green, run real workflow checks covering:
       home
     - `xian-py` now exposes an optional `app` extra for the documented FastAPI
       and uvicorn examples
-    - `xian-configs` solution-pack contracts now have an explicit lint gate via
-      `scripts/validate-solution-pack-contracts.py`, and the Credits Ledger
-      pack contract was fixed to satisfy the current linter rules
-    - `xian-py` solution-pack write examples now fail loudly on rejected or
+    - `xian-configs` solution contracts now have an explicit lint gate via
+      `scripts/validate-solution-contracts.py`, and the Credits Ledger
+      solution contract was fixed to satisfy the current linter rules
+    - `xian-py` solution write examples now fail loudly on rejected or
       failed submissions instead of printing false-success hashes
     - `xian-py` simulation and chi estimation now canonicalize payloads with
       runtime encoding, which fixed Decimal-valued argument simulation
@@ -313,7 +313,7 @@ After repo-level validation is green, run real workflow checks covering:
   - next live scenarios:
     - `consortium-3`
     - snapshot and recovery flows
-    - at least one solution-pack walkthrough against a live node
+    - at least one solution walkthrough against a live node
   - live `Registry / Approval` reference-app validation then completed against
     the indexed single-node network
   - registry validation exposed and resolved additional cross-stack issues:
@@ -343,7 +343,7 @@ After repo-level validation is green, run real workflow checks covering:
     - `Workflow Backend` reference-app validation at the same depth
   - live `Workflow Backend` reference-app validation then completed against the
     same indexed single-node network
-  - workflow validation exposed and resolved the remaining pack-level issues:
+  - workflow validation exposed and resolved the remaining solution-level issues:
     - workflow event processors and projections were still assuming decisive
       fields like `item_id` and `worker` lived only in `event.data`; they now
       merge `data_indexed` and `data`, which matches the live BDS event shape

@@ -28,7 +28,7 @@ Files:
 - `COMETBFT_TO_SEI_MIGRATION_MEMO.md`: evaluation of what a move from CometBFT to Sei's integrated chain stack would actually mean for Xian and why it is not a drop-in swap
 - `XIAN_MISSION_AND_PRODUCT_STRATEGY.md`: shared mission, principles, and product direction for Xian
 - `GOLDEN_PATH_ROADMAP.md`: phased cross-repo implementation roadmap for the product thesis
-- `SOLUTION_PACKS.md`: canonical definition of the reference solution-pack set and the first pack scope
+- `SOLUTIONS.md`: canonical definition of the reference solution set and first solution scope
 - `WHOLE_STACK_VALIDATION_PLAN.md`: resumable whole-stack validation and hardening plan
 - `LOCALNET_4_NODE_E2E_RUNBOOK.md`: the canonical 4-node localnet runbook for whole-stack live validation across runtime, governance, BDS, DEX, logging, and shielded-note flows
 - `PYPI_RELEASE_ROLLOUT.md`: one-time PyPI Trusted Publishing registration map, release order, and maintainer checklist for the Python package set
