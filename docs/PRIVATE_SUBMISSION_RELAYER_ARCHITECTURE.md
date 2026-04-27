@@ -159,21 +159,8 @@ Operators should treat all of the following as baseline requirements:
 
 ## Network Manifest Discovery
 
-Canonical network manifests can advertise one or more relayers.
-
-Legacy single-entry form:
-
-```json
-{
-  "shielded_relayer": {
-    "base_url": "https://relayer.example.org",
-    "auth_scheme": "bearer",
-    "public_info": true
-  }
-}
-```
-
-Canonical multi-entry form:
+Canonical network manifests advertise one or more relayers with
+`shielded_relayers`:
 
 ```json
 {
