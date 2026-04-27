@@ -2,8 +2,6 @@
 
 Open follow-up items for `xian-meta` itself:
 
-- execute the staged cleanup in `docs/CORE_REPO_CLEANUP_PLAN.md`, starting with
-  the shared README convention reset
 - execute the shared-foundations cleanup in
   `docs/SHARED_FOUNDATIONS_PLAN.md`, starting with moving the decompiler out of
   `xian-py`
@@ -14,6 +12,8 @@ Open follow-up items for `xian-meta` itself:
   contents so repo-local notes stay as consistent as the root README files
 - review whether the main repos should share a common `CONTRIBUTING.md`
   convention in addition to `AGENTS.md`
+- keep completed implementation plans out of `docs/` once the current behavior
+  is covered by repo-local or public docs
 
 Cross-repo protocol and architecture designs do not belong in this backlog
 unless the follow-up work is specifically about `xian-meta` itself.

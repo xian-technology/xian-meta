@@ -29,17 +29,12 @@ Files:
 - `XIAN_MISSION_AND_PRODUCT_STRATEGY.md`: shared mission, principles, and product direction for Xian
 - `GOLDEN_PATH_ROADMAP.md`: phased cross-repo implementation roadmap for the product thesis
 - `SOLUTIONS.md`: canonical definition of the reference solution set and first solution scope
-- `WHOLE_STACK_VALIDATION_PLAN.md`: resumable whole-stack validation and hardening plan
-- `LOCALNET_4_NODE_E2E_RUNBOOK.md`: the canonical 4-node localnet runbook for whole-stack live validation across runtime, governance, BDS, DEX, logging, and shielded-note flows
+- `LOCALNET_E2E_RUNBOOK.md`: current cross-repo pointer for the 5-validator localnet and release-safety validation flows
 - `PYPI_RELEASE_ROLLOUT.md`: one-time PyPI Trusted Publishing registration map, release order, and maintainer checklist for the Python package set
 - `XIAN_SECURITY_AUDIT_FOLLOWUPS.md`: status note for the latest stack-wide security audit, including fixed findings and the remaining dashboard/simulation follow-up decisions
-- `CORE_REPO_CLEANUP_PLAN.md`: staged cleanup plan for keeping the core repos human-first, minimal, and correctly layered
 - `SHARED_FOUNDATIONS_PLAN.md`: cleanup plan for neutral shared Python foundations and removing the `xian-abci -> xian-py` dependency
 - `SHARED_PACKAGE_EXTRACTION_PLAN.md`: deferred extraction criteria and migration path for shared packages that currently live in `xian-contracting`
 - `INTENTKIT_STACK_INTEGRATION.md`: cross-repo contract for keeping `xian-intentkit` independent while attaching it cleanly to the stack and CLI
-- `CONTRACT_SOURCE_STORAGE.md`: design for storing exact submitted contract source alongside canonical runtime code
-- `CONTRACT_FACTORY_DEPLOYMENT.md`: design for restoring contract factories with explicit constructor semantics, provenance, metering, and BDS indexing
-- `DYNAMIC_CONTRACT_CALLS.md`: design for safe dynamic exported-function dispatch without exposing generic reflection
 - `DETERMINISTIC_RANDOMNESS.md`: design for a Xian-owned deterministic contract randomness model and simulation alignment
 - `REAL_PRIVACY_TOKEN_ARCHITECTURE.md`: architecture for replacing the current experimental privacy-token contract with a real shielded-note token backed by native proof verification
 - `PRIVATE_SUBMISSION_RELAYER_ARCHITECTURE.md`: current network-layer relayer service, discovery shape, and trust boundary for proof-bound private submission
@@ -47,5 +42,4 @@ Files:
 - `PRIVACY_ASSET_THREAT_MODEL.md`: first explicit threat-model and privacy-review pass for the current shielded asset stack
 - `SHIELDED_RELAYER_OPERATOR_RUNBOOK.md`: baseline operating posture, auth/rate-limit policy, retention guidance, metrics, and manifest publication rules for relayer operators
 - `SHIELDED_WALLET_RECOVERY_MODEL.md`: current operational recovery model for shielded wallets, including BDS history requirements, wallet `state_snapshot` backups, and snapshot-based recovery expectations
-- `ZK_RUNTIME_OPTIMIZATION_MERGE_READINESS.md`: repo-by-repo merge guidance and ordering for the current shielded runtime and wallet-sync branches
 - `ZK_VERIFIER_RUNTIME.md`: runtime design for a native Groth16/BN254 verifier bridge, key registry, encoding rules, and metering

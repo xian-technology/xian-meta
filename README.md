@@ -46,4 +46,3 @@ python3 ./scripts/check_repo_conventions.py --workspace-root ..
 - [docs/BACKLOG.md](docs/BACKLOG.md)
 - [docs/REPO_CONVENTIONS.md](docs/REPO_CONVENTIONS.md)
 - [docs/CHANGE_WORKFLOW.md](docs/CHANGE_WORKFLOW.md)
-- [docs/CORE_REPO_CLEANUP_PLAN.md](docs/CORE_REPO_CLEANUP_PLAN.md)
