@@ -25,10 +25,10 @@ jobs:
             node-version: "24"
           - repo: xian-tg-bot
             runtime: python
-            python-version: "3.11"
+            python-version: "3.14"
           - repo: xian-intentkit
             runtime: python
-            python-version: "3.13"
+            python-version: "3.14"
 
     steps:
       - name: Check out xian-meta
@@ -57,7 +57,7 @@ jobs:
           path: xian-py
 
       - name: Check out xian-contracting
-        if: matrix.repo == 'xian-tg-bot'
+        if: matrix.repo == 'xian-tg-bot' || matrix.repo == 'xian-intentkit'
         uses: actions/checkout@v6
         with:
           repository: ${{ github.repository_owner }}/xian-contracting
