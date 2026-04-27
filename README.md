@@ -9,6 +9,18 @@ This repo holds *standards* and *cross-repo contracts*. It does not hold
 runtime code, repo-local backlogs, or implementation details that belong to a
 single owning repo.
 
+## Standards Flow
+
+```mermaid
+flowchart LR
+  CrossRepoNeed["Cross-repo design need"] --> MetaDocs["xian-meta design contract"]
+  MetaDocs --> OwningRepos["Owning implementation repos"]
+  OwningRepos --> RepoDocs["Repo-local docs and README updates"]
+  RepoDocs --> Validation["Validation gates"]
+  MetaDocs --> Conventions["Repo conventions and templates"]
+  Conventions --> WorkspaceCheck["check_repo_conventions.py"]
+```
+
 ## Quick Start
 
 Open `docs/REPO_CONVENTIONS.md` first if you are starting a new repo, refactoring
