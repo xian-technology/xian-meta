@@ -27,6 +27,7 @@ Files:
 - `XIAN_VM_PARALLEL_EXECUTION_PLAN.md`: concrete plan for replacing the current speculative process-pool parallel executor with a deterministic, access-spec-driven design that is actually worth enabling by default
 - `COMETBFT_TO_SEI_MIGRATION_MEMO.md`: evaluation of what a move from CometBFT to Sei's integrated chain stack would actually mean for Xian and why it is not a drop-in swap
 - `XIAN_MISSION_AND_PRODUCT_STRATEGY.md`: shared mission, principles, and product direction for Xian
+- `XIAN_X402_EXACT_PROFILE.md`: first native-Xian x402 exact-payment profile for HTTP 402 paid API requests
 - `GOLDEN_PATH_ROADMAP.md`: phased cross-repo implementation roadmap for the product thesis
 - `SOLUTIONS.md`: canonical definition of the reference solution set and first solution scope
 - `LOCALNET_E2E_RUNBOOK.md`: current cross-repo pointer for the 5-validator localnet and release-safety validation flows
