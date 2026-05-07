@@ -115,6 +115,28 @@ The deeper reference-app path is implemented in `xian-py/examples`, with an
 admin job, API service, processor worker, projector worker, queue projections,
 and activity views.
 
+### x402 Exact
+
+Use case:
+
+- fixed-price HTTP 402 paid API requests settled through native Xian token
+  contracts
+
+Canonical assets:
+
+- `xian-configs/solutions/x402-exact/solution.json`
+- `xian-configs/solutions/x402-exact/contracts/x402_settlement.s.py`
+- `xian-py/examples/x402_exact/README.md`
+
+Recommended operator paths:
+
+- local: `single-node-indexed`
+- remote: `embedded-backend`
+
+The deeper reference-app path is implemented in `xian-py/examples`, with a
+settlement deployment job, paid FastAPI resource server, optional facilitator
+service, and buyer client.
+
 ## Boundary
 
 `xian-meta` owns the cross-repo definition of what belongs in the solution set.
