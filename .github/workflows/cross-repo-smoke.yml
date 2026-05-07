@@ -79,6 +79,10 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Set up uv
+        if: matrix.runtime == 'python'
+        uses: astral-sh/setup-uv@v7
+
       - name: Build xian-js for wallet smoke tests
         if: matrix.runtime == 'node'
         working-directory: xian-js
@@ -106,14 +110,12 @@ jobs:
         if: matrix.repo == 'xian-tg-bot'
         working-directory: xian-tg-bot
         run: |
-          python -m pip install poetry
-          poetry install --with dev
-          poetry run ruff check plg/price/price.py plg/chart/chart.py utils.py tests/test_dex_datetime.py
-          poetry run pytest tests/test_smoke.py tests/test_dex_datetime.py
+          uv sync --group dev
+          uv run ruff check plg/price/price.py plg/chart/chart.py utils.py tests/test_dex_datetime.py
+          uv run pytest tests/test_smoke.py tests/test_dex_datetime.py
 
       - name: Smoke xian-intentkit
         if: matrix.repo == 'xian-intentkit'
         working-directory: xian-intentkit
         run: |
-          python -m pip install uv
           uv run pytest tests/api/team/test_auth_optional.py tests/api/team/test_get_agent_unified.py
