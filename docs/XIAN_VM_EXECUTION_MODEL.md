@@ -488,18 +488,15 @@ The VM model must not depend on:
 
 Gas schedules are versioned independently from source code.
 
-Suggested network execution policy shape:
+Current network execution policy shape:
 
 ```yaml
 execution:
   engine:
     mode: xian_vm_v1
-    bytecode_version: xvm-1
-    gas_schedule: xvm-gas-1
 ```
 
-All validators on a network must use the same execution engine mode and gas
-schedule when those choices affect consensus or chi.
+All validators on a network must use the fixed `xian_vm_v1` runtime.
 
 ## Determinism Rules
 
@@ -573,30 +570,12 @@ Execution must never rely on undefined behavior for malformed bytecode.
 
 The execution engine becomes an explicit network policy decision.
 
-Suggested long-term config shape:
-
-```yaml
-execution:
-  engine:
-    mode: python_line_v1
-```
-
-or
-
-```yaml
-execution:
-  engine:
-    mode: native_instruction_v1
-```
-
-or
+Current config shape:
 
 ```yaml
 execution:
   engine:
     mode: xian_vm_v1
-    bytecode_version: xvm-1
-    gas_schedule: xvm-gas-1
 ```
 
 ### Rules
@@ -604,20 +583,18 @@ execution:
 - no silent fallback between engines
 - validators on one network must agree on engine mode when it changes
   consensus-relevant semantics
-- upgrades between engines or bytecode versions must be explicit network policy
+- runtime upgrades must be explicit network policy
 
 ## Compatibility And Migration
 
-The VM should not replace the current engine abruptly.
+The VM has replaced the old engine in node execution.
 
 ### Recommended Rollout
 
-1. Keep current CPython-backed execution as the default stable engine.
-2. Define the Xian language subset more formally where needed.
-3. Implement Xian IR and bytecode generation.
-4. Implement a Rust VM prototype.
-5. Run contracts in shadow mode for parity testing.
-6. Build a deterministic parity suite covering:
+1. Define the Xian language subset more formally where needed.
+2. Maintain Xian IR and bytecode generation.
+3. Keep the Rust VM as the node execution path.
+4. Build a deterministic parity suite covering:
    - state writes
    - events
    - `ctx.signer` / `ctx.caller`

@@ -66,7 +66,7 @@ operator clarity:
 The serious validation paths are:
 
 - `make localnet-e2e`
-- `make localnet-vm-e2e`
+- `make localnet-parallel-e2e`
 - `make release-safety`
 
 The docs source of truth for these flows is

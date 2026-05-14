@@ -21,7 +21,8 @@ A new language feature should be added only if it is:
 - simple enough to audit
 - useful enough to justify permanent protocol surface
 
-The old Python VM forced some restrictions because CPython itself was risky.
+The old CPython-backed execution path forced some restrictions because CPython
+itself was risky.
 
 The new Xian VM removes much of that pressure, but it does not remove the real
 blockchain constraints:

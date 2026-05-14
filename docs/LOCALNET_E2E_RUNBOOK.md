@@ -17,8 +17,8 @@ make localnet-up
 # Broad 5-validator whole-stack harness
 make localnet-e2e
 
-# VM-native 5-validator harness
-make localnet-vm-e2e
+# Lower-batch parallel 5-validator harness
+make localnet-parallel-e2e
 
 # Release-grade validation gate
 make release-safety
@@ -32,7 +32,7 @@ shielded-note flows, parallel-execution behavior, restart/chaos convergence,
 and soak/abuse coverage.
 
 `make release-safety` is the release gate. It combines repo validation,
-VM-native e2e, VM rollout reporting, and the focused validator/governance
+parallel e2e, node reporting, and the focused validator/governance
 localnet.
 
 ## Source Of Truth

@@ -29,34 +29,19 @@ the currently frozen `xian_vm_v1` subset.
 
 ```toml
 [xian.execution.engine]
-mode = "python_line_v1"
-bytecode_version = ""
-gas_schedule = ""
-authority = ""
-shadow_tracer_mode = ""
+mode = "xian_vm_v1"
 ```
 
-Current tracer-backed engines continue to run exactly as before:
-
-- `python_line_v1`
-- `native_instruction_v1`
-
-`xian_vm_v1` is now a named future execution policy slot in config shape, and
-`xian-abci` now routes it through an explicit execution-runtime probe instead of
-rejecting it as an unknown future string.
+`xian_vm_v1` is the only supported node execution policy.
 
 Current behavior is still deliberately strict:
 
-- current tracer-backed engines continue to run normally
-- `xian_vm_v1` now performs native capability probing against `xian-vm-core`
-- `xian_vm_v1` is now native-authoritative only on this branch
-- `shadow_tracer_mode` is no longer part of the `xian_vm_v1` runtime model
+- `xian_vm_v1` performs native capability probing against `xian-vm-core`
 - the node does not silently “try native first and fall back to Python” for
-  consensus execution; native execution remains an explicit rollout mode, not
-  an invisible fallback
+  consensus execution
 
-That keeps the runtime honest while still moving execution selection away from a
-forever-implicit `tracer_mode` string.
+That keeps the runtime honest while removing execution-engine selection from
+operator policy.
 
 ### 3. Structural Xian IR and host-binding catalog
 
@@ -151,7 +136,7 @@ The native path is now materially more self-contained than the earlier slices:
 - authored contract submission and governed `__source__` patches now persist
   `__xian_ir_v1__` alongside `__source__`; `__code__` is no longer part of
   the VM-native state path
-- the Python VM host and the `xian-abci` preflight path now require persisted
+- the VM host and the `xian-abci` preflight path now require persisted
   `xian_ir_v1` for `xian_vm_v1` execution; stored `__source__` remains
   inspection/debug metadata and is no longer an execution fallback
 - the built-in `submission` contract now seeds a dedicated authored-source
@@ -182,16 +167,12 @@ The native path is now materially more self-contained than the earlier slices:
 - `xian_vm_v1` rollout now enforces artifact-backed deployment unconditionally,
   so source-only submissions are rejected instead of being compiled on-node
 - the remaining live on-chain factory flow, `token_factory`, now materializes
-  and submits canonical child deployment artifacts, so native-authority
-  contract creation is no longer limited to direct client submissions
-- `authority = "native"` no longer depends on Python for chi accounting or
-  contract reward weights, and it no longer requires Python shadow comparison
-  to be configured
-- `xian-stack` now exposes a first-class `make localnet-vm-e2e` path that
-  boots a 5-node integrated localnet with `xian_vm_v1` in native-authority
-  mode plus Python shadow comparison for soak and replay-style validation
-- the current native-authority soak baseline is no longer theoretical:
-  `make localnet-vm-e2e` now completes the full 16-phase run successfully,
+  and submits canonical child deployment artifacts, so VM contract creation is
+  no longer limited to direct client submissions
+- `xian-stack` now exposes a first-class `make localnet-parallel-e2e` path that
+  boots a 5-node integrated localnet with `xian_vm_v1`
+- the current VM soak baseline is no longer theoretical:
+  `make localnet-parallel-e2e` now completes the full 16-phase run successfully,
   including shielded-note-token and parallel prefix-scan workloads
 - `xian-abci` now also ships an explicit legacy-network replay audit tool:
   `xian-legacy-replay-audit`
@@ -210,17 +191,13 @@ The native path is now materially more self-contained than the earlier slices:
     cost on every transaction
   - it writes a structured replay report plus a normalized transaction log for
     later widening from small audit windows to larger historical ranges
-- VM rollout observability is now first-class instead of log-only:
-  - `xian-abci` exports shadow/native comparison counters and latest-mismatch
-    context through Prometheus metrics
-  - mismatch records are appended to
-    `storage/logs/xian-vm-shadow-mismatches.jsonl`
-  - `xian-stack/scripts/localnet_vm_rollout.py` collects those signals from a
-    running localnet and summarizes rollout consistency as JSON
+- VM runtime observability is now first-class instead of log-only:
+  - `xian-abci` exports runtime mode through Prometheus metrics
+  - `xian-stack/scripts/localnet_node_report.py` collects those signals from a
+    running localnet and summarizes fixed VM node capability as JSON
   - localnet now exposes the Xian app metrics exporter separately from the
-    CometBFT metrics port, so rollout validation reads the actual VM metrics
-  - `make localnet-vm-e2e` now writes `vm_rollout.json` and fails by default if
-    the mismatch budget is exceeded
+    CometBFT metrics port, so runtime validation reads the actual VM metrics
+  - `make localnet-parallel-e2e` now writes `node_report.json`
   - the main monitoring stack now ships VM-specific alert rules and a dedicated
     Grafana dashboard (`Xian VM Runtime`) in addition to summary panels on the
     existing overview/preset dashboards
@@ -231,8 +208,7 @@ The native path is now materially more self-contained than the earlier slices:
   artifact block, so the large child-contract artifact payload is derived
   output rather than hand-maintained contract source
 
-It is now a real engine boundary with an explicit authoritative native mode,
-not only a shadow probe path.
+It is now a real engine boundary with a single authoritative VM path.
 
 ### 6. Explicit VM metering and corpus calibration
 
@@ -253,20 +229,15 @@ There is also now a calibration audit:
 
 - `xian-contracting/scripts/audit_vm_metering.py`
 
-That audit runs the full authored parity corpus through both:
-
-- Python `native_instruction_v1`
-- Rust `xian_vm_v1`
-
-and reports the current ratio envelope, instead of treating metering as a
-placeholder.
+That audit reports the current VM metering envelope instead of treating
+metering as a placeholder.
 
 Current calibration state on this branch:
 
-- no fixture in the current parity corpus is under-metered relative to
-  `native_instruction_v1`
+- no fixture in the current parity corpus is under-metered relative to the
+  baseline used by the audit
 - the authored-contract subset currently lands in roughly the `1.02x` to
-  `2.35x` band versus `native_instruction_v1`
+  `2.35x` band versus the audit baseline
 - the full mixed corpus, including intentionally synthetic helper fixtures,
   currently lands in roughly the `1.02x` to `2.50x` band
 
@@ -537,7 +508,6 @@ operations should stay delegated.
    - decimal behavior
    - chi accounting
    - imported contract calls
-3. Move from shadow preflight into a true native transaction executor in
-   `xian-abci` once parity is credible enough for state-write comparison.
+3. Keep the native transaction executor as the sole `xian-abci` execution path.
 4. Only introduce an internal bytecode layer later if the direct-IR interpreter
    proves to be a real bottleneck or prevents specific optimizations.
