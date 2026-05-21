@@ -87,10 +87,10 @@ The adapter writes those into the selected network slot inside
 This keeps `xian-intentkit` generic while still allowing the live Xian network
 deployment to use the bridged Solana token for pricing.
 
-## Service-Node Note
+## BDS Note
 
 Basic Xian wallet and transaction flows only need RPC reachability.
 
-Indexed Xian features inside `xian-intentkit` are strongest when the node is a
-service node with BDS enabled, because event and indexed-transaction paths rely
-on the ABCI query surface exposed by that posture.
+Indexed Xian features inside `xian-intentkit` are strongest when the node has
+BDS enabled, because event and indexed-transaction paths rely on the ABCI query
+surface exposed by that posture.
