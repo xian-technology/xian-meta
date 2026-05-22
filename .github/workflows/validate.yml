@@ -45,6 +45,13 @@ jobs:
           ref: main
           path: xian-contracting
 
+      - name: Checkout xian-intentkit
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.repository_owner }}/xian-intentkit
+          ref: main
+          path: xian-intentkit
+
       - name: Checkout xian-deploy
         uses: actions/checkout@v6
         with:
@@ -90,3 +97,4 @@ jobs:
         run: |
           python -m compileall scripts
           python ./scripts/check_repo_conventions.py --workspace-root ..
+          python ./scripts/check_python_except_compat.py --workspace-root ..
