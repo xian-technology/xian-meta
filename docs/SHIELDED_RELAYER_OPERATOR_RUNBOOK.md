@@ -84,9 +84,9 @@ export XIAN_SHIELDED_RELAYER_LOG_REQUESTS=1
 Start the service through `xian-stack`:
 
 ```bash
-python3 ./scripts/backend.py start --no-service-node --shielded-relayer
-python3 ./scripts/backend.py endpoints --no-service-node --shielded-relayer
-python3 ./scripts/backend.py status --no-service-node --shielded-relayer
+python3 ./scripts/backend.py start --no-bds-enabled --shielded-relayer
+python3 ./scripts/backend.py endpoints --no-bds-enabled --shielded-relayer
+python3 ./scripts/backend.py status --no-bds-enabled --shielded-relayer
 ```
 
 ## Auth And Request Policy
