@@ -1,28 +1,27 @@
-# Solutions
+# Examples
 
-This file defines the current reference solution set for Xian. A solution is an
+This file defines the current reference example set for Xian. An example is an
 opinionated, repeatable backend pattern that proves Xian works as a
 Python-first decentralized backend for real application workflows.
 
 The machine-readable source of truth for installable starter flows lives in
-`xian-configs/solutions/<name>/solution.json`. Public walkthroughs live in
-`xian-docs-web/solutions/`.
+`xian-configs/examples/<name>/example.json`. Public walkthroughs live in
+`xian-docs-web/examples/`.
 
-## Solution Requirements
+## Example Requirements
 
-A solution should have:
+An example should have:
 
 - one clear use case
-- one small contract set or module bundle
+- one small contract set or optional contract pack
 - one recommended local network template
-- one recommended remote/operator template
 - one Python integration path
-- one operator/recovery story
+- one operator/recovery story when it affects node operation
 - one machine-readable starter manifest
 - one public docs walkthrough
 
-A solution should not become a customizable framework. If the use case needs a
-full product, the solution should stay as the reusable starter path and the
+An example should not become a customizable framework. If the use case needs a
+full product, the example should stay as the reusable starter path and the
 product should live elsewhere.
 
 ## Current Set
@@ -36,14 +35,13 @@ Use case:
 
 Canonical assets:
 
-- `xian-configs/solutions/credits-ledger/solution.json`
-- `xian-configs/solutions/credits-ledger/contracts/credits_ledger.s.py`
-- `xian-docs-web/solutions/credits-ledger.md`
+- `xian-configs/examples/credits-ledger/example.json`
+- `xian-configs/examples/credits-ledger/contracts/credits_ledger.s.py`
+- `xian-docs-web/examples/credits-ledger.md`
 
-Recommended operator paths:
+Recommended template:
 
-- local: `single-node-indexed`
-- remote: `embedded-backend`
+- `single-node-indexed`
 
 The deeper reference-app path is implemented in `xian-py/examples`, with an
 admin job, API service, projector, and local read model.
@@ -57,18 +55,17 @@ Use case:
 
 Canonical assets:
 
-- `xian-configs/solutions/dex-demo/solution.json`
-- `xian-configs/modules/dex/module.json`
-- `xian-configs/modules/dex/contract-bundle.json`
-- `xian-docs-web/solutions/dex-demo.md`
+- `xian-configs/examples/dex-demo/example.json`
+- `xian-configs/contract-packs/dex/contract-pack.json`
+- `xian-configs/contract-packs/dex/contract-bundle.json`
+- `xian-docs-web/examples/dex-demo.md`
 
-Recommended operator paths:
+Recommended template:
 
-- local: `single-node-indexed`
-- remote: `consortium-3`
+- `single-node-indexed`
 
-The active DEX codebase remains `xian-dex`; `xian-configs/modules/dex` is the
-hash-pinned deployable module snapshot.
+The active DEX codebase remains `xian-dex`; `xian-configs/contract-packs/dex`
+is the hash-pinned deployable contract pack snapshot.
 
 ### Registry / Approval
 
@@ -79,15 +76,14 @@ Use case:
 
 Canonical assets:
 
-- `xian-configs/solutions/registry-approval/solution.json`
-- `xian-configs/solutions/registry-approval/contracts/registry_records.s.py`
-- `xian-configs/solutions/registry-approval/contracts/registry_approval.s.py`
-- `xian-docs-web/solutions/registry-approval.md`
+- `xian-configs/examples/registry-approval/example.json`
+- `xian-configs/examples/registry-approval/contracts/registry_records.s.py`
+- `xian-configs/examples/registry-approval/contracts/registry_approval.s.py`
+- `xian-docs-web/examples/registry-approval.md`
 
-Recommended operator paths:
+Recommended template:
 
-- local: `single-node-indexed`
-- remote: `consortium-3`
+- `single-node-indexed`
 
 The deeper reference-app path is implemented in `xian-py/examples`, with an
 admin job, API service, projector, hydrated projections, and approval activity
@@ -102,14 +98,13 @@ Use case:
 
 Canonical assets:
 
-- `xian-configs/solutions/workflow-backend/solution.json`
-- `xian-configs/solutions/workflow-backend/contracts/job_workflow.s.py`
-- `xian-docs-web/solutions/workflow-backend.md`
+- `xian-configs/examples/workflow-backend/example.json`
+- `xian-configs/examples/workflow-backend/contracts/job_workflow.s.py`
+- `xian-docs-web/examples/workflow-backend.md`
 
-Recommended operator paths:
+Recommended template:
 
-- local: `single-node-indexed`
-- remote: `embedded-backend` or `consortium-3`, depending on the trust model
+- `single-node-indexed`
 
 The deeper reference-app path is implemented in `xian-py/examples`, with an
 admin job, API service, processor worker, projector worker, queue projections,
@@ -124,14 +119,13 @@ Use case:
 
 Canonical assets:
 
-- `xian-configs/solutions/x402-exact/solution.json`
-- `xian-configs/solutions/x402-exact/contracts/x402_settlement.s.py`
+- `xian-configs/examples/x402-exact/example.json`
+- `xian-configs/examples/x402-exact/contracts/x402_settlement.s.py`
 - `xian-py/examples/x402_exact/README.md`
 
-Recommended operator paths:
+Recommended template:
 
-- local: `single-node-indexed`
-- remote: `embedded-backend`
+- `single-node-indexed`
 
 The deeper reference-app path is implemented in `xian-py/examples`, with a
 settlement deployment job, paid FastAPI resource server, optional facilitator
@@ -139,7 +133,7 @@ service, and buyer client.
 
 ## Boundary
 
-`xian-meta` owns the cross-repo definition of what belongs in the solution set.
+`xian-meta` owns the cross-repo definition of what belongs in the example set.
 The implementation lives in the owning repos:
 
 - contracts and starter manifests: `xian-configs`

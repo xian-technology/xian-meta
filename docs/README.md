@@ -29,7 +29,7 @@ Files:
 - `XIAN_MISSION_AND_PRODUCT_STRATEGY.md`: shared mission, principles, and product direction for Xian
 - `XIAN_X402_EXACT_PROFILE.md`: first native-Xian x402 exact-payment profile for HTTP 402 paid API requests
 - `GOLDEN_PATH_ROADMAP.md`: phased cross-repo implementation roadmap for the product thesis
-- `SOLUTIONS.md`: canonical definition of the reference solution set and first solution scope
+- `EXAMPLES.md`: canonical definition of the reference example set and first example scope
 - `LOCALNET_E2E_RUNBOOK.md`: current cross-repo pointer for the 5-validator localnet and release-safety validation flows
 - `PYPI_RELEASE_ROLLOUT.md`: one-time PyPI Trusted Publishing registration map, release order, and maintainer checklist for the Python package set
 - `XIAN_SECURITY_AUDIT_FOLLOWUPS.md`: status note for the latest stack-wide security audit, including fixed findings and the remaining dashboard/simulation follow-up decisions

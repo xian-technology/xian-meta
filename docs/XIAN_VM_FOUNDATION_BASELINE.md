@@ -200,7 +200,7 @@ The native path is now materially more self-contained than the earlier slices:
   - `make localnet-parallel-e2e` now writes `node_report.json`
   - the main monitoring stack now ships VM-specific alert rules and a dedicated
     Grafana dashboard (`Xian VM Runtime`) in addition to summary panels on the
-    existing overview/preset dashboards
+    existing overview/profile dashboards
   - the monitoring stack also now ships a dedicated `Xian BDS Recovery`
     dashboard plus Alertmanager routing examples so VM mismatch alerts and BDS
     recovery alerts can be separated operationally
@@ -393,7 +393,7 @@ Audit command:
 uv run --project ../xian-contracting python ../xian-contracting/scripts/audit_vm_compatibility.py \
   ../xian-contracts/contracts \
   ../xian-configs/contracts \
-  ../xian-configs/modules/stable-protocol/contracts \
+  ../xian-configs/contract-packs/stable-protocol/contracts \
   ../xian-stable-protocol/contracts
 ```
 
@@ -423,7 +423,7 @@ Lowering command:
 uv run --project ../xian-contracting python ../xian-contracting/scripts/audit_vm_ir_lowering.py \
   ../xian-contracts/contracts \
   ../xian-configs/contracts \
-  ../xian-configs/modules/stable-protocol/contracts \
+  ../xian-configs/contract-packs/stable-protocol/contracts \
   ../xian-stable-protocol/contracts
 ```
 
@@ -463,7 +463,7 @@ The rewrites in this branch removed the previously incompatible constructs from:
 - `xian-contracts/contracts/turn-based-games/src/con_turn_based_games.py`
 - `xian-configs/contracts/members.s.py`
 - `xian-configs/contracts/rewards.s.py`
-- `xian-configs/modules/stable-protocol/contracts/oracle.s.py`
+- `xian-configs/contract-packs/stable-protocol/contracts/oracle.s.py`
 - `xian-stable-protocol/contracts/oracle.s.py`
 
 ## What This Means
