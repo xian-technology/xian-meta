@@ -22,6 +22,7 @@ DEFAULT_REPOS = (
 )
 
 SKIP_DIRS = {
+    ".artifacts",
     ".git",
     ".mypy_cache",
     ".pytest_cache",
