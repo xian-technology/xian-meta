@@ -1,28 +1,26 @@
-# Examples
+# Examples And Product Starters
 
-This file defines the current reference example set for Xian. An example is an
-opinionated, repeatable backend pattern that proves Xian works as a
-Python-first decentralized backend for real application workflows.
+This file defines the current reference example set for Xian. An example is a
+small, repeatable backend pattern that proves Xian works as a Python-first
+decentralized backend for real application workflows.
 
-The machine-readable source of truth for installable starter flows lives in
-`xian-configs/examples/<name>/example.json`. Public walkthroughs live in
-`xian-docs-web/examples/`.
+Example contract sources live beside the SDK example code that consumes them.
+Product starter flows live in the owning product repo. Public walkthroughs live
+in the owning SDK or product repo docs.
 
 ## Example Requirements
 
 An example should have:
 
 - one clear use case
-- one small contract set or optional contract pack
+- one small contract set or optional product dependency
 - one recommended local network template
 - one Python integration path
 - one operator/recovery story when it affects node operation
-- one machine-readable starter manifest
 - one public docs walkthrough
 
 An example should not become a customizable framework. If the use case needs a
-full product, the example should stay as the reusable starter path and the
-product should live elsewhere.
+full product, the product should live in its own owning repo.
 
 ## Current Set
 
@@ -35,9 +33,8 @@ Use case:
 
 Canonical assets:
 
-- `xian-configs/examples/credits-ledger/example.json`
-- `xian-configs/examples/credits-ledger/contracts/credits_ledger.s.py`
-- `xian-docs-web/examples/credits-ledger.md`
+- `xian-py/examples/credits_ledger/contracts/credits_ledger.s.py`
+- `xian-py/examples/credits_ledger/README.md`
 
 Recommended template:
 
@@ -55,17 +52,16 @@ Use case:
 
 Canonical assets:
 
-- `xian-configs/examples/dex-demo/example.json`
-- `xian-configs/contract-packs/dex/contract-pack.json`
-- `xian-configs/contract-packs/dex/contract-bundle.json`
-- `xian-docs-web/examples/dex-demo.md`
+- `xian-dex/contract-bundle.json`
+- `xian-dex/scripts/bootstrap_dex.py`
+- `xian-docs-web/products/dex.md`
 
 Recommended template:
 
 - `single-node-indexed`
 
-The active DEX codebase remains `xian-dex`; `xian-configs/contract-packs/dex`
-is the hash-pinned deployable contract pack snapshot.
+The active DEX codebase remains `xian-dex`; that repo owns the hash-pinned
+deployable product snapshot and starter flow.
 
 ### Registry / Approval
 
@@ -76,10 +72,9 @@ Use case:
 
 Canonical assets:
 
-- `xian-configs/examples/registry-approval/example.json`
-- `xian-configs/examples/registry-approval/contracts/registry_records.s.py`
-- `xian-configs/examples/registry-approval/contracts/registry_approval.s.py`
-- `xian-docs-web/examples/registry-approval.md`
+- `xian-py/examples/registry_approval/contracts/registry_records.s.py`
+- `xian-py/examples/registry_approval/contracts/registry_approval.s.py`
+- `xian-py/examples/registry_approval/README.md`
 
 Recommended template:
 
@@ -98,9 +93,8 @@ Use case:
 
 Canonical assets:
 
-- `xian-configs/examples/workflow-backend/example.json`
-- `xian-configs/examples/workflow-backend/contracts/job_workflow.s.py`
-- `xian-docs-web/examples/workflow-backend.md`
+- `xian-py/examples/workflow_backend/contracts/job_workflow.s.py`
+- `xian-py/examples/workflow_backend/README.md`
 
 Recommended template:
 
@@ -119,8 +113,7 @@ Use case:
 
 Canonical assets:
 
-- `xian-configs/examples/x402-exact/example.json`
-- `xian-configs/examples/x402-exact/contracts/x402_settlement.s.py`
+- `xian-py/examples/x402_exact/contracts/x402_settlement.s.py`
 - `xian-py/examples/x402_exact/README.md`
 
 Recommended template:
@@ -136,7 +129,8 @@ service, and buyer client.
 `xian-meta` owns the cross-repo definition of what belongs in the example set.
 The implementation lives in the owning repos:
 
-- contracts and starter manifests: `xian-configs`
+- network manifests, templates, and system contract bundles: `xian-configs`
+- product contracts, bundles, apps, and starter flows: product repos
 - Python examples and reusable projection helpers: `xian-py`
 - public walkthroughs: `xian-docs-web`
 - runtime/bootstrap consumers: `xian-cli` and `xian-stack`

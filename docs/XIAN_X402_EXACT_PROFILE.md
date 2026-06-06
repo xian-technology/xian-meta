@@ -168,11 +168,11 @@ attempting settlement again.
 
 ## Milestone 1 Deliverables
 
-- `x402_settlement.s.py` in `xian-configs`
+- `x402_settlement.s.py` in `xian-py/examples/x402_exact/contracts`
 - `xian-py` helpers for requirement encoding, payment signing, verification,
   settlement, and paid HTTP requests
 - a FastAPI seller/facilitator example under `xian-py/examples/x402_exact`
-- an example manifest under `xian-configs/examples/x402-exact`
+- an example contract source under `xian-py/examples/x402_exact/contracts`
 
 ## Later Work
 

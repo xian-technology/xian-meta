@@ -5,9 +5,9 @@
 Current cross-repo product roadmap.
 
 The first golden-path foundation is implemented: SDK integration examples,
-template-driven network creation, local and remote operator workflows, reference
-examples, starter manifests, and whole-stack validation all exist. This file
-now tracks the current direction rather than the completed implementation plan.
+template-driven network creation, local and remote operator workflows, product
+repo bootstrap flows, and whole-stack validation all exist. This file now tracks
+the current direction rather than the completed implementation plan.
 
 ## Golden Path
 
@@ -15,7 +15,7 @@ The intended flow for a normal engineering team is:
 
 1. choose a purposeful network template
 2. start it locally or remotely
-3. run an example or install a contract pack
+3. run an SDK example or deploy a product repo onto the running chain
 4. integrate it from a Python service or worker
 5. read state, history, and events through stable APIs
 6. monitor, validate, recover, and upgrade the node predictably
@@ -25,15 +25,14 @@ common path obvious and boring.
 
 ## What Exists Now
 
-- `xian-configs` owns canonical network templates, contract packs, and example
-  starter manifests.
-- `xian-cli` exposes network creation, node lifecycle, example inspection, and
-  contract/contract pack helpers.
+- `xian-configs` owns canonical network templates, manifests, and system
+  contract bundles.
+- `xian-cli` exposes network creation, node lifecycle, and contract helpers.
 - `xian-stack` owns local runtime, monitoring, localnet, release, and
   validation harnesses.
 - `xian-deploy` owns profile-driven remote operator playbooks.
 - `xian-py` provides SDK clients, examples, and reusable projection helpers.
-- `xian-docs-web` documents the public operator, contract, SDK, and example
+- `xian-docs-web` documents the public operator, contract, SDK, and product
   workflows.
 
 ## Current Priorities
