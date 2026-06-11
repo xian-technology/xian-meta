@@ -2,7 +2,10 @@
 
 ## Status
 
-Milestone 1 design target.
+Milestone 1 implemented — the profile ships as `xian_py.x402` (sign / verify /
+facilitator helpers), the `examples/x402_exact/` reference set in `xian-py`,
+and x402 canary phases in the `xian-stack` localnet e2e. Kept as the design
+record for the profile.
 
 This document defines the first native-Xian profile for x402-style HTTP
 payments. It is intentionally narrow: fixed-price `exact` payments, Xian

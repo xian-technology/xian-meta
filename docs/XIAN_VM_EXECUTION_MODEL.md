@@ -2,12 +2,13 @@
 
 ## Status
 
-Proposed implementation target.
+Implemented — `xian_vm_v1` is the fixed node execution runtime. Kept as the
+design record for the execution model.
 
-This document defines the target design for a future Xian-owned contract
-execution engine where Python remains the authoring language, but contract
-execution and metering no longer depend on CPython bytecode semantics or Python
-runtime tracing.
+This document defines the design for the Xian-owned contract execution engine
+where Python remains the authoring language, but contract execution and
+metering no longer depend on CPython bytecode semantics or Python runtime
+tracing.
 
 It is intended to be precise enough to implement against without inventing
 additional consensus-relevant behavior during implementation.

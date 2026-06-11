@@ -1,12 +1,24 @@
 # Xian Security Audit Follow-Ups
 
-Status as of 2026-04-16:
+Status as of 2026-06-11:
 
 - fixed: contract metadata privilege escalation
 - fixed: remote snapshot bootstrap now supports signed manifest validation
 - fixed: secret-bearing MCP tools are disabled by default unless explicitly enabled
-- open: dashboard SSRF trust boundary
-- open: unauthenticated public transaction simulation DoS surface
+- fixed: dashboard SSRF trust boundary (RPC proxy targets constrained to the
+  configured node plus currently connected peers)
+- addressed: public transaction simulation DoS surface (loopback-default
+  bindings with explicit `--public-rpc` opt-in, plus bounded simulation
+  workers, timeouts, and chi caps; public-RPC operators accept the residual
+  bounded-compute exposure)
+- fixed: shielded MiMC hash was non-binding (critical) — replaced with
+  Poseidon-BN254 across circuits, contracts, and tooling (`shielded-*-v4`,
+  `shielded-command-*-v5`), and nodes on zk-enabled chains require the native
+  verifier at startup
+- fixed: bridge admin rate-limit bypass via `X-Forwarded-For` — forwarded
+  headers are only honored for explicitly configured trusted proxy hops
+- fixed: bridge double-mint race — destination transfers run through the
+  lease-based durable runtime queue with per-direction idempotency keys
 
 ## Fixed Findings
 
@@ -61,73 +73,37 @@ They require:
 This gate covers the tools that either return secrets or consume raw private
 keys to sign, encrypt, decrypt, or submit transactions.
 
-## Open Findings
+## Resolved Findings (Implemented Decisions)
 
 ### 1. Dashboard SSRF via Peer-Advertised RPC Targets
 
-Current issue:
+Implemented model (decision option 2, constrained discovery):
 
-- the dashboard accepts peer-advertised RPC addresses
-- those addresses become proxy targets
-- that lets untrusted network metadata influence where the dashboard host sends
-  requests
-
-Current recommendation:
-
-- remove trust in peer-advertised RPC URLs
-- allow only static operator-configured RPC targets
-
-Reason:
-
-- this is the clearest trust boundary
-- it removes a whole class of dashboard-host pivot risks
-- the only tradeoff is losing automatic peer-RPC discovery
-
-Decision options:
-
-1. Static allowlist only
-   - strongest fix
-   - lowest complexity
-   - recommended
-2. Keep peer discovery but constrain it to configured host/port patterns
-   - preserves more dashboard convenience
-   - still leaves a larger attack surface
-3. Remove remote RPC proxying and make the dashboard local-node-only
-   - strongest reduction in surface
-   - bigger product/UX change
+- the dashboard's `rpc` query parameter only proxies to an allowlist built
+  from the configured node RPC plus the RPC endpoints of currently connected
+  peers
+- peer-advertised loopback/wildcard hosts are rewritten to the peer's actual
+  remote address before allowlisting
+- arbitrary URLs are rejected, removing the generic dashboard-host proxy
+  pivot while keeping localnet peer switching
 
 ### 2. Public `simulate_tx` DoS Surface
 
-Current issue:
+Implemented model:
 
-- public RPC can expose unauthenticated transaction simulation
-- simulation is bounded, but it still gives remote callers a CPU/worker budget
-
-Current recommendation:
-
-- disable public simulation by default
-- allow it only on loopback or authenticated operator deployments
-
-Decision options:
-
-1. Default-off except loopback/admin deployments
-   - strongest fix
-   - recommended
-2. Keep remote simulation but require auth
-   - acceptable if remote simulation is operationally necessary
-3. Keep it public and only tighten limits
-   - defense-in-depth only
-   - not a complete fix by itself
+- simulation runs in bounded worker processes with explicit
+  `simulation_max_concurrency`, `simulation_timeout_ms`, and
+  `simulation_max_chi` limits
+- node bindings are fail-closed loopback by default; exposing RPC (and with
+  it simulation) requires the explicit `--public-rpc` opt-in
+- operators who deliberately expose public RPC accept the residual bounded
+  compute budget; rate limiting at the reverse proxy stays the recommended
+  hardening for that posture
 
 ## Next Security Pass
 
-When the remaining work is resumed, handle it in this order:
+For any new pass, rerun:
 
-1. dashboard RPC target trust boundary
-2. public simulation exposure
-
-After that, rerun:
-
-- targeted unit tests for the touched paths
-- a focused source audit around the new trust boundaries
+- targeted unit tests for the touched trust-boundary paths
+- a focused source audit around new trust boundaries
 - local operator-path validation for dashboard and simulation settings

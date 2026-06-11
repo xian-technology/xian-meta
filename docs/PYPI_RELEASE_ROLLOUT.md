@@ -14,7 +14,7 @@ The GitHub side is already mostly set up:
   - `xian-tech-accounts`
   - `xian-tech-contracting`
   - `xian-tech-runtime-types`
-  - `xian-tech-native-tracer`
+  - `xian-tech-compiler-core`
   - `xian-tech-zk`
 
 That means the missing work is primarily on the PyPI side:

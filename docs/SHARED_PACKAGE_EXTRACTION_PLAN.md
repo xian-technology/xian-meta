@@ -6,7 +6,6 @@ For now, keep these shared packages inside the `xian-contracting` repo:
 
 - `xian-runtime-types`
 - `xian-accounts`
-- `xian-contract-tools`
 
 Do not extract them into standalone repos yet.
 
@@ -68,19 +67,6 @@ for:
 - secp256k1 / Ethereum-compatible account helpers
 - account normalization
 - signature-scheme-specific primitives
-
-### `xian-contract-tools`
-
-Keep it where it is unless it grows into a more substantial contract-tooling
-surface.
-
-Right now it is better understood as:
-
-- a narrow companion package in the `xian-contracting` repo
-
-than as:
-
-- a standalone repo with its own longer-term identity
 
 ## Decision Process
 

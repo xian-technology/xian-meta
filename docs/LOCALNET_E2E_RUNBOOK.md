@@ -32,8 +32,8 @@ shielded-note flows, parallel-execution behavior, restart/chaos convergence,
 and soak/abuse coverage.
 
 `make release-safety` is the release gate. It combines repo validation,
-parallel e2e, node reporting, and the focused validator/governance
-localnet.
+parallel e2e, node reporting, and the focused protocol-safety localnet
+(`make localnet-protocol-safety`).
 
 ## Source Of Truth
 

@@ -1,5 +1,10 @@
 # Shared Foundations Plan
 
+Status: **executed** — `xian-accounts` is the shared key/signing package
+(consumed by `xian-abci` and `xian-py`), `xian-runtime-types` stayed narrow,
+and the contract decompiler was retired outright because canonical contract
+source is stored on-chain. Kept as the design record.
+
 ## Goal
 
 Clean up the low-level shared Python code in the Xian workspace so that:
