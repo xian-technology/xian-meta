@@ -459,7 +459,7 @@ The rewrites in this branch removed the previously incompatible constructs from:
 - `xian-contracts/contracts/shielded-commands/src/con_shielded_commands.py`
 - `xian-contracts/contracts/shielded-note-token/src/con_shielded_note_token.py`
 - `xian-contracts/contracts/turn-based-games/src/con_turn_based_games.py`
-- `xian-configs/contracts/members.s.py`
+- `xian-configs/contracts/validators.s.py`
 - `xian-configs/contracts/rewards.s.py`
 - `xian-stable-protocol/contracts/oracle.s.py`
 
