@@ -45,13 +45,6 @@ jobs:
           ref: main
           path: xian-contracting
 
-      - name: Checkout xian-intentkit
-        uses: actions/checkout@v6
-        with:
-          repository: ${{ github.repository_owner }}/xian-intentkit
-          ref: main
-          path: xian-intentkit
-
       - name: Checkout xian-deploy
         uses: actions/checkout@v6
         with:
@@ -59,12 +52,33 @@ jobs:
           ref: main
           path: xian-deploy
 
+      - name: Checkout xian-bridge
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.repository_owner }}/xian-bridge
+          ref: main
+          path: xian-bridge
+
       - name: Checkout xian-docs-web
         uses: actions/checkout@v6
         with:
           repository: ${{ github.repository_owner }}/xian-docs-web
           ref: main
           path: xian-docs-web
+
+      - name: Checkout xian-governance-web
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.repository_owner }}/xian-governance-web
+          ref: main
+          path: xian-governance-web
+
+      - name: Checkout xian-js
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.repository_owner }}/xian-js
+          ref: main
+          path: xian-js
 
       - name: Checkout xian-linter
         uses: actions/checkout@v6
@@ -79,6 +93,20 @@ jobs:
           repository: ${{ github.repository_owner }}/xian-py
           ref: main
           path: xian-py
+
+      - name: Checkout xian-wallet-browser
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.repository_owner }}/xian-wallet-browser
+          ref: main
+          path: xian-wallet-browser
+
+      - name: Checkout xian-wallet-mobile
+        uses: actions/checkout@v6
+        with:
+          repository: ${{ github.repository_owner }}/xian-wallet-mobile
+          ref: main
+          path: xian-wallet-mobile
 
       - name: Checkout xian-stack
         uses: actions/checkout@v6
@@ -96,5 +124,7 @@ jobs:
         working-directory: xian-meta
         run: |
           python -m compileall scripts
+          python ./scripts/bootstrap_workspace.py --workspace-root .. --dry-run
           python ./scripts/check_repo_conventions.py --workspace-root ..
           python ./scripts/check_python_except_compat.py --workspace-root ..
+          python ./scripts/report_workspace_shas.py --workspace-root ..

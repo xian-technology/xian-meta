@@ -4,8 +4,8 @@ Open follow-up items for `xian-meta` itself:
 
 - decide whether the convention checker should also validate boundary-folder
   `README.md` coverage, not just root structure
-- extend the convention checker's repo list once the remaining app/product
-  repos carry `AGENTS.md` plus `docs/ARCHITECTURE.md` and `docs/BACKLOG.md`
+- promote light-tier product repos to the full tier when their operational or
+  security surface requires repo-local architecture and backlog entrypoints
 - add a small template for `docs/ARCHITECTURE.md` and `docs/BACKLOG.md`
   contents so repo-local notes stay as consistent as the root README files
 - review whether the main repos should share a common `CONTRIBUTING.md`

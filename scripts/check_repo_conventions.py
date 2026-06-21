@@ -3,22 +3,10 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
-
-MAIN_REPOS = (
-    "xian-abci",
-    "xian-cli",
-    "xian-configs",
-    "xian-contracting",
-    "xian-deploy",
-    "xian-docs-web",
-    "xian-linter",
-    "xian-meta",
-    "xian-py",
-    "xian-stack",
-)
 
 REQUIRED_README_MARKERS = (
     "## Validation",
@@ -30,32 +18,39 @@ def read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def check_repo(repo_root: Path, repo_name: str) -> list[str]:
+def load_manifest(manifest_path: Path) -> dict:
+    return json.loads(manifest_path.read_text(encoding="utf-8"))
+
+
+def check_repo(repo_root: Path, repo_entry: dict, *, require_missing: bool) -> list[str]:
     errors: list[str] = []
+    repo_name = repo_entry["name"]
     repo = repo_root / repo_name
 
     if not repo.exists():
-        return [f"{repo_name}: repo path is missing"]
+        if require_missing:
+            return [f"{repo_name}: repo path is missing"]
+        return []
 
     for rel in ("README.md", "AGENTS.md"):
         if not (repo / rel).exists():
             errors.append(f"{repo_name}: missing {rel}")
 
-    if repo_name == "xian-docs-web":
-        internal_required = (".meta/ARCHITECTURE.md", ".meta/BACKLOG.md")
-    else:
-        internal_required = ("docs/ARCHITECTURE.md", "docs/BACKLOG.md")
+    tier = repo_entry.get("tier", "light")
+    if tier == "full":
+        docs_dir = repo_entry.get("docs_dir", "docs")
+        internal_required = (f"{docs_dir}/ARCHITECTURE.md", f"{docs_dir}/BACKLOG.md")
 
-    for rel in internal_required:
-        if not (repo / rel).exists():
-            errors.append(f"{repo_name}: missing {rel}")
+        for rel in internal_required:
+            if not (repo / rel).exists():
+                errors.append(f"{repo_name}: missing {rel}")
 
-    readme_path = repo / "README.md"
-    if readme_path.exists():
-        readme_text = read_text(readme_path)
-        for marker in REQUIRED_README_MARKERS:
-            if marker not in readme_text:
-                errors.append(f"{repo_name}: README.md missing heading {marker}")
+        readme_path = repo / "README.md"
+        if readme_path.exists():
+            readme_text = read_text(readme_path)
+            for marker in REQUIRED_README_MARKERS:
+                if marker not in readme_text:
+                    errors.append(f"{repo_name}: README.md missing heading {marker}")
 
     return errors
 
@@ -69,23 +64,38 @@ def parse_args() -> argparse.Namespace:
         default=str(Path(__file__).resolve().parents[2]),
         help="Path that contains the sibling xian-* repos",
     )
+    parser.add_argument(
+        "--manifest",
+        default=str(Path(__file__).resolve().parents[1] / "workspace-repos.json"),
+        help="Path to workspace-repos.json",
+    )
+    parser.add_argument(
+        "--require-light",
+        action="store_true",
+        help="Treat missing light-tier repos as errors instead of validating only when present",
+    )
     return parser.parse_args()
 
 
 def main() -> int:
     args = parse_args()
     workspace_root = Path(args.workspace_root).resolve()
+    manifest = load_manifest(Path(args.manifest).resolve())
     errors: list[str] = []
 
-    for repo_name in MAIN_REPOS:
-        errors.extend(check_repo(workspace_root, repo_name))
+    for repo in manifest.get("repos", []):
+        tier = repo.get("tier", "light")
+        if tier == "exempt":
+            continue
+        require_missing = tier == "full" or args.require_light
+        errors.extend(check_repo(workspace_root, repo, require_missing=require_missing))
 
     if errors:
         for error in errors:
             print(error, file=sys.stderr)
         return 1
 
-    print("All main repos match the shared root-structure conventions.")
+    print("All checked repos match the shared root-structure conventions.")
     return 0
 
 

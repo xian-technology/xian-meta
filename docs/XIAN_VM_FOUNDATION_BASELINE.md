@@ -8,6 +8,9 @@ This document records what now exists in code, what the first compiler-side
 subset currently freezes, and how the authored contract corpus now maps to that
 subset.
 
+For launch-readiness status across compiler authority, runtime coverage, and
+release tags, use `COMPILER_RUNTIME_LAUNCH_STATUS.md`.
+
 ## What This Slice Added
 
 ### 1. Compiler-side VM compatibility profile

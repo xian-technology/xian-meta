@@ -9,9 +9,21 @@
 - Put a design in `xian-meta` only if it defines behavior, structure, or workflow that spans multiple main Xian repos.
 
 ## Project Layout
+- `workspace-repos.json`: canonical sibling repo manifest, convention tiers, default clone policy, and explicit exemptions.
+- `docs/WORKSPACE.md`: progressive-disclosure front door for the full sibling workspace.
 - `docs/REPO_CONVENTIONS.md`: authoritative repo structure standard.
 - `docs/FOLDER_README_TEMPLATE.md`: short template for directory-level entrypoints.
 - `docs/README.md`: overview of the internal documentation in this repo.
+- `docs/MAINNET_LAUNCH_PLAN.md`: future public-network launch checklist for the current codebase.
+- `docs/COMPILER_RUNTIME_LAUNCH_STATUS.md`: cross-repo compiler/runtime readiness page.
+
+## Progressive Disclosure
+- Start with `docs/WORKSPACE.md` for workspace orientation, then move to the owning repo's `AGENTS.md` and `README.md`.
+- Use `workspace-repos.json` to decide which sibling repos are in scope and which repos are explicitly exempt.
+- Use `docs/REPO_CONVENTIONS.md` for root-file and tier rules before changing repo structure.
+- Use `docs/CHANGE_WORKFLOW.md` before pushing multi-repo work.
+- Use `docs/MAINNET_LAUNCH_PLAN.md` and `docs/COMPILER_RUNTIME_LAUNCH_STATUS.md` for launch-readiness questions instead of spreading launch status across repo-local notes.
+- Keep current-code defaults local unless a future launch manifest has been accepted.
 
 ## Workflow
 - When the convention changes, update this repo first, then roll the change into the implementation repos.

@@ -37,12 +37,14 @@ Rule of thumb:
 
 ## Required Root Files
 
-Every main repo should have:
+`workspace-repos.json` declares each repo's convention tier.
+
+Full-tier repos should have:
 
 - `README.md`
 - `AGENTS.md`
 
-Every main repo should also expose two stable internal note entrypoints:
+Full-tier repos should also expose two stable internal note entrypoints:
 
 - `docs/ARCHITECTURE.md`
 - `docs/BACKLOG.md`
@@ -51,12 +53,37 @@ Exception:
 
 - the public docs site repo may keep these internal notes under a hidden `.meta/` directory so they do not become part of the published site.
 
+Light-tier repos should have:
+
+- `README.md`
+- `AGENTS.md`
+
+Light-tier repos may add `docs/ARCHITECTURE.md` and `docs/BACKLOG.md` when
+their operational or security surface grows. Promote them to the full tier once
+those files become required for safe orientation.
+
+Exempt repos are intentionally outside the shared checker. Forked upstream
+repos should be marked exempt instead of silently failing to match local
+conventions.
+
 ## Meaning Of The Standard Files
 
 - `README.md`: public repo entrypoint
 - `AGENTS.md`: fast AI/operator orientation for the repo
 - `docs/ARCHITECTURE.md`: major components, ownership, dependency direction
 - `docs/BACKLOG.md`: future work, open problems, follow-up items, and links to deeper notes
+
+## Progressive Disclosure
+
+Root files should let a reader decide where to go next without reading the
+whole workspace.
+
+- start from `xian-meta/docs/WORKSPACE.md` for sibling-repo orientation
+- read the owning repo's `AGENTS.md` before editing
+- read the owning repo's `README.md` for public/current behavior
+- use `docs/ARCHITECTURE.md` for component boundaries and dependency direction
+- use `docs/BACKLOG.md` for open follow-ups and links to deeper notes
+- use `xian-meta` only for shared cross-repo contracts and standards
 
 ## Root README Standard
 
@@ -135,6 +162,9 @@ Before pushing a change:
 - do not push code with known failing validation
 - if the change touches multiple repos, validate each changed repo
 - if `xian-docs-web` is changed, run its build before push
+- if CI checks out sibling repos from floating branches, report resolved
+  sibling SHAs in the job summary with
+  `xian-meta/scripts/report_workspace_shas.py`
 
 Each repo should expose a clear preferred validation path in `AGENTS.md`.
 If a repo lacks one, add it before expanding the repo further.

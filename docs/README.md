@@ -16,8 +16,11 @@ Files:
 
 - `ARCHITECTURE.md`: what `xian-meta` owns and where its boundaries are
 - `BACKLOG.md`: follow-up work for the standards repo itself
+- `WORKSPACE.md`: progressive-disclosure front door for the sibling repo layout
 - `REPO_CONVENTIONS.md`: the common structure that the main repos should follow
 - `CHANGE_WORKFLOW.md`: the common pre-push workflow for docs impact and validation
+- `MAINNET_LAUNCH_PLAN.md`: future public-network launch checklist for the current codebase
+- `COMPILER_RUNTIME_LAUNCH_STATUS.md`: reconciled compiler/runtime readiness status
 - `README_TEMPLATE.md`: the shared root README shape for the main repos
 - `FOLDER_README_TEMPLATE.md`: the short per-folder entrypoint template
 - `MULTI_ACCOUNT_SUPPORT.md`: protocol-level design for multi-scheme transaction accounts

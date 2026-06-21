@@ -1,0 +1,207 @@
+{
+  "schema_version": 1,
+  "organization": "xian-technology",
+  "default_branch": "main",
+  "workspace_root_name": "xian",
+  "tiers": {
+    "full": "Core and launch-critical repos that must carry the full root README, AGENTS, architecture, and backlog convention.",
+    "light": "Product, content, and integration repos that must expose README and AGENTS entrypoints, with deeper docs added when the repo graduates.",
+    "exempt": "Repos that are intentionally outside the shared convention checker."
+  },
+  "repos": [
+    {
+      "name": ".github",
+      "slug": ".github",
+      "category": "org-profile",
+      "tier": "exempt",
+      "clone_by_default": false,
+      "reason": "Organization profile and GitHub metadata repo."
+    },
+    {
+      "name": "xian-abci",
+      "category": "core-protocol",
+      "tier": "full",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-cli",
+      "category": "node-operations",
+      "tier": "full",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-configs",
+      "category": "node-operations",
+      "tier": "full",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-contracting",
+      "category": "core-protocol",
+      "tier": "full",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-deploy",
+      "category": "node-operations",
+      "tier": "full",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-docs-web",
+      "category": "docs-and-web",
+      "tier": "full",
+      "clone_by_default": true,
+      "docs_dir": ".meta"
+    },
+    {
+      "name": "xian-js",
+      "category": "developer-tooling",
+      "tier": "full",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-linter",
+      "category": "developer-tooling",
+      "tier": "full",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-meta",
+      "category": "standards",
+      "tier": "full",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-py",
+      "category": "developer-tooling",
+      "tier": "full",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-stack",
+      "category": "node-operations",
+      "tier": "full",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-bridge",
+      "category": "apps-protocols-integrations",
+      "tier": "full",
+      "clone_by_default": true,
+      "reason": "Launch-critical product with custody and operational risk."
+    },
+    {
+      "name": "xian-governance-web",
+      "category": "node-operations",
+      "tier": "full",
+      "clone_by_default": true,
+      "reason": "Launch-critical validator governance surface."
+    },
+    {
+      "name": "xian-wallet-browser",
+      "category": "developer-tooling",
+      "tier": "full",
+      "clone_by_default": true,
+      "reason": "Wallet and signing surface."
+    },
+    {
+      "name": "xian-wallet-mobile",
+      "category": "developer-tooling",
+      "tier": "full",
+      "clone_by_default": true,
+      "reason": "Wallet and signing surface."
+    },
+    {
+      "name": "xian-ai-guides",
+      "category": "ai-and-agents",
+      "tier": "light",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-ai-skills",
+      "category": "ai-and-agents",
+      "tier": "light",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-contracting-hub-web",
+      "category": "standards-and-examples",
+      "tier": "light",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-contracts",
+      "category": "standards-and-examples",
+      "tier": "light",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-dex",
+      "category": "apps-protocols-integrations",
+      "tier": "light",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-dex-automation",
+      "category": "apps-protocols-integrations",
+      "tier": "light",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-ide-web",
+      "category": "developer-tooling",
+      "tier": "light",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-mcp-server",
+      "category": "developer-tooling",
+      "tier": "light",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-nft",
+      "category": "apps-protocols-integrations",
+      "tier": "light",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-playground-web",
+      "category": "developer-tooling",
+      "tier": "light",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-stable-protocol",
+      "category": "apps-protocols-integrations",
+      "tier": "light",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-technology-web",
+      "category": "docs-and-web",
+      "tier": "light",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-tg-bot",
+      "category": "ai-and-agents",
+      "tier": "light",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-xips",
+      "category": "standards-and-examples",
+      "tier": "light",
+      "clone_by_default": true
+    },
+    {
+      "name": "xian-intentkit",
+      "category": "ai-and-agents",
+      "tier": "exempt",
+      "clone_by_default": false,
+      "reason": "Forked upstream repo; keep convention changes out unless a fork-specific change is deliberately needed."
+    }
+  ]
+}
