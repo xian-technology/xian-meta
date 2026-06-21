@@ -21,7 +21,7 @@ that imply this network is live until the final gates below are closed.
 - `networks/mainnet/privacy/artifacts.json`
 
 The draft bundle starts from one bootstrap validator and uses
-`selection_mode = "auto_top_n"` with `max_validators = 25`. Validators are
+`selection_mode = "auto_top_n"` with `max_validators = 13`. Validators are
 ranked by `self_bond + total_delegated`; CometBFT power is equal per active
 validator.
 
