@@ -58,12 +58,13 @@ owning repo for implementation details.
 ## Network Scope
 
 The current codebase does not have an active public testnet or public mainnet.
-Use local nodes, localnet, or explicitly named future launch manifests when
+Use local nodes, localnet, or the explicit draft mainnet launch manifest when
 working with this codebase.
 
 Do not add public chain IDs or public RPC endpoints to repo defaults until a
-new launch manifest exists in the owning config repo and is linked from
-`docs/MAINNET_LAUNCH_PLAN.md`.
+new launch manifest is final, rehearsed, and linked from
+`docs/MAINNET_LAUNCH_PLAN.md`. The draft chain ID reserved for the new
+current-codebase mainnet is `xian-mainnet-1`.
 
 ## Exemptions
 
