@@ -152,26 +152,22 @@ The native path is now materially more self-contained than the earlier slices:
 - the native host now models contract-management side effects explicitly for
   `submission`-style flows, including deploy, owner changes, and developer
   changes, and returns those staged writes/events as part of native execution
-- native deployment is now artifact-driven end to end:
-  - the native host validates `deployment_artifacts`
-  - it stages contract metadata/source/IR writes directly
+- native deployment is now source-driven end to end:
+  - the native host rejects submitted `deployment_artifacts`
+  - it compiles submitted source and stages contract metadata/source/IR writes
+    directly
   - it executes child constructors natively instead of delegating deploy-time
     contract execution back through Python `Contract.deploy(...)`
 - native deployment no longer has a local-time fallback:
   if deterministic `now` context is missing, deployment fails explicitly
   instead of reading wall-clock time from the host machine
-- artifact validation on the native deployment path now runs in Rust and
-  rejects malformed or internally inconsistent bundles, including IR/source
-  hash mismatches
-- canonical source-to-runtime recompilation is still provided by the Python
-  artifact validator used by the Python deployment path and offline tooling,
-  so the native path is Rust-native for bundle validation but not yet a full
-  Rust recompiler
-- `xian_vm_v1` rollout now enforces artifact-backed deployment unconditionally,
-  so source-only submissions are rejected instead of being compiled on-node
-- the remaining live on-chain factory flow, `token_factory`, now materializes
-  and submits canonical child deployment artifacts, so VM contract creation is
-  no longer limited to direct client submissions
+- native deployment compiles source through the pinned compiler before staging
+  writes, so forged client IR cannot become the persisted executable payload
+- `xian_vm_v1` rollout now enforces source-backed deployment unconditionally,
+  so artifact submissions are rejected instead of being trusted
+- the remaining live on-chain factory flow, `token_factory`, now submits child
+  source, so VM contract creation is no longer limited to direct client
+  submissions
 - `xian-stack` now exposes a first-class `make localnet-parallel-e2e` path that
   boots a 5-node integrated localnet with `xian_vm_v1`
 - the current VM soak baseline is no longer theoretical:
