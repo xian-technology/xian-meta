@@ -28,9 +28,7 @@ def check_repo(repo_root: Path, repo_entry: dict, *, require_missing: bool) -> l
     repo = repo_root / repo_name
 
     if not repo.exists():
-        if require_missing:
-            return [f"{repo_name}: repo path is missing"]
-        return []
+        return [f"{repo_name}: repo path is missing"] if require_missing else []
 
     for rel in ("README.md", "AGENTS.md"):
         if not (repo / rel).exists():
@@ -55,6 +53,23 @@ def check_repo(repo_root: Path, repo_entry: dict, *, require_missing: bool) -> l
     return errors
 
 
+def check_repo_with_missing_allowlist(
+    repo_root: Path,
+    repo_entry: dict,
+    *,
+    require_missing: bool,
+    allow_missing: set[str],
+) -> list[str]:
+    repo_name = repo_entry["name"]
+    repo = repo_root / repo_name
+
+    if not repo.exists() and repo_name in allow_missing:
+        print(f"{repo_name}: missing repo path allowed by --allow-missing")
+        return []
+
+    return check_repo(repo_root, repo_entry, require_missing=require_missing)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Check the shared xian-meta repo-structure conventions."
@@ -74,6 +89,13 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Treat missing light-tier repos as errors instead of validating only when present",
     )
+    parser.add_argument(
+        "--allow-missing",
+        action="append",
+        default=[],
+        metavar="REPO",
+        help="Allow a required repo path to be absent, for CI jobs without private-repo checkout access",
+    )
     return parser.parse_args()
 
 
@@ -81,6 +103,7 @@ def main() -> int:
     args = parse_args()
     workspace_root = Path(args.workspace_root).resolve()
     manifest = load_manifest(Path(args.manifest).resolve())
+    allow_missing = set(args.allow_missing)
     errors: list[str] = []
 
     for repo in manifest.get("repos", []):
@@ -88,7 +111,14 @@ def main() -> int:
         if tier == "exempt":
             continue
         require_missing = tier == "full" or args.require_light
-        errors.extend(check_repo(workspace_root, repo, require_missing=require_missing))
+        errors.extend(
+            check_repo_with_missing_allowlist(
+                workspace_root,
+                repo,
+                require_missing=require_missing,
+                allow_missing=allow_missing,
+            )
+        )
 
     if errors:
         for error in errors:
