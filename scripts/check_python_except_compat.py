@@ -15,7 +15,6 @@ DEFAULT_REPOS = (
     "xian-contracting",
     "xian-deploy",
     "xian-docs-web",
-    "xian-intentkit",
     "xian-linter",
     "xian-py",
     "xian-stack",
