@@ -11,8 +11,6 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    env:
-      XIAN_WORKSPACE_READ_TOKEN: ${{ secrets.XIAN_WORKSPACE_READ_TOKEN }}
     steps:
       - name: Checkout xian-meta
         uses: actions/checkout@v6
@@ -53,20 +51,6 @@ jobs:
           repository: ${{ github.repository_owner }}/xian-deploy
           ref: main
           path: xian-deploy
-
-      - name: Checkout xian-bridge
-        if: env.XIAN_WORKSPACE_READ_TOKEN != ''
-        uses: actions/checkout@v6
-        with:
-          repository: ${{ github.repository_owner }}/xian-bridge
-          ref: main
-          path: xian-bridge
-          token: ${{ env.XIAN_WORKSPACE_READ_TOKEN }}
-
-      - name: Note skipped xian-bridge checkout
-        if: env.XIAN_WORKSPACE_READ_TOKEN == ''
-        run: |
-          echo "::notice::XIAN_WORKSPACE_READ_TOKEN is not set; skipping private xian-bridge checkout in GitHub Actions."
 
       - name: Checkout xian-docs-web
         uses: actions/checkout@v6

@@ -90,11 +90,18 @@ def parse_args() -> argparse.Namespace:
         help="Treat missing light-tier repos as errors instead of validating only when present",
     )
     parser.add_argument(
+        "--repo",
+        action="append",
+        default=[],
+        metavar="REPO",
+        help="Validate only the named repo. Can be passed more than once.",
+    )
+    parser.add_argument(
         "--allow-missing",
         action="append",
         default=[],
         metavar="REPO",
-        help="Allow a required repo path to be absent, for CI jobs without private-repo checkout access",
+        help="Allow a required repo path to be absent, for split CI or optional checkouts.",
     )
     return parser.parse_args()
 
@@ -104,9 +111,19 @@ def main() -> int:
     workspace_root = Path(args.workspace_root).resolve()
     manifest = load_manifest(Path(args.manifest).resolve())
     allow_missing = set(args.allow_missing)
+    selected_repos = set(args.repo)
+    manifest_repos = {repo["name"] for repo in manifest.get("repos", [])}
     errors: list[str] = []
 
+    unknown_repos = selected_repos - manifest_repos
+    if unknown_repos:
+        for repo_name in sorted(unknown_repos):
+            print(f"{repo_name}: repo is not declared in the manifest", file=sys.stderr)
+        return 1
+
     for repo in manifest.get("repos", []):
+        if selected_repos and repo["name"] not in selected_repos:
+            continue
         tier = repo.get("tier", "light")
         if tier == "exempt":
             continue
