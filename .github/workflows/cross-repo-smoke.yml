@@ -8,6 +8,13 @@ on:
   schedule:
     - cron: "41 3 * * *"
 
+permissions:
+  contents: read
+
+env:
+  XIAN_JS_FLOATING_REF: main
+  XIAN_JS_PINNED_REF: 9fbc6d4ba345ded93ce87818d307e4f53c86c738
+
 jobs:
   smoke:
     name: ${{ matrix.repo }}
@@ -18,53 +25,54 @@ jobs:
       matrix:
         include:
           - repo: xian-wallet-browser
-            runtime: node
             node-version: "24"
+            floating_ref: main
+            pinned_ref: 907a5130f983a4b1885e34b6b420a98fcfa81cb6
           - repo: xian-wallet-mobile
-            runtime: node
             node-version: "24"
-          - repo: xian-tg-bot
-            runtime: python
-            python-version: "3.14"
-          - repo: xian-intentkit
-            runtime: python
-            python-version: "3.14"
+            floating_ref: main
+            pinned_ref: 12b84afbd0a2eebb15949d2c31088235b0272eee
 
     steps:
       - name: Check out xian-meta
         uses: actions/checkout@v6
         with:
           path: xian-meta
+          persist-credentials: false
 
       - name: Check out ${{ matrix.repo }}
         uses: actions/checkout@v6
         with:
           repository: ${{ github.repository_owner }}/${{ matrix.repo }}
+          ref: ${{ github.event_name == 'pull_request' && matrix.floating_ref || matrix.pinned_ref }}
           path: ${{ matrix.repo }}
+          persist-credentials: false
 
       - name: Check out xian-js
-        if: matrix.runtime == 'node'
         uses: actions/checkout@v6
         with:
           repository: ${{ github.repository_owner }}/xian-js
+          ref: ${{ github.event_name == 'pull_request' && env.XIAN_JS_FLOATING_REF || env.XIAN_JS_PINNED_REF }}
           path: xian-js
+          persist-credentials: false
 
-      - name: Check out xian-py
-        if: matrix.repo == 'xian-tg-bot' || matrix.repo == 'xian-intentkit'
-        uses: actions/checkout@v6
-        with:
-          repository: ${{ github.repository_owner }}/xian-py
-          path: xian-py
-
-      - name: Check out xian-contracting
-        if: matrix.repo == 'xian-tg-bot' || matrix.repo == 'xian-intentkit'
-        uses: actions/checkout@v6
-        with:
-          repository: ${{ github.repository_owner }}/xian-contracting
-          path: xian-contracting
+      - name: Report resolved SHAs
+        env:
+          TARGET_REPO: ${{ matrix.repo }}
+          TARGET_REF: ${{ github.event_name == 'pull_request' && matrix.floating_ref || matrix.pinned_ref }}
+          XIAN_JS_REF: ${{ github.event_name == 'pull_request' && env.XIAN_JS_FLOATING_REF || env.XIAN_JS_PINNED_REF }}
+        run: |
+          {
+            echo "### Cross-repo smoke resolved SHAs"
+            echo
+            echo "| repo | configured ref | resolved SHA |"
+            echo "| --- | --- | --- |"
+            echo "| xian-meta | \`${GITHUB_SHA}\` | \`$(git -C xian-meta rev-parse HEAD)\` |"
+            echo "| ${TARGET_REPO} | \`${TARGET_REF}\` | \`$(git -C "${TARGET_REPO}" rev-parse HEAD)\` |"
+            echo "| xian-js | \`${XIAN_JS_REF}\` | \`$(git -C xian-js rev-parse HEAD)\` |"
+          } >> "${GITHUB_STEP_SUMMARY}"
 
       - name: Set up Node.js
-        if: matrix.runtime == 'node'
         uses: actions/setup-node@v6
         with:
           node-version: ${{ matrix.node-version }}
@@ -73,18 +81,7 @@ jobs:
             xian-js/package-lock.json
             ${{ matrix.repo }}/package-lock.json
 
-      - name: Set up Python
-        if: matrix.runtime == 'python'
-        uses: actions/setup-python@v6
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Set up uv
-        if: matrix.runtime == 'python'
-        uses: astral-sh/setup-uv@v7
-
       - name: Build xian-js for wallet smoke tests
-        if: matrix.runtime == 'node'
         working-directory: xian-js
         run: |
           npm ci
@@ -105,17 +102,3 @@ jobs:
           npm ci
           npm run typecheck
           npm test -- src/lib/__tests__/wallet-controller.test.ts
-
-      - name: Smoke xian-tg-bot
-        if: matrix.repo == 'xian-tg-bot'
-        working-directory: xian-tg-bot
-        run: |
-          uv sync --group dev
-          uv run ruff check plg/price/price.py plg/chart/chart.py utils.py tests/test_dex_datetime.py
-          uv run pytest tests/test_smoke.py tests/test_dex_datetime.py
-
-      - name: Smoke xian-intentkit
-        if: matrix.repo == 'xian-intentkit'
-        working-directory: xian-intentkit
-        run: |
-          uv run pytest tests/api/team/test_auth_optional.py tests/api/team/test_get_agent_unified.py

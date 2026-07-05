@@ -75,8 +75,10 @@ repo unless a fork-specific change is deliberately requested.
 ## CI Reproducibility
 
 Cross-repo CI may still check out sibling `main` branches for fresh integration
-coverage. Any workflow that does this should report the resolved sibling SHAs
-using:
+coverage during pull requests. Scheduled or manually dispatched cross-repo
+smoke jobs should use pinned sibling SHAs unless an accepted launch manifest
+defines a different set. Any workflow that checks out sibling repos should
+report the resolved sibling SHAs using:
 
 ```bash
 python3 ./scripts/report_workspace_shas.py --workspace-root ..
