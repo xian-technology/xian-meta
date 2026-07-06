@@ -13,96 +13,96 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout xian-meta
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: xian-meta
 
       - name: Checkout xian-abci
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/xian-abci
           ref: main
           path: xian-abci
 
       - name: Checkout xian-cli
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/xian-cli
           ref: main
           path: xian-cli
 
       - name: Checkout xian-configs
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/xian-configs
           ref: main
           path: xian-configs
 
       - name: Checkout xian-contracting
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/xian-contracting
           ref: main
           path: xian-contracting
 
       - name: Checkout xian-deploy
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/xian-deploy
           ref: main
           path: xian-deploy
 
       - name: Checkout xian-docs-web
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/xian-docs-web
           ref: main
           path: xian-docs-web
 
       - name: Checkout xian-governance-web
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/xian-governance-web
           ref: main
           path: xian-governance-web
 
       - name: Checkout xian-js
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/xian-js
           ref: main
           path: xian-js
 
       - name: Checkout xian-linter
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/xian-linter
           ref: main
           path: xian-linter
 
       - name: Checkout xian-py
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/xian-py
           ref: main
           path: xian-py
 
       - name: Checkout xian-wallet-browser
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/xian-wallet-browser
           ref: main
           path: xian-wallet-browser
 
       - name: Checkout xian-wallet-mobile
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/xian-wallet-mobile
           ref: main
           path: xian-wallet-mobile
 
       - name: Checkout xian-stack
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/xian-stack
           ref: main

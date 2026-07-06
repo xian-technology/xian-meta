@@ -35,13 +35,13 @@ jobs:
 
     steps:
       - name: Check out xian-meta
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           path: xian-meta
           persist-credentials: false
 
       - name: Check out ${{ matrix.repo }}
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/${{ matrix.repo }}
           ref: ${{ github.event_name == 'pull_request' && matrix.floating_ref || matrix.pinned_ref }}
@@ -49,7 +49,7 @@ jobs:
           persist-credentials: false
 
       - name: Check out xian-js
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ github.repository_owner }}/xian-js
           ref: ${{ github.event_name == 'pull_request' && env.XIAN_JS_FLOATING_REF || env.XIAN_JS_PINNED_REF }}
