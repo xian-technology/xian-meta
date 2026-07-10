@@ -33,8 +33,9 @@ launch gates below are closed.
   and native node deployment admission. The legacy Python transformer remains
   local-harness-only.
 - Compiler admission enforces identical deterministic bounds across those
-  surfaces: 128 KiB source, 50,000 syntax nodes, depth 64, 100,000 tokens, and
-  4,096 tokens per logical line.
+  surfaces: 128 KiB source, 50,000 syntax nodes, depth 64, 100,000 tokens,
+  4,096 tokens per logical line, 1 MiB canonical IR JSON, and 512
+  contract-handle inference passes.
 - Accepted and rejected shared fixtures exercise byte-identical artifacts and
   stable diagnostics across Rust, Python, WASM/JavaScript, linter, and node
   admission.
