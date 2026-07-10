@@ -28,17 +28,31 @@ launch gates below are closed.
   deployment staging, runtime metrics, and localnet E2E coverage.
 - Canonical source-to-runtime compilation is the deployment admission boundary;
   offline artifact builders remain for diagnostics and CI.
+- The Rust compiler core is authoritative for source-to-IR output and
+  diagnostics across Python bindings, WASM/JavaScript, the standalone linter,
+  and native node deployment admission. The legacy Python transformer remains
+  local-harness-only.
+- Compiler admission enforces identical deterministic bounds across those
+  surfaces: 128 KiB source, 50,000 syntax nodes, depth 64, 100,000 tokens, and
+  4,096 tokens per logical line.
+- Accepted and rejected shared fixtures exercise byte-identical artifacts and
+  stable diagnostics across Rust, Python, WASM/JavaScript, linter, and node
+  admission.
+
+## Closed Compiler Gates
+
+- compiler authority is the Rust `xian-compiler-core`
+- public bindings and node admission share canonical source/IR behavior
+- rejected fixtures and compile-limit diagnostics are stable across the locally
+  available public surfaces
+- node-side deployment derives IR from source and rejects client-supplied IR
+  artifacts
 
 ## Launch Gates
 
-Treat the compiler/runtime migration as launch-ready only when:
+The compiler gates above do not make the runtime launch-ready by themselves.
+The remaining launch gates are:
 
-- one compiler authority is declared for the public launch train
-- Python, JS/WASM, CLI, IDE diagnostics, and node admission produce
-  fixture-identical canonical source/IR for the accepted corpus
-- rejected contracts produce stable diagnostics across public compiler surfaces
-- node-side deployment rejects client-supplied IR artifacts and derives IR from
-  submitted source
 - five-node E2E, localnet release checks, and VM runtime metrics pass from the
   pinned release manifest
 - docs, SDK examples, and product defaults all describe source-backed
