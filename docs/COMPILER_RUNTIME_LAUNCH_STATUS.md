@@ -6,13 +6,18 @@ cross-repo status reference before a public launch.
 
 ## Version State
 
-- `xian-contracting` has a local `contracting-v1.0.11-beta.1` tag.
-- `xian-stack` has progressed through `v0.1.0-beta.3`.
-- `xian-py` has a local `v0.4.20-beta.1` tag.
+- `xian-contracting` is published as the stable `contracting-v1.1.1`
+  release (`xian-tech-contracting==1.1.1`).
+- `xian-stack` is published as the stable `v0.3.0` release. Its pinned
+  release manifest passed the localnet safety gate and reproducibility
+  verification, and its signed integrated and split images are available for
+  `linux/amd64` and `linux/arm64`.
+- `xian-py` is published as the stable `v0.5.0` release
+  (`xian-tech-py==0.5.0`).
 
-These are beta/pre-release markers. They should not be presented as a stable
-public launch train until the release manifest pins the exact versions and the
-launch gates below are closed.
+These are stable component releases, not a public-network launch by themselves.
+Current-code defaults remain local until an explicit public launch manifest is
+accepted and the launch gates below are closed.
 
 ## Current Implementation State
 
@@ -43,8 +48,8 @@ Treat the compiler/runtime migration as launch-ready only when:
   pinned release manifest
 - docs, SDK examples, and product defaults all describe source-backed
   deployment consistently
-- beta tags are promoted into an explicit release-candidate or stable launch
-  versioning plan
+- an explicit public-network launch manifest pins the accepted stable
+  component train, network identifiers, and public endpoints
 
 ## Related Source Docs
 
