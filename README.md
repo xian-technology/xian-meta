@@ -105,6 +105,7 @@ defined in `docs/REPO_CONVENTIONS.md`.
 - [docs/CHANGE_WORKFLOW.md](docs/CHANGE_WORKFLOW.md) — pre-push docs-impact and validation gates
 - [docs/MAINNET_LAUNCH_PLAN.md](docs/MAINNET_LAUNCH_PLAN.md) — future public-network launch checklist
 - [docs/COMPILER_RUNTIME_LAUNCH_STATUS.md](docs/COMPILER_RUNTIME_LAUNCH_STATUS.md) — current compiler/runtime launch status
+- [docs/VALIDATOR_OPERATIONS_RUNBOOK.md](docs/VALIDATOR_OPERATIONS_RUNBOOK.md) — validator/governance rehearsal and acceptance checklist
 - [docs/README_TEMPLATE.md](docs/README_TEMPLATE.md) — root README shape used by the main repos
 - [docs/FOLDER_README_TEMPLATE.md](docs/FOLDER_README_TEMPLATE.md) — short per-folder entrypoint template
 - [docs/XIAN_MISSION_AND_PRODUCT_STRATEGY.md](docs/XIAN_MISSION_AND_PRODUCT_STRATEGY.md) — shared mission, principles, and product direction
