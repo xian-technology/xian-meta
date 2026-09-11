@@ -171,6 +171,9 @@ If a repo lacks one, add it before expanding the repo further.
 
 ## Cross-Repo Rule
 
+Use `docs/CODE_GRAPH_WORKFLOW.md` for graph freshness, directed dependency
+queries, and source verification across sibling repos.
+
 When a code change in one repo affects public behavior elsewhere, the change is not complete until the impacted repos are updated as needed.
 
 Typical examples:

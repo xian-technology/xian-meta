@@ -1,0 +1,281 @@
+{
+  "cases": [
+    {
+      "repo": "xian-abci",
+      "target": "_bounded_int_param",
+      "file": "src/xian/methods/query.py",
+      "scope": [
+        "src/"
+      ],
+      "expected": [
+        {
+          "file": "src/xian/methods/query.py",
+          "name": "_offset_pagination",
+          "call_line": 128
+        },
+        {
+          "file": "src/xian/methods/query.py",
+          "name": "_bds_query_options",
+          "call_line": 151
+        },
+        {
+          "file": "src/xian/methods/query.py",
+          "name": "_resolve_keys_query",
+          "call_line": 553
+        }
+      ],
+      "truth": "Python stdlib AST; direct named calls, source-reviewed unique target/import bindings"
+    },
+    {
+      "repo": "xian-abci",
+      "target": "_offset_pagination",
+      "file": "src/xian/methods/query.py",
+      "scope": [
+        "src/"
+      ],
+      "expected": [
+        {
+          "file": "src/xian/methods/query.py",
+          "name": "_bds_query_options",
+          "call_line": 138
+        },
+        {
+          "file": "src/xian/methods/query.py",
+          "name": "_resolve_contract_listing",
+          "call_line": 469
+        },
+        {
+          "file": "src/xian/methods/query.py",
+          "name": "_handle_validators_open_votes",
+          "call_line": 698
+        }
+      ],
+      "truth": "Python stdlib AST; direct named calls, source-reviewed unique target/import bindings"
+    },
+    {
+      "repo": "xian-abci",
+      "target": "_encode_query_value",
+      "file": "src/xian/methods/query.py",
+      "scope": [
+        "src/"
+      ],
+      "expected": [
+        {
+          "file": "src/xian/methods/query.py",
+          "name": "query",
+          "call_line": 1148
+        }
+      ],
+      "truth": "Python stdlib AST; direct named calls, source-reviewed unique target/import bindings"
+    },
+    {
+      "repo": "xian-contracting",
+      "target": "_assert_native_compiler_host_surface_current",
+      "file": "src/contracting/compilation/artifacts.py",
+      "scope": [
+        "src/"
+      ],
+      "expected": [
+        {
+          "file": "src/contracting/compilation/artifacts.py",
+          "name": "diagnose_contract_source",
+          "call_line": 27
+        },
+        {
+          "file": "src/contracting/compilation/artifacts.py",
+          "name": "_compile_canonical_ir",
+          "call_line": 86
+        },
+        {
+          "file": "src/contracting/compilation/artifacts.py",
+          "name": "build_contract_artifacts",
+          "call_line": 103
+        },
+        {
+          "file": "src/contracting/compilation/artifacts.py",
+          "name": "compile_contract_source",
+          "call_line": 119
+        },
+        {
+          "file": "src/contracting/compilation/artifacts.py",
+          "name": "validate_contract_artifacts",
+          "call_line": 148
+        }
+      ],
+      "truth": "Python stdlib AST; direct named calls, source-reviewed unique target/import bindings"
+    },
+    {
+      "repo": "xian-contracting",
+      "target": "_compile_canonical_ir",
+      "file": "src/contracting/compilation/artifacts.py",
+      "scope": [
+        "src/"
+      ],
+      "expected": [
+        {
+          "file": "src/contracting/compilation/artifacts.py",
+          "name": "compile_contract_source",
+          "call_line": 130
+        }
+      ],
+      "truth": "Python stdlib AST; direct named calls, source-reviewed unique target/import bindings"
+    },
+    {
+      "repo": "xian-contracting",
+      "target": "compile_contract_source",
+      "file": "src/contracting/compilation/artifacts.py",
+      "scope": [
+        "src/"
+      ],
+      "expected": [
+        {
+          "file": "src/contracting/storage/contract.py",
+          "name": "_submit_with_driver",
+          "call_line": 88
+        },
+        {
+          "file": "src/contracting/compilation/artifacts.py",
+          "name": "validate_contract_artifacts",
+          "call_line": 201
+        }
+      ],
+      "truth": "Python stdlib AST; direct named calls, source-reviewed unique target/import bindings"
+    },
+    {
+      "repo": "xian-js",
+      "target": "publicKeyFromPrivateKey",
+      "file": "packages/client/src/ed25519.ts",
+      "scope": [
+        "packages/"
+      ],
+      "expected": [
+        {
+          "file": "packages/client/src/ed25519.ts",
+          "name": "signXianMessage",
+          "call_line": 85
+        },
+        {
+          "file": "packages/client/src/ed25519.ts",
+          "name": "address",
+          "call_line": 130
+        },
+        {
+          "file": "packages/client/src/shielded.ts",
+          "name": "shieldedSyncHintFromViewingPrivateKey",
+          "call_line": 29
+        }
+      ],
+      "truth": "Manually checked source call sites"
+    },
+    {
+      "repo": "xian-js",
+      "target": "assertEd25519PrivateKey",
+      "file": "packages/client/src/ed25519.ts",
+      "scope": [
+        "packages/"
+      ],
+      "expected": [
+        {
+          "file": "packages/client/src/ed25519.ts",
+          "name": "publicKeyFromPrivateKey",
+          "call_line": 46
+        },
+        {
+          "file": "packages/client/src/ed25519.ts",
+          "name": "signMessage",
+          "call_line": 57
+        },
+        {
+          "file": "packages/client/src/ed25519.ts",
+          "name": "signXianMessage",
+          "call_line": 84
+        },
+        {
+          "file": "packages/client/src/ed25519.ts",
+          "name": "constructor",
+          "call_line": 125
+        }
+      ],
+      "truth": "Manually checked source call sites"
+    },
+    {
+      "repo": "xian-js",
+      "target": "createXianMessageSigningPayload",
+      "file": "packages/types/src/message-signing.ts",
+      "scope": [
+        "packages/"
+      ],
+      "expected": [
+        {
+          "file": "packages/client/src/ed25519.ts",
+          "name": "signXianMessage",
+          "call_line": 91
+        },
+        {
+          "file": "packages/client/src/ed25519.ts",
+          "name": "verifyXianMessage",
+          "call_line": 107
+        },
+        {
+          "file": "packages/provider/src/provider.ts",
+          "name": "request",
+          "call_line": 449
+        }
+      ],
+      "truth": "Manually checked source call sites"
+    },
+    {
+      "repo": "xian-contracting",
+      "target": "contract_name_is_formatted",
+      "file": "packages/xian-fastpath-core/src/lib.rs",
+      "scope": [
+        "packages/xian-fastpath-core/src/"
+      ],
+      "expected": [
+        {
+          "file": "packages/xian-fastpath-core/src/lib.rs",
+          "name": "is_valid_submission_name",
+          "call_line": 310
+        }
+      ],
+      "truth": "Manually checked source call sites"
+    },
+    {
+      "repo": "xian-contracting",
+      "target": "is_valid_submission_name",
+      "file": "packages/xian-fastpath-core/src/lib.rs",
+      "scope": [
+        "packages/xian-fastpath-core/src/"
+      ],
+      "expected": [
+        {
+          "file": "packages/xian-fastpath-core/src/lib.rs",
+          "name": "validate_transaction_static_impl",
+          "call_line": 223
+        }
+      ],
+      "truth": "Manually checked source call sites"
+    },
+    {
+      "repo": "xian-contracting",
+      "target": "lower_source_to_ir_json_py",
+      "file": "packages/xian-compiler-core/src/python_bindings.rs",
+      "scope": [
+        "packages/xian-compiler-core/python/"
+      ],
+      "expected": [
+        {
+          "file": "packages/xian-compiler-core/python/xian_compiler_core/__init__.py",
+          "name": "lower_source_to_ir_json",
+          "call_line": 79
+        }
+      ],
+      "truth": "Manually checked source call sites"
+    }
+  ],
+  "revisions": {
+    "xian-abci": "7463024a79459519903488dee3181e991eeeb232",
+    "xian-contracting": "77c12f918bd725a01b747c5e72c0eb9d4ef1d104",
+    "xian-js": "3343df5345b1bee4ecb5efa989367f4c1011d418"
+  }
+}

@@ -46,6 +46,7 @@ when the task needs more depth.
 | What must each repo expose at the root? | `docs/REPO_CONVENTIONS.md` |
 | What should an agent read before editing a repo? | that repo's `AGENTS.md`, then the relevant README |
 | What is the change discipline before push? | `docs/CHANGE_WORKFLOW.md` |
+| How do I check graph freshness and find affected code? | `docs/CODE_GRAPH_WORKFLOW.md` |
 | What is ready for a future public network launch? | `docs/MAINNET_LAUNCH_PLAN.md` |
 | What is the compiler/runtime launch status? | `docs/COMPILER_RUNTIME_LAUNCH_STATUS.md` |
 | What is the overall product direction? | `docs/XIAN_MISSION_AND_PRODUCT_STRATEGY.md` |

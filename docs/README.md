@@ -19,6 +19,10 @@ Files:
 - `WORKSPACE.md`: progressive-disclosure front door for the sibling repo layout
 - `REPO_CONVENTIONS.md`: the common structure that the main repos should follow
 - `CHANGE_WORKFLOW.md`: the common pre-push workflow for docs impact and validation
+- `CODE_GRAPH_WORKFLOW.md`: local graph freshness, directed dependencies, and cross-repo verification
+- `CODE_GRAPH_COMPARISON.md`: source-reviewed Graphify/GitNexus comparison and reproduction
+- `CODEBASE_CONSISTENCY_AUDIT.md`: verified cross-repo protocol, dependency, signing, and bootstrap inconsistencies
+- `TRANSACTION_ENCODING_CONTRACT.md`: canonical wire fixtures and shared runtime encoding requirements
 - `MAINNET_LAUNCH_PLAN.md`: future public-network launch checklist for the current codebase
 - `COMPILER_RUNTIME_LAUNCH_STATUS.md`: reconciled compiler/runtime readiness status
 - `README_TEMPLATE.md`: the shared root README shape for the main repos

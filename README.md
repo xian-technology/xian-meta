@@ -88,6 +88,7 @@ Common entrypoints by question:
 python3 ./scripts/bootstrap_workspace.py --workspace-root .. --dry-run
 python3 ./scripts/check_repo_conventions.py --workspace-root ..
 python3 ./scripts/report_workspace_shas.py --workspace-root ..
+python3 -m unittest discover -s tests
 ```
 
 The checker walks the workspace root, resolves the main `xian-*` repos, and
@@ -103,6 +104,8 @@ defined in `docs/REPO_CONVENTIONS.md`.
 - [docs/BACKLOG.md](docs/BACKLOG.md) — open work on the standards repo itself
 - [docs/REPO_CONVENTIONS.md](docs/REPO_CONVENTIONS.md) — canonical repo structure standard
 - [docs/CHANGE_WORKFLOW.md](docs/CHANGE_WORKFLOW.md) — pre-push docs-impact and validation gates
+- [docs/CODE_GRAPH_WORKFLOW.md](docs/CODE_GRAPH_WORKFLOW.md) — graph freshness and dependency queries
+- [docs/CODE_GRAPH_COMPARISON.md](docs/CODE_GRAPH_COMPARISON.md) — Graphify and GitNexus comparison on Xian code
 - [docs/MAINNET_LAUNCH_PLAN.md](docs/MAINNET_LAUNCH_PLAN.md) — future public-network launch checklist
 - [docs/COMPILER_RUNTIME_LAUNCH_STATUS.md](docs/COMPILER_RUNTIME_LAUNCH_STATUS.md) — current compiler/runtime launch status
 - [docs/VALIDATOR_OPERATIONS_RUNBOOK.md](docs/VALIDATOR_OPERATIONS_RUNBOOK.md) — validator/governance rehearsal and acceptance checklist
