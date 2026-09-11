@@ -6,16 +6,19 @@ cross-repo status reference before a public launch.
 
 ## Version State
 
-- `xian-contracting` is published as the stable `contracting-v1.1.1`
-  release (`xian-tech-contracting==1.1.1`).
-- `xian-stack` is published as the stable `v0.3.0` release. Its pinned
-  release manifest passed the localnet safety gate and reproducibility
-  verification, and its signed integrated and split images are available for
-  `linux/amd64` and `linux/arm64`.
-- `xian-py` is published as the stable `v0.5.0` release
-  (`xian-tech-py==0.5.0`).
+Resolve component versions from the selected stack release's
+[`release-manifest.json`](https://github.com/xian-technology/xian-stack/blob/main/release-manifest.json)
+and its release assets. The manifest pins component commits; each pinned
+component's package metadata gives its version. Use the manifest from the
+release tag being deployed, rather than assuming the current branch represents
+the installed release. PyPI release histories for
+[xian-tech-contracting](https://pypi.org/project/xian-tech-contracting/#history),
+[xian-tech-vm-core](https://pypi.org/project/xian-tech-vm-core/#history), and
+[xian-tech-py](https://pypi.org/project/xian-tech-py/#history) record published
+package versions. This readiness page deliberately does not duplicate those
+version numbers or image-publication claims.
 
-These are stable component releases, not a public-network launch by themselves.
+Stable component releases are not a public-network launch by themselves.
 Current-code defaults remain local until an explicit public launch manifest is
 accepted and the launch gates below are closed.
 

@@ -10,6 +10,9 @@ Files:
   `--dry-run`
 - `check_repo_conventions.py`: checks required root files and root README
   section headings across repos declared in `../workspace-repos.json`
+- `check_release_helper_parity.py`: checks that the SDK and linter release
+  helpers remain byte-identical; edit both copies together until they use a
+  shared published helper
 - `report_workspace_shas.py`: reports resolved sibling Git refs and SHAs for
   local debugging and CI job summaries
 - `graphify_workspace.py`: checks working-file and graph freshness, and
