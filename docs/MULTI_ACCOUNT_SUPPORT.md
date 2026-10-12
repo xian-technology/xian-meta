@@ -1,8 +1,17 @@
+> The [account registry integration](ACCOUNT_REGISTRY_PROTOCOL.md) preserves existing
+> sender identities during hybrid enrollment. Its `xian_account_v1` format is
+> separate from this unimplemented typed-account proposal; this proposal does
+> not authorize rewriting existing balances or account identifiers.
+
 # Multi-Account Support Design
 
 ## Status
 
 Proposed implementation target.
+
+The separate [hybrid account authorization experiment](HYBRID_ACCOUNT_AUTH_EXPERIMENT.md)
+explores future Ed25519 + ML-DSA-65 authorization with stable account records.
+It does not extend this proposal's first-version schemes or envelope.
 
 This document defines the target design for adding multiple transaction-account
 schemes to Xian while keeping validator consensus keys unchanged.

@@ -28,6 +28,7 @@ Files:
 - `README_TEMPLATE.md`: the shared root README shape for the main repos
 - `FOLDER_README_TEMPLATE.md`: the short per-folder entrypoint template
 - `MULTI_ACCOUNT_SUPPORT.md`: protocol-level design for multi-scheme transaction accounts
+- `HYBRID_ACCOUNT_AUTH_EXPERIMENT.md`: isolated Ed25519 + ML-DSA-65 byte contract and future integration gates
 - `XIAN_VM_EXECUTION_MODEL.md`: target design for a Xian-owned VM and bytecode execution model
 - `XIAN_VM_FOUNDATION_BASELINE.md`: current implementation baseline for the VM-front-end subset, explicit execution-policy config shape, structural IR lowering, explicit runtime host ops, first Rust-side VM crate, and authored-contract audit status
 - `XIAN_VM_LANGUAGE_EXPANSION_ROADMAP.md`: ranked roadmap for growing the contract language safely around Xian-owned VM semantics instead of inheriting CPython's execution boundary
@@ -52,3 +53,10 @@ Files:
 - `SHIELDED_RELAYER_OPERATOR_RUNBOOK.md`: baseline operating posture, auth/rate-limit policy, retention guidance, metrics, and manifest publication rules for relayer operators
 - `SHIELDED_WALLET_RECOVERY_MODEL.md`: current operational recovery model for shielded wallets, including BDS history requirements, wallet `state_snapshot` backups, and snapshot-based recovery expectations
 - `ZK_VERIFIER_RUNTIME.md`: runtime design for a native Groth16/BN254 verifier bridge, key registry, encoding rules, and metering
+
+- [Account registry protocol](ACCOUNT_REGISTRY_PROTOCOL.md) — identity-preserving hybrid authorization and node integration.
+
+- `SNAPSHOT_GENESIS_MIGRATION.md`: exact native-balance import format, fresh contract scope and launch gates
+
+- [ACCOUNT_MASTER_BACKUP.md](ACCOUNT_MASTER_BACKUP.md) — single-master derivation and custody contract
+- [QUANTUM_RESISTANCE_ROADMAP.md](QUANTUM_RESISTANCE_ROADMAP.md) — remaining consensus, proof, encryption and trust-root work

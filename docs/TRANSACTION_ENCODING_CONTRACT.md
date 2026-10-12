@@ -33,3 +33,15 @@ Bundle source validation remains owned by `xian-cli.contract_bundles`. Product
 bootstraps consume that validator in their deploy dependency group, resolve
 paths/order/budgets from the bundle, and retain the exact verified source bytes
 for submission. Product constructors and configuration remain repo-local.
+
+The explicit [account-registry envelope](ACCOUNT_REGISTRY_PROTOCOL.md) uses the
+same canonical JSON and ASCII-hex transport, with its own framed hybrid signing
+messages. It preserves existing sender strings. Legacy envelopes retain their
+current encoding and are valid only for unenrolled accounts. Registry policy is
+not installed by default.
+
+Hybrid epochs retain raw uint64 JSON integer tokens rather than runtime
+`__big_int__` wrappers. JS uses `canonicalAccountJson` for the hybrid envelope.
+Hybrid broadcasts use a JSON-RPC POST body to avoid URL/header limits for the
+larger proofs: `params.tx` is base64 of the **ASCII hex transaction bytes**, not
+base64 of JSON. This does not change the CometBFT transaction bytes or hash.

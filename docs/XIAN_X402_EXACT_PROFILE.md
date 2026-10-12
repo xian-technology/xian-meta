@@ -1,5 +1,10 @@
 # Xian x402 Exact Payment Profile
 
+> Historical profile: unsupported on the fresh chain. Currency permits and the
+> settlement example have been removed. A new account-authenticated profile is
+> required; this document is not a new-chain deployment specification.
+
+
 ## Status
 
 Milestone 1 implemented — the profile ships as `xian_py.x402` (sign / verify /

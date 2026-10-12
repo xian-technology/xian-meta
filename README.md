@@ -113,3 +113,9 @@ defined in `docs/REPO_CONVENTIONS.md`.
 - [docs/FOLDER_README_TEMPLATE.md](docs/FOLDER_README_TEMPLATE.md) — short per-folder entrypoint template
 - [docs/XIAN_MISSION_AND_PRODUCT_STRATEGY.md](docs/XIAN_MISSION_AND_PRODUCT_STRATEGY.md) — shared mission, principles, and product direction
 - [docs/README.md](docs/README.md) — index of every cross-repo design note maintained here
+
+## Account and balance protocols
+
+- [Account registry](docs/ACCOUNT_REGISTRY_PROTOCOL.md): stable identities and hybrid transaction authorization.
+- [Master backup](docs/ACCOUNT_MASTER_BACKUP.md): one secret per account and chain, portable recovery and active-only wallet custody.
+- [Snapshot balance import](docs/SNAPSHOT_GENESIS_MIGRATION.md): exact native-balance conversion and reconciliation into a fresh genesis bundle.
