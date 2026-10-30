@@ -35,6 +35,29 @@ python3 ./scripts/report_workspace_shas.py --workspace-root ..
 The bootstrap script only clones missing repos. It does not pull, reset, or
 rewrite existing checkouts.
 
+## Optional Migration Tooling
+
+`xian-migration` owns offline legacy-state migration analysis and rehearsal.
+It is full-tier because it handles state conversion, but `clone_by_default` is
+`false`: ordinary node, SDK, and workspace development does not need it. Clone
+it explicitly into the sibling layout when working on a migration:
+
+```bash
+git clone https://github.com/xian-technology/xian-migration.git ../xian-migration
+python3 ./scripts/check_repo_conventions.py --workspace-root .. --repo xian-migration
+```
+
+These commands assume the current directory is `xian-meta`. Follow the migration
+repo's README for its pinned dependencies and explicit network/contract inputs.
+The dependency points one way: `xian-migration` consumes node/runtime tooling;
+`xian-abci` does not import or depend on migration implementation. Its node
+package, image, and normal startup do not require the migration checkout.
+
+Default convention checks allow absent optional repos and validate them when
+present. Selecting a repo with `--repo` requires its checkout unless explicitly
+allowed through `--allow-missing`. Full-tier structural requirements apply to
+the migration repo just as they do to other full-tier repos.
+
 ## Progressive Disclosure
 
 Start with the narrowest page that matches the question, then follow links only

@@ -106,6 +106,13 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def checkout_required(repo: dict, *, selected: bool, require_light: bool) -> bool:
+    return selected or (
+        repo.get("clone_by_default", True)
+        and (repo.get("tier", "light") == "full" or require_light)
+    )
+
+
 def main() -> int:
     args = parse_args()
     workspace_root = Path(args.workspace_root).resolve()
@@ -127,7 +134,9 @@ def main() -> int:
         tier = repo.get("tier", "light")
         if tier == "exempt":
             continue
-        require_missing = tier == "full" or args.require_light
+        require_missing = checkout_required(
+            repo, selected=repo["name"] in selected_repos, require_light=args.require_light
+        )
         errors.extend(
             check_repo_with_missing_allowlist(
                 workspace_root,

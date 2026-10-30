@@ -79,6 +79,13 @@
       "clone_by_default": true
     },
     {
+      "name": "xian-migration",
+      "category": "node-operations",
+      "tier": "full",
+      "clone_by_default": false,
+      "reason": "Optional offline tooling for one-time legacy-state migration rehearsals; consumes node/runtime tooling without being a node dependency."
+    },
+    {
       "name": "xian-stack",
       "category": "node-operations",
       "tier": "full",
