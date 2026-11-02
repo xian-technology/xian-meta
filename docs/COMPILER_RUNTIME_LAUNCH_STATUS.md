@@ -57,6 +57,27 @@ accepted and the launch gates below are closed.
 - node-side deployment derives IR from source and rejects client-supplied IR
   artifacts
 
+## Supported Platforms and Compatibility Evidence
+
+Linux x86-64 and ARM64 are the server validation targets. Apple Silicon macOS
+is supported through the ARM64 Docker runtime, with native macOS compiler and
+contract-runtime tests providing additional evidence. Windows node operation
+is unsupported and is not a launch gate. Package build availability does not
+expand the supported node platforms.
+
+The Localnet Safety workflow replays the same source-network corpus on native
+Linux x86-64 and ARM64 runners. Each replay builds from the corpus's recorded
+repository commits and compares every block's application hash and transaction
+results. Require successful artifacts for the selected revisions; a workflow
+definition or an emulated run alone is not native cross-platform evidence.
+
+Historical application compatibility is a separate check: run pinned real
+contract source and explicit call sequences through the historical Python
+runtime and current VM, comparing returns, state, events and failure recovery.
+Authored test calls are not historical chain transactions. A real-chain migration
+rehearsal additionally requires an authenticated state export, matching history
+and reviewed migration policy decisions in `xian-migration`.
+
 ## Launch Gates
 
 The compiler gates above do not make the runtime launch-ready by themselves.
