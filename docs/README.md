@@ -18,6 +18,7 @@ Files:
 - `BACKLOG.md`: follow-up work for the standards repo itself
 - `WORKSPACE.md`: progressive-disclosure front door for the sibling repo layout
 - `REPO_CONVENTIONS.md`: the common structure that the main repos should follow
+- `OPERATIONAL_LOGGING.md`: shared record structure, diagnostic scope and retention ownership
 - `CHANGE_WORKFLOW.md`: the common pre-push workflow for docs impact and validation
 - `CODE_GRAPH_WORKFLOW.md`: local graph freshness, directed dependencies, and cross-repo verification
 - `CODE_GRAPH_COMPARISON.md`: source-reviewed Graphify/GitNexus comparison and reproduction
