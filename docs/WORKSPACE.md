@@ -75,6 +75,7 @@ when the task needs more depth.
 | What is the compiler/runtime launch status? | `docs/COMPILER_RUNTIME_LAUNCH_STATUS.md` |
 | What is the overall product direction? | `docs/XIAN_MISSION_AND_PRODUCT_STRATEGY.md` |
 | What VM design documents exist? | `docs/XIAN_VM_EXECUTION_MODEL.md` and linked VM docs |
+| How could new chains choose a different language, cost policy or VM? | `docs/CHAIN_EXECUTION_PROFILES_PLAN.md` (proposed; fresh chains only) |
 
 Repo-local files remain authoritative for repo-local behavior. Use
 `xian-meta` for shared contracts and cross-repo orientation, then dive into the

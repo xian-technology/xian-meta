@@ -52,6 +52,7 @@ Common entrypoints by question:
 - *Where should a cross-repo design live?* → here, then implement in the owning repo
 - *What network is ready for public launch?* → `docs/MAINNET_LAUNCH_PLAN.md`
 - *What is the compiler/runtime launch status?* → `docs/COMPILER_RUNTIME_LAUNCH_STATUS.md`
+- *How could a new chain choose its own contract language, costs or VM?* → [Execution profiles plan](docs/CHAIN_EXECUTION_PROFILES_PLAN.md) (proposed)
 - *What is Xian for, strategically?* → `docs/XIAN_MISSION_AND_PRODUCT_STRATEGY.md`
 
 ## Principles
