@@ -78,6 +78,19 @@ Authored test calls are not historical chain transactions. A real-chain migratio
 rehearsal additionally requires an authenticated state export, matching history
 and reviewed migration policy decisions in `xian-migration`.
 
+The versioned application corpus is documented in
+`../xian-contracting/tests/compatibility/applications/README.md`. It preserves
+exact historical inputs and documents constructor-context and fixed-decimal
+square-root differences explicitly. Source admission and behavioral execution
+are separate evidence: indexed display code can be lossy, and untyped BDS state
+is not a substitute for an authenticated typed checkpoint.
+
+These gates do not establish unrestricted Python syntax parity. The runtime
+backlog records an unresolved escaped f-string format-specification parser bug,
+including artifact self-validation instability, and separate syntax-admission
+decisions. Review those limitations against the proposed contract corpus before
+declaring a migration or public launch ready.
+
 ## Launch Gates
 
 The compiler gates above do not make the runtime launch-ready by themselves.
