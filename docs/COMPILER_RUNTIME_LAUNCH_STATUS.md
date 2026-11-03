@@ -71,6 +71,17 @@ repository commits and compares every block's application hash and transaction
 results. Require successful artifacts for the selected revisions; a workflow
 definition or an emulated run alone is not native cross-platform evidence.
 
+The native Contract Determinism campaign complements block replay with exact
+compiler/runtime observations across Linux x86-64, Linux ARM64 and Apple Silicon
+macOS. Release evidence must include successful campaigns on all three actual
+platforms and an exact comparison of their observations for the same pinned
+source and corpus digest. Require canonical Rust compilation of authored source;
+a Python-harness deployment path is not equivalent admission evidence. Missing
+platforms, partial runs or a workflow definition alone do not satisfy this gate.
+See `../xian-contracting/tests/determinism/README.md` and its linked workflow for
+the campaign and artifact contract. These finite checks do not prove determinism
+for every possible contract or replace semantic correctness tests.
+
 Historical application compatibility is a separate check: run pinned real
 contract source and explicit call sequences through the historical Python
 runtime and current VM, comparing returns, state, events and failure recovery.
@@ -98,6 +109,8 @@ The remaining launch gates are:
 
 - five-node E2E, localnet release checks, and VM runtime metrics pass from the
   pinned release manifest
+- native Contract Determinism evidence passes the same-corpus, exact-observation
+  comparison across all three required platforms for the pinned release
 - docs, SDK examples, and product defaults all describe source-backed
   deployment consistently
 - an explicit public-network launch manifest pins the accepted stable
