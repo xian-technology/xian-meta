@@ -96,11 +96,10 @@ square-root differences explicitly. Source admission and behavioral execution
 are separate evidence: indexed display code can be lossy, and untyped BDS state
 is not a substitute for an authenticated typed checkpoint.
 
-These gates do not establish unrestricted Python syntax parity. The runtime
-backlog records an unresolved escaped f-string format-specification parser bug,
-including artifact self-validation instability, and separate syntax-admission
-decisions. Review those limitations against the proposed contract corpus before
-declaring a migration or public launch ready.
+The compiler rejects ambiguous literal text in f-string format specifications
+during source admission. The runtime backlog tracks other source-admission
+decisions and a separate aggregate formatting limit in the Python harness.
+Review those limitations against the proposed contract corpus before launch.
 
 ## Launch Gates
 

@@ -14,6 +14,7 @@ owning repo.
 
 Files:
 
+- [Fresh-genesis contract language](FRESH_GENESIS_CONTRACT_LANGUAGE.md) defines the proposed source subset, numeric rules, application evidence and delivery gates.
 - [CHAIN_EXECUTION_PROFILES_PLAN.md](CHAIN_EXECUTION_PROFILES_PLAN.md): proposed compiler/runtime extension contracts and delivery gates for new chains selecting their own language, costs and VM at genesis
 - `ARCHITECTURE.md`: what `xian-meta` owns and where its boundaries are
 - `BACKLOG.md`: follow-up work for the standards repo itself
