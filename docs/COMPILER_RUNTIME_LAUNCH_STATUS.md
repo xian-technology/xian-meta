@@ -26,8 +26,10 @@ accepted and the launch gates below are closed.
 
 - The current source tree targets fresh `xian_vm_v2` genesis using the
   [V2 numeric specification](NUMERIC_PROFILE_V2.md). Standalone compilation
-  and local contract tests default to that same profile. V1 remains an explicit
-  compatibility option for earlier artifacts, signatures and local test state.
+  defaults to that profile. Public `ContractingClient` and
+  `ParallelBatchExecutor` execution is V2-only; explicit V1 profiles and V1
+  drivers are rejected. Low-level native V1 compilation, storage, encoding and
+  execution remain for historical verification and migration tools.
 - Deployment is source-backed: clients submit cleartext source, and validators
   compile and persist canonical IR on admission.
 - The Rust compiler core builds `xian_contract_artifact_v1` artifacts through
@@ -40,8 +42,10 @@ accepted and the launch gates below are closed.
   offline artifact builders remain for diagnostics and CI.
 - The Rust compiler core is authoritative for source-to-IR output and
   diagnostics across Python bindings, WASM/JavaScript, the standalone linter,
-  and native node deployment admission. The legacy Python transformer remains
-  local-harness-only.
+  and native node deployment admission. Current contract execution uses the
+  native VM without a CPython executor, bytecode transformer or line tracer.
+  Shared Python host context and bridge helpers are independent of the retired
+  execution engine.
 - Compiler admission enforces identical deterministic bounds across those
   surfaces: 128 KiB source, 50,000 syntax nodes, depth 64, 100,000 tokens,
   4,096 tokens per logical line, 1 MiB canonical IR JSON, and 512
@@ -99,9 +103,9 @@ are separate evidence: indexed display code can be lossy, and untyped BDS state
 is not a substitute for an authenticated typed checkpoint.
 
 The compiler rejects ambiguous literal text in f-string format specifications
-during source admission. The runtime backlog tracks other source-admission
-decisions and a separate aggregate formatting limit in the Python harness.
-Review those limitations against the proposed contract corpus before launch.
+during source admission. The native VM bounds aggregate f-string output to
+128 KiB. Review remaining source-admission decisions against the proposed
+contract corpus before launch.
 
 ## Launch Gates
 

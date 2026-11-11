@@ -43,7 +43,7 @@ Files:
 - `EXAMPLES.md`: canonical definition of the reference example set and first example scope
 - `LOCALNET_E2E_RUNBOOK.md`: current cross-repo pointer for the 5-validator localnet and release-safety validation flows
 - `VALIDATOR_OPERATIONS_RUNBOOK.md`: cross-repo acceptance evidence for validator onboarding, exit/unbond, jail/unjail, evidence/slashing, governance changes, and recovery rehearsals
-- `PYPI_RELEASE_ROLLOUT.md`: one-time PyPI Trusted Publishing registration map, release order, and maintainer checklist for the Python package set
+- `PYPI_RELEASE_ROLLOUT.md`: historical March2026 PyPI registration and rollout record; current package boundaries come from owning release workflows and `COMPILER_RUNTIME_LAUNCH_STATUS.md`
 - `XIAN_SECURITY_AUDIT_FOLLOWUPS.md`: status note for the latest stack-wide security audit, including fixed findings and the remaining dashboard/simulation follow-up decisions
 - `SHARED_FOUNDATIONS_PLAN.md`: cleanup plan for neutral shared Python foundations and removing the `xian-abci -> xian-py` dependency
 - `SHARED_PACKAGE_EXTRACTION_PLAN.md`: deferred extraction criteria and migration path for shared packages that currently live in `xian-contracting`

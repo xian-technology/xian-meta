@@ -1,7 +1,13 @@
 # PyPI Release Rollout
 
-This note is the canonical maintainer checklist for turning the existing GitHub
-release workflows into real PyPI publication across the Xian Python packages.
+Historical rollout plan and publisher observations from March 29, 2026. The
+versions, publication state and batch instructions below describe that recorded
+rollout, not current release readiness. Use each owning repository's release
+workflow and `COMPILER_RUNTIME_LAUNCH_STATUS.md` for current package boundaries.
+
+The native-tracer package is retired from the maintained contracting release
+workflow. Its entries below are historical evidence, not instructions to create
+publishers, tag or publish that package.
 
 ## Current State
 

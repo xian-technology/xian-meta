@@ -2,14 +2,14 @@
 
 ## Status
 
-Implementation baseline for the first Xian VM groundwork slice.
+Historical implementation record for the first Xian VM groundwork slice. The
+execution-policy examples and Python-oracle tooling below describe that
+recorded baseline, not the supported current client or node API.
 
-This document records what now exists in code, what the first compiler-side
-subset currently freezes, and how the authored contract corpus now maps to that
-subset.
-
-For launch-readiness status across compiler authority, runtime coverage, and
-release tags, use `COMPILER_RUNTIME_LAUNCH_STATUS.md`.
+For current compiler authority, runtime coverage and release requirements, use
+`COMPILER_RUNTIME_LAUNCH_STATUS.md`. Current nodes and public local clients
+execute native V2; low-level native V1 is reserved for historical verification
+and migration, and historical Python observers use pinned archived packages.
 
 ## What This Slice Added
 

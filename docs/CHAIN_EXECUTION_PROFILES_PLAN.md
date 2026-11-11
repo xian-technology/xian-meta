@@ -53,10 +53,11 @@ The following baseline was inspected when preparing this plan:
 | `xian-stack` at `17b8390` | Reproducible images, five-node suites, corpus capture and architecture replay | Build dependencies, reports and workloads assume the Xian runtime/system contracts |
 | `xian-py` at `2959aa8` | Shared signing/wire handling and public deployment/simulation APIs | Source-language and value assumptions need explicit compatibility checks |
 
-Current node policy names are `xian_vm_v1`, `xvm-execution-5`, `xvm-gas-2`,
-`xvm-1` and `xian-set-1`. These identifiers are evidence of explicit versioning,
-not evidence of an implemented plugin or upgrade system. Current validation
-rejects other modes and incompatible persisted policies.
+At those inspected revisions the node policy names were `xian_vm_v1`,
+`xvm-execution-5`, `xvm-gas-2`, `xvm-1` and `xian-set-1`. These identifiers are
+evidence of explicit versioning, not an implemented plugin or upgrade system.
+Use `COMPILER_RUNTIME_LAUNCH_STATUS.md` for the current V2-only node/public-client
+boundary and the archival role of low-level native V1.
 
 Source entrypoints:
 
@@ -356,8 +357,10 @@ profile-specific coverage.
 Publish a profile-author guide, provider template, conformance runner and pinned
 example manifests. Document exactly which SDK, linter, IDE and deployment paths
 support each profile and which need language-specific adapters. Make local test
-harness execution use the selected backend; retain the Python harness as a
-Xian-specific oracle rather than requiring every language to mimic Python.
+harness execution use the selected backend. Give each profile independent
+semantic models and immutable historical observations where appropriate;
+current conformance must not require a maintained CPython contract executor or
+require another language to mimic Python.
 
 Exit: a developer can follow a clean-workspace guide to define a profile, install
 its provider, build matching validators, generate fresh genesis, deploy a contract,
