@@ -2,8 +2,9 @@
 
 This is the protocol specification for the fresh-genesis numeric profile. It
 defines the arithmetic, interchange and expected results for conformance.
-The genesis manifest selects the profile. Replaying a V1 chain requires its
-pinned execution policy. A V2 node must reject incompatible persisted state.
+The genesis manifest selects the profile. The standalone compiler, local
+`ContractingClient` and SDKs default to V2. Tests of earlier V1 artifacts and
+signed payloads select V1 explicitly. A V2 node must reject incompatible persisted state.
 
 ## Values and input
 

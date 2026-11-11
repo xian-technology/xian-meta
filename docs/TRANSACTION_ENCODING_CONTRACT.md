@@ -38,11 +38,11 @@ and native validators. [V2 transaction fixtures](https://github.com/xian-technol
 
 ## V1 compatibility
 
-For historical V1 signing, select `vm_profile="xian_vm_v1"` in Python or
+To reproduce V1 signing fixtures, select `vm_profile="xian_vm_v1"` in Python or
 `vmProfile: "xian_vm_v1"` in the JavaScript client. V1 has its own
 normalization and integer-wrapper boundaries. Its golden fixture preserves
 expected historical signatures, submitted bytes and CometBFT receipts.
-Replay the original chain using its pinned V1 node and execution policy.
+The V1 fixtures come from earlier development and test configurations.
 [V1 transaction fixtures](https://github.com/xian-technology/xian-contracting/blob/main/tests/fixtures/transaction_wire.json)
 
 Python storage encoding and wrapper conversion are consensus-sensitive shared
