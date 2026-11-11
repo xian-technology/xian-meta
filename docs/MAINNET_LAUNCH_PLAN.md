@@ -31,6 +31,13 @@ artifacts are imported and checksum-pinned.
 
 ## Launch Inputs
 
+The draft allocation has an unresolved custody blocker: `team_lock` receives
+66,666,666.60 tokens (60% of supply), but the canonical bundle deploys no contract
+at that name and it is not a signing account. Final genesis must use an accepted
+custody account or deploy a reviewed vault with explicitly accepted owners and
+quorum. Do not treat the draft allocation as spendable or launch-ready until
+that choice is resolved and rehearsed.
+
 Before final genesis, the launch owner must publish or accept:
 
 - final allocation file and generated `contracts_mainnet.json`

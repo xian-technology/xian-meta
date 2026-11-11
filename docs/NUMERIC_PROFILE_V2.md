@@ -45,7 +45,7 @@ truncation toward zero of x × S, divided by S.
 
 Zero denominators, invalid types, negative square roots, unknown rounding modes
 and out-of-range results fail deterministically. A failed contract call commits
-no writes or events. The V2 policy uses execution revision `xvm-execution-6`, gas schedule
+no writes or events. The V2 policy uses execution revision `xvm-execution-7`, gas schedule
 `xvm-gas-3` and bytecode `xvm-2`. The additional raw computation charge is
 96 units for a numeric binary operation, 96 for `quantize` or `sqrt`, and
 192 for either `mul_div` helper. Power charges 96 times (1 + the exponent
