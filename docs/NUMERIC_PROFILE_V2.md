@@ -65,6 +65,8 @@ no redundant leading or fractional trailing zeros, exponent, plus sign or
 negative zero. Reserved wrappers have exactly one key. Decimal input conveniences
 in an SDK may normalize before signing. A validator rejects noncanonical wire
 representations. Plain strings such as `"1.25"` remain ordinary contract strings.
+Transaction-envelope fields `nonce` and `chi_supplied` must be nonnegative
+safe JSON integers; the wide integer tag is for contract values, not those fields.
 A contract-local dictionary can use numeric keys, but dictionaries crossing
 the V2 wire boundary must use string keys and cannot impersonate reserved
 wrappers. Returning or storing a dictionary with a numeric key fails the call.
