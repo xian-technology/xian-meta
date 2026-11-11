@@ -91,6 +91,23 @@ calculation). In event type lists, simplify `(int, float, decimal)` to
 `(int, decimal)`. In runtime checks, review the intended domain before
 collapsing two existing cases into one.
 
+## V2 application results
+
+With the implemented compiler and VM, 339 of the 340 previously admissible
+archived sources still compile after a token-level `float` → `decimal` edit.
+The remaining source, `con_ai_dice2`, uses a raw Decimal constructor. This
+is source admission, not evidence each contract behaves identically.
+
+For behavior, four archived application workflows were run against both metered
+VMs, reopening storage between calls: names, reflection token, staking and
+DEX. Their 68 steps produced the same numerical balances, allowances, rewards
+and liquidity and the same business successes and failures. Ports included
+explicit square roots in the DEX. Types did change: exported decimal amounts
+can return an integral decimal where V1 returned an int. Four returned messages
+changed notation (for example, `Transferred 1E+3` became `Transferred 1000`).
+Treat signed or hashed numeric text as a protocol of its own when porting.
+These are authored workflows, not a replay of historical transactions.
+
 ## Delivery and acceptance
 
 1. **Specify the profile and freeze examples.** In xian-meta and xian-contracting,
