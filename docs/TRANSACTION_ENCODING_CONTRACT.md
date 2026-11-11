@@ -1,28 +1,49 @@
 # Transaction encoding across SDKs and the node
 
-The Python and JavaScript SDKs and both node validation paths share the same
-normalized transaction wire contract. Authoritative golden cases live in
-`xian-contracting/tests/fixtures/transaction_wire.json`; the SDK and ABCI tests
-read that fixture from the sibling checkout. This keeps expected signing bytes
-and submitted bytes independently reviewable instead of reproducing an encoder
-inside each test suite.
+The current Python and JavaScript SDK sources default to `xian_vm_v2` for fresh-chain
+transactions. Both node admission paths verify the same canonical bytes.
 
-- JSON object keys are sorted by Unicode code point at every depth. Numeric
-  strings are ordinary keys for canonicalization, regardless of JavaScript's
-  object enumeration rules.
-- Own object keys are preserved as data, including `__proto__`. Copying or
-  decoding an object must not invoke a prototype setter.
-- Runtime wrappers are normalized recursively through lists and dictionaries.
-  The integer wrapper rules preserve existing signed 64-bit boundary behavior;
-  JavaScript also wraps integers outside its safe numeric range. Use native
-  `bigint` to avoid precision loss before serialization. These representations
-  can differ before normalization; the fixture specifies exact normalized inputs.
-- Booleans remain booleans. Node transaction rules continue to reject bare
-  floating-point values and enforce the canonical JSON integer bounds.
-- Sign the canonical UTF-8 payload string. Serialize the whole signed transaction
-  canonically, then submit the ASCII hex encoding of its UTF-8 bytes to CometBFT.
-- Nodes retain strict canonical-byte validation. SDK bugs must be fixed at the
-  producer rather than bypassed at admission.
+## V2 contract values
+
+- Encode integers in the inclusive range from `-(2**53 - 1)` to `2**53 - 1`
+  as JSON integers. Larger magnitudes up to `2**512 - 1` use a single-key
+  object containing signed decimal integer text, such as
+  `{"__big_int__":"9007199254740992"}`. Use Python `int` or JavaScript
+  `bigint` when constructing a wide integer in application code.
+- Encode every decimal as a tagged plain string, including whole values.
+  `{"__fixed__":"1"}` represents decimal one, `1` represents integer one,
+  and `"1"` remains a string. A canonical decimal has at most 30 fractional
+  places and magnitude below `10**61`. Spell zero `"0"` and omit exponents,
+  plus signs, redundant leading zeros and trailing fractional zeros.
+- Apply these rules recursively in lists and dictionaries. JSON booleans
+  remain booleans. The validator rejects bare fractional numbers and
+  noncanonical numeric wrappers. The numeric specification also describes
+  dictionary keys, other reserved tags and exact source literals.
+  [V2 numeric specification](NUMERIC_PROFILE_V2.md)
+- Encode the envelope fields `nonce` and `chi_supplied` as bare JSON integers
+  from `0` to `2**53 - 1` inclusive.
+
+## Signing and submission
+
+Sort JSON object keys by Unicode code point at every depth, including
+numeric-looking string keys. Preserve each own property as data, including
+`__proto__`. Sign the compact canonical UTF-8 JSON payload. Serialize the
+complete signed transaction the same way, then submit the ASCII bytes of
+its lowercase hexadecimal encoding to CometBFT.
+
+The V2 fixtures specify each payload, signature and full signed transaction.
+ABCI parity tests construct transactions using each SDK's default, compare
+their submitted bytes to those fixtures and pass them through the Python
+and native validators. [V2 transaction fixtures](https://github.com/xian-technology/xian-contracting/blob/main/tests/fixtures/transaction_numeric_v2.json)
+
+## V1 compatibility
+
+For historical V1 signing, select `vm_profile="xian_vm_v1"` in Python or
+`vmProfile: "xian_vm_v1"` in the JavaScript client. V1 has its own
+normalization and integer-wrapper boundaries. Its golden fixture preserves
+expected historical signatures, submitted bytes and CometBFT receipts.
+Replay the original chain using its pinned V1 node and execution policy.
+[V1 transaction fixtures](https://github.com/xian-technology/xian-contracting/blob/main/tests/fixtures/transaction_wire.json)
 
 Python storage encoding and wrapper conversion are consensus-sensitive shared
 runtime behavior. Changes require encoding tests, SDK preparation tests, node
