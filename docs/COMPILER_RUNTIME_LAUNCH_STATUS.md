@@ -24,8 +24,9 @@ accepted and the launch gates below are closed.
 
 ## Current Implementation State
 
-- `xian_vm_v1` is the only supported execution-policy mode in the current node
-  configuration.
+- The current source tree targets fresh `xian_vm_v2` genesis using the
+  [V2 numeric specification](NUMERIC_PROFILE_V2.md). Replay an existing
+  V1 chain with its pinned V1 node and policy.
 - Deployment is source-backed: clients submit cleartext source, and validators
   compile and persist canonical IR on admission.
 - The Rust compiler core builds `xian_contract_artifact_v1` artifacts through

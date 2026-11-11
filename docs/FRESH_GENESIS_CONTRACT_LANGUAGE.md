@@ -8,11 +8,14 @@ streaming contracts are newly authored genesis inputs.
 
 ## Numbers
 
+The [numeric protocol specification](NUMERIC_PROFILE_V2.md) defines the V2
+operator, rounding, range and wire rules.
+
 Use two arithmetic types, bounded integers and a single fixed-point `decimal`.
 Make `amount: decimal` valid in exports and event schemas. Accept ordinary
 decimal literal spelling such as `0.05` by reading the source digits directly.
-The current compiler stores fractional syntax as an `f64` before lowering.
-Replacing the division instruction alone would leave that precision loss in place.
+The legacy V1 compiler lowers fractional syntax through binary64. V2 uses
+the source token directly; literals and division follow the same exact model.
 
 - Retain Xian's scale of 30 fractional digits and its checked range
   (absolute value below 10^61). Require exactly representable source and input
@@ -76,9 +79,10 @@ annotation allowlist, and replaced only `float` identifier tokens in recovered
 sources. All 340 baseline-admissible contracts still compiled and self-validated
 (220 edited, 120 unchanged). All 68 observations also matched when the four
 workflows ran with the edited application sources. Both prototypes used the
-existing value codecs and host functions. This establishes a mechanical first
-port and tests one operator change. Full removal still requires direct-digit
-literal parsing, ABI enforcement and the protocol tests below.
+previous value codecs and host functions. This established a mechanical first
+port and tested one operator change. V2 now implements direct-digit literal
+parsing, numeric ABI enforcement and exact wire types. The architecture
+decisions below also cover future language cuts.
 
 Three concrete manual review targets are `con_easy_dex` (default integer
 slippage divided by 100), `con_price_feed_102025` (decimal text in a signed

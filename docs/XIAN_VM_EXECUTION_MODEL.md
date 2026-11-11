@@ -2,8 +2,9 @@
 
 ## Status
 
-Implemented — `xian_vm_v1` is the fixed node execution runtime. Kept as the
-design record for the execution model.
+Historical design record for the original fixed `xian_vm_v1` runtime. For
+current fresh-genesis policy, see the [V2 numeric specification](NUMERIC_PROFILE_V2.md)
+and [compiler/runtime status](COMPILER_RUNTIME_LAUNCH_STATUS.md).
 
 This document defines the design for the Xian-owned contract execution engine
 where Python remains the authoring language, but contract execution and
