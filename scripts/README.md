@@ -19,6 +19,23 @@ Files:
   refreshes directed local Graphify indexes for non-exempt repos
 - `benchmark_code_graphs.py`: compares existing isolated Graphify and GitNexus
   indexes against the source-reviewed caller fixtures in `tests/fixtures/`
+- `verify_test_isolation.py`: runs two coordinated pytest processes against the
+  actual ABCI and contracting fixtures, checking that one process can flush its
+  storage and delete its node home without affecting the other. It also checks
+  that the next test receives fresh directories. `isolation_probe.py` supplies
+  the temporary tests; it is not a standalone test suite.
+
+Run the isolation check after installing each repository's test environment:
+
+```bash
+python3 scripts/verify_test_isolation.py --workspace-root ..
+```
+
+It uses each repository's `.venv/bin/python`. Use `--repo xian-abci` or
+`--repo xian-contracting` to select a repository, and
+`--python xian-abci=/absolute/path/to/python` to override its interpreter.
+The check requires a supported POSIX node platform and removes its temporary
+probes and child processes, including on failure.
 
 Do not turn this folder into a general automation dump. Keep it limited to
 workspace-wide convention helpers.
