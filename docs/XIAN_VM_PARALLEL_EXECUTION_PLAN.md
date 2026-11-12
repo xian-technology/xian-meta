@@ -10,6 +10,96 @@ model that is:
 - secure under adversarial workloads
 - simple enough to reason about and operate
 
+## Roadmap Decision (November 2026)
+
+A profile of revision-10 execution changed the order of work. The Rust VM is
+not the bottleneck; the Python host around it is, and the same costs cap every
+parallel design. The roadmap is therefore:
+
+| Step | What | Status |
+|---|---|---|
+| A | Serial host speedups: copy-on-write (or journaled) block-state snapshots instead of `deepcopy`, and a parsed-IR cache keyed by content hash | doing now |
+| B | Move the per-transaction block loop into Rust (`execute_block`): Rust-side LMDB reads and block overlay, fee reservation/settlement and reward deltas in Rust, GIL released | doing now |
+| C | Block-STM-style multi-threading in Rust over multi-version state | deferred |
+
+Parallel mode stays disabled by default meanwhile (Phase 0 below). The
+process-pool executor gets no further tuning.
+
+### Measurements behind the decision
+
+Apple M1 (4 performance + 4 efficiency cores), real `Xian` app, signed
+transactions, metered fees and rewards on, `finalize_block` plus `commit`;
+machine was shared, so ratios matter more than absolute numbers.
+
+Serial cost per transaction in a 200-transaction block:
+
+| | Transfer | DEX swap | CPU loop (3000 iterations) |
+|---|---|---|---|
+| Total | 6.4 ms | 35 ms | 7.3 ms |
+| Block-state snapshot + restore (`deepcopy`) | 2.2 ms (about 12 ms at 1000 tx) | 6.4 ms | 1.5 ms |
+| `execute_bundle` (Rust) | 1.8 ms, about 1.1 ms of it IR parse and validation | 19 ms | 4.8 ms of real interpretation |
+| Python IR JSON load and dump | about 1.4 ms | 3.9 ms (`load_module_ir` 32 times per swap) | small |
+
+- The state copy grows with block size: a 1000-transfer block ran at about
+  65 tx/s.
+- Contract IR is re-read, parsed in Python, re-serialized and parsed and
+  validated again in Rust on every call, uncached: 69 KB for `currency`,
+  about 320 KB each for `con_dex` and `con_pairs`. Native sampling of a DEX
+  swap: serde_json 26%, module parse 12%, IR validation 8%, IR cloning about
+  12%, module instantiation 14%; interpretation is a small share.
+
+What-if for step A (benchmark-only patch: shallow snapshot plus cached Python
+IR parse and serialization; app hash identical to unpatched):
+
+| Workload | Before | After | Gain |
+|---|---|---|---|
+| Transfers, 1000 per block | 64.6 tx/s | 331.6 tx/s | 5.1x |
+| DEX, one hot pair | 28.7 tx/s | 48.8 tx/s | 1.7x |
+| CPU-heavy | 138 tx/s | 172 tx/s | 1.25x |
+
+Caching the Rust-side parse as well is expected to bring DEX to about 2-3x
+(estimate, not measured).
+
+Current process-pool parallel mode (200-transaction blocks, tx/s; all runs
+matched the serial app hash):
+
+| Workload | Serial | 1 worker | 2 | 4 | 8 |
+|---|---|---|---|---|---|
+| Transfers, distinct accounts | 156 | 241 | 378 | 662 | 758 |
+| CPU-heavy, independent | 138 | 128 | 138 | 126 | 139 |
+| Mix, 30% DEX | 66 | 61 | 62 | 67 | 66 |
+| DEX, one hot pair | 28.7 | 31 | 31 | 30 | 31 |
+
+- Against serial with the step-A fixes (332 tx/s at 1000 per block), four
+  workers are only about 2x faster and eight are slower than four: the serial
+  merge in the main process and the efficiency cores cap it.
+- With access estimates on (the default), only hard-coded transfer/approve
+  shapes form waves, so DEX, CPU-heavy and mixed blocks run serially. Turning
+  estimates off makes contended workloads worse (199 of 200 DEX transactions
+  rejected).
+
+### Why step C waits
+
+- Today threads cannot help: `execute_bundle` holds the GIL for the whole
+  call, every storage read, `contract.*`, `random.*`, `zk.*` and deploy goes
+  through Python callbacks, and `rt.env`, the random state and the zk proof
+  cache are process-global. Step B removes these from the hot path; Block-STM
+  before B would only parallelize Python callbacks.
+- Expected gain of C is about linear in cores for independent work and about
+  zero on hot contracts such as one DEX pair, which degrade to serial plus
+  wasted work. A and B help every workload.
+- C is the most expensive and riskiest step (about 1-3 months). Revisit it
+  after A and B land and are re-measured, and only if real block sizes and
+  traffic justify it. Its constraints stay as below: results equal to serial
+  block order, fees/rewards/counters as additive deltas, no proposer hints,
+  nothing dependent on scheduling.
+- Open check carried into A: confirm IR parsing is never charged to chi, so
+  an IR cache cannot change chi or receipts.
+
+Steps A and B must keep receipts, chi, `ContractingDecimal` rounding, error
+texts, event order and the sorted write list byte-identical; prove it with the
+determinism corpus, a parity corpus and app-hash replay.
+
 ## Current Diagnosis
 
 The current `parallel_execution` path is correct but not performant enough to
@@ -127,6 +217,10 @@ That is the wrong shape once VM execution itself becomes fast.
 
 ## Phased Implementation Plan
 
+The access-spec phases below remain the target design for scheduling, but
+they start only after steps A and B of the roadmap decision above, which come
+first.
+
 ### Phase 0: Safe Default
 
 - keep `parallel_execution` disabled by default
@@ -241,6 +335,8 @@ The new design is good enough when all of these are true:
 - hot-state contention does not collapse performance unpredictably
 
 ## Immediate Next Tasks
+
+Steps A and B of the roadmap decision come first. After they are measured:
 
 1. Define the access-spec schema for exported contract functions.
 2. Identify the first contract families that can support it cleanly:
