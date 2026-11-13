@@ -18,7 +18,7 @@ parallel design. The roadmap is therefore:
 
 | Step | What | Status |
 |---|---|---|
-| A | Serial host speedups: copy-on-write (or journaled) block-state snapshots instead of `deepcopy`, and a parsed-IR cache keyed by content hash | doing now |
+| A | Serial host speedups: copy-on-write (or journaled) block-state snapshots instead of `deepcopy`, and a parsed-IR cache keyed by content hash | landed (see below) |
 | B | Move the per-transaction block loop into Rust (`execute_block`): Rust-side LMDB reads and block overlay, fee reservation/settlement and reward deltas in Rust, GIL released | doing now |
 | C | Block-STM-style multi-threading in Rust over multi-version state | deferred |
 
@@ -95,6 +95,34 @@ matched the serial app hash):
   nothing dependent on scheduling.
 - Open check carried into A: confirm IR parsing is never charged to chi, so
   an IR cache cannot change chi or receipts.
+
+### Step A result
+
+Landed in xian-contracting `17fca5c5` (undo-log scope
+`Driver.discarding_changes()` instead of deep-copy snapshots), `fc15e7cf`
+(decoded large stored texts shared per byte-identical content) and
+`bc362112` (Rust `ModuleCache`: each contract's IR parsed and validated once
+per byte-identical text), and in xian-abci `f474b76` and `e68493f` (the node
+uses the undo scope and reuses the per-module preparation check by IR text).
+IR parsing and validation are pure and never metered, so the open check
+above holds: chi, receipts, events and app hashes are byte-identical.
+
+Throughput on revision 11, same benchmark harness, before = xian-abci
+`d6631e3` with xian-contracting `654702fe`, after = `e68493f` with `bc362112`
+(tx/s, two interleaved runs each, load average about 3; all runs
+byte-identical in app hashes, receipts and final state):
+
+| Workload | Before | After | Gain |
+|---|---|---|---|
+| Transfers, 200 per block | 141 | 564 | 4.0x |
+| Transfers, 1000 per block | 62 | 574 | 9.3x |
+| DEX, one hot pair, 200 per block | 29 | 137 | 4.7x |
+| CPU-heavy, 200 per block | 123 | 159 | 1.3x |
+| Mix, 30% DEX, 200 per block | 66 | 281 | 4.3x |
+| Edge cases (same-block deploys, failures), 20 per block | 221 | 401 | 1.8x |
+
+Per-transaction cost no longer grows with block size. Step B is the next
+serial step; C stays deferred.
 
 Steps A and B must keep receipts, chi, `ContractingDecimal` rounding, error
 texts, event order and the sorted write list byte-identical; prove it with the

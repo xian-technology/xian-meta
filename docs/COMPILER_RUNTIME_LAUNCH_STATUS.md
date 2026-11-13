@@ -30,8 +30,13 @@ accepted and the launch gates below are closed.
   `ParallelBatchExecutor` execution is V2-only; explicit V1 profiles and V1
   drivers are rejected. Low-level native V1 compilation, storage, encoding and
   execution remain for historical verification and migration tools.
-- The current V2 execution revision is `xvm-execution-9`; archival native V1
-  remains `xvm-execution-7`. V2 failure messages preserve the outer recognized
+- The current V2 execution revision is `xvm-execution-12` with gas schedule
+  `xvm-gas-6`; archival native V1 remains `xvm-execution-7`. Revision 11
+  priced size-dependent work (text scans, comparisons, boundary values, hash
+  scans) by size and capped one V2 transaction at 1,000,000 chi; revision 12
+  gave V2 dictionaries a hash index with in-place mutation. Every chain fee
+  mode carries hard caps in `__fee_policy` (`max_tx_chi` 200,000 and
+  `max_block_chi` 500,000 by default). V2 failure messages preserve the outer recognized
   exception type, so message text cannot change the reported error category.
   Earlier V2 state requires its matching pinned runtime.
 - Deployment is source-backed: clients submit cleartext source, and validators
