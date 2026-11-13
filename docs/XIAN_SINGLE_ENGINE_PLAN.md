@@ -74,6 +74,7 @@ Recorded as golden behaviour today; increment 7 must give each an explicit rule 
 4. A failed transaction from a sender with a negative balance sets the balance to 0, minting the difference.
 5. The Rust "receipt encoding refuses" hand-back (RawDecimal, DecimalTuple, Float, Reference) is unreachable from V2 contracts; remove it with its Python counterpart.
 6. Random seed salts other than str/int/None are still handed back to Python after increment 5; decision 4 makes them a defined error.
+7. The fixed 5-chi base charge is not counted against `chi_supplied` (out-of-chi only when raw cost > supplied x 1000; chi_used = min(raw/1000 + 5, supplied)), so a transaction can supply up to 4 chi less than its cost and still succeed. Approved fix (2026-11-13): the base charge counts against the budget. The simulator must then estimate with the real signed envelope (the sender's real nonce and the final chi value's digits) so exact supply never fails at a chi boundary.
 
 Also: CI has no zk extra, so the zk parity corpus is skipped in CI; increment 6 (decision 5: zk in every build) must make CI run it.
 
