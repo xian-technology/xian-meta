@@ -66,6 +66,17 @@ events (not consensus), Block-STM (separate, deferred).
 Compiler error type names reach receipts (must match exactly); local tests that monkeypatch the Python random/zk
 bridges or `rt.env` must be rewritten; moving the zk proof cache may change preverify timing (performance only).
 
+## Findings for increment 7 (from the increment-0 corpora, 2026-11-13)
+Recorded as golden behaviour today; increment 7 must give each an explicit rule that never halts the chain:
+1. A sender balance that is a str, dict, list or bool makes the failure fallback raise in FinalizeBlock (node halt), on both paths.
+2. Reward configs with an int validator key or int foundation owner put a non-string key into the receipt; encoding raises in FinalizeBlock (node halt).
+3. A malformed reward split (short list, str, dict) fails every paid transaction, including the governance transaction that would repair it.
+4. A failed transaction from a sender with a negative balance sets the balance to 0, minting the difference.
+5. The Rust "receipt encoding refuses" hand-back (RawDecimal, DecimalTuple, Float, Reference) is unreachable from V2 contracts; remove it with its Python counterpart.
+6. Random seed salts other than str/int/None are still handed back to Python after increment 5; decision 4 makes them a defined error.
+
+Also: CI has no zk extra, so the zk parity corpus is skipped in CI; increment 6 (decision 5: zk in every build) must make CI run it.
+
 ## Progress
 
 | # | Status | Commits |
