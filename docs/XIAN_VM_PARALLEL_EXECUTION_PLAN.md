@@ -19,7 +19,7 @@ parallel design. The roadmap is therefore:
 | Step | What | Status |
 |---|---|---|
 | A | Serial host speedups: copy-on-write (or journaled) block-state snapshots instead of `deepcopy`, and a parsed-IR cache keyed by content hash | landed (see below) |
-| B | Move the per-transaction block loop into Rust (`execute_block`): Rust-side LMDB reads and block overlay, fee reservation/settlement and reward deltas in Rust, GIL released | B0-B2 landed; B3, B4 next (see below) |
+| B | Move the per-transaction block loop into Rust (`execute_block`): Rust-side LMDB reads and block overlay, fee reservation/settlement and reward deltas in Rust, GIL released | landed (B0-B4, see below) |
 | C | Block-STM-style multi-threading in Rust over multi-version state | deferred |
 
 Parallel mode stays disabled by default meanwhile (Phase 0 below). The
@@ -80,11 +80,12 @@ matched the serial app hash):
 
 ### Why step C waits
 
-- Today threads cannot help: `execute_bundle` holds the GIL for the whole
-  call, every storage read, `contract.*`, `random.*`, `zk.*` and deploy goes
-  through Python callbacks, and `rt.env`, the random state and the zk proof
-  cache are process-global. Step B removes these from the hot path; Block-STM
-  before B would only parallelize Python callbacks.
+- Before step B threads could not help: `execute_bundle` held the GIL for
+  the whole call, every storage read, `contract.*`, `random.*`, `zk.*` and
+  deploy went through Python callbacks, and `rt.env`, the random state and
+  the zk proof cache are process-global. Step B removed these from the hot
+  path (the block executor runs with the GIL released); random, zk, deploy
+  and hash scans still take the Python path.
 - Expected gain of C is about linear in cores for independent work and about
   zero on hot contracts such as one DEX pair, which degrade to serial plus
   wasted work. A and B help every workload.
@@ -128,7 +129,7 @@ Steps A and B must keep receipts, chi, `ContractingDecimal` rounding, error
 texts, event order and the sorted write list byte-identical; prove it with the
 determinism corpus, a parity corpus and app-hash replay.
 
-### Step B result so far
+### Step B result
 
 Step B moves the per-transaction block loop into Rust in increments; every
 increment kept app hashes, receipts (including error texts), chi, fees,
@@ -146,44 +147,61 @@ Landed:
 | B1b | Rust owns the node's single LMDB environment (vendored LMDB 0.9.36); py-lmdb only in compatibility tests | contracting `d4c28cf5`, abci `a375933` |
 | B1a | Rust stored-value reader; committed VM reads served from LMDB in Rust; a rejected stored value is a host fault | contracting `21bc7ee2`, `1e2127a9` |
 | B2 | Block overlay in a Rust `BlockState` (pending writes as stored bytes in key order, tracked reads, one discarding scope); the driver and the node use a small explicit API; the VM reads pending and committed state in Rust; byte-identical Rust stored-value writer (prerequisite for B4) | contracting `8e69f0d2`, `b3cb041a`, `9097f065`; abci `95b4f95` |
+| B3 | Fee reservation, refunds, failure metering and transaction rewards in Rust: CPython's default `decimal` context through the vendored libmpdec, `ContractingDecimal` arithmetic, reward split by validator power, commission, self bond, delegations and developer contract costs; rewards computed in Rust over node state from the Python path already | contracting `4b78c907`; abci `f566781`, `9777402` |
+| B4 | `BlockExecutor`: a block's transactions run in Rust over the block overlay with the GIL released (reservation, preparation, entry checks, VM execution through the shared bundle executor with a Rust host, failure charge, refund or metering, rewards, staging through the single staging point); transactions that need Python run through `process_tx` in their place in the block | contracting `a31c6cf6`, `74296283`, `ad6bcbf1`; abci `80d5bad` |
 
-Throughput after B2 (revision 13), same harness as step A, tx/s, median of two
-interleaved runs, load average 4-5; the revision-12 baseline is xian-contracting
-`96363368` with xian-abci `711e8c5` (step A only), the previous step is main
-before B2 (B0 through B1a plus the revision-13 key-size fix). All bench venvs
-use the native admission fastpath, as the node image does. Previous step and B2
-were byte-identical on every block.
+Throughput after B4 (revision 13), same harness as step A, tx/s, median of two
+interleaved runs. The revision-12 baseline (step A only, xian-contracting
+`96363368` with xian-abci `711e8c5`) and the B2 column are from the B2 and B3
+measurements; B3 and B4 ran back to back (load average 3.5-4.6). Every step was
+byte-identical to the one before it on every block. All bench venvs use the
+native admission fastpath, as the node image does.
 
-| Workload | Rev 12 (step A) | Before B2 | After B2 | vs rev 12 | vs before B2 |
-|---|---|---|---|---|---|
-| Transfers, 200 per block | 872 | 1082 | 1132 | 1.30x | 1.05x |
-| Transfers, 1000 per block | 901 | 1084 | 1192 | 1.32x | 1.10x |
-| DEX, one hot pair, 200 per block | 158 | 374 | 403 | 2.55x | 1.08x |
-| CPU-heavy, 200 per block | 183 | 181 | 176 | 0.96x | 0.97x |
-| Mix, 30% DEX, 200 per block | 370 | 694 | 755 | 2.04x | 1.09x |
-| Edge cases, 20 per block | 505 | 550 | 584 | 1.16x | 1.06x |
+| Workload | Rev 12 (step A) | B2 | B3 | B4 | B4 vs rev 12 | B4 vs B3 |
+|---|---|---|---|---|---|---|
+| Transfers, 200 per block | 872 | 1168 | 1370 | 2067 | 2.37x | 1.51x |
+| Transfers, 1000 per block | 901 | 1167 | 1480 | 2280 | 2.53x | 1.54x |
+| DEX, one hot pair, 200 per block | 158 | 390 | 451 | 640 | 4.05x | 1.42x |
+| CPU-heavy, 200 per block | 183 | 180 | 182 | 192 | 1.05x | 1.06x |
+| Mix, 30% DEX, 200 per block | 370 | 744 | 830 | 1209 | 3.27x | 1.46x |
+| Edge cases, 20 per block | 505 | 600 | 678 | 810 | 1.60x | 1.19x |
 
-Most of the B gain so far is inside the VM (shared function IR, owner cache)
-and in the block overlay (no Python dict lookups or callbacks per read, one
-encode per write, no read cache). CPU-heavy work is pure interpretation and is
-unchanged.
+Where the gain comes from: B0-B2 sped up the VM itself and moved every state
+read into Rust; B3 removed the Python reward computation (about 15% on
+transfers); B4 removed the remaining Python glue per transaction (input and
+output conversion, fee bookkeeping, write staging) and decodes each
+contract's IR once per run instead of on every read. CPU-heavy work is pure
+interpretation and stays where it was.
 
-Remaining in step B:
+How B4 stays byte-identical: the Rust path covers the common shape and hands
+everything else back before any of its effects reach the overlay. The node
+then runs that transaction through the existing Python path, in block order,
+and Rust continues after it. Handed back: contract submission, host syscalls
+other than `contract.exists`, `contract.has_export` and `contract.owner_of`
+(random, zk, deploy, metadata changes), hash scans, zk modules, owner or
+export rejections, preparation failures, non-numeric balances, reward inputs
+the B3 port does not cover, and any write or event Python's output checks
+could refuse. The reason is logged at debug level. The differential tests
+(`tests/integration/test_rust_block_executor.py`, the reward and fee corpora)
+and the bench (per-block app hash, receipt digest, success count and final
+state on all six workloads) check the outcomes against the Python path.
 
-- B3: fee reservation and settlement, refunds and reward deltas in Rust.
-  The reward path mixes Python `decimal` at its default 28-digit context
-  (half-even; the participant reward is rounded to 8 places) with
-  `ContractingDecimal` (30 fractional digits, rounding down) and divides by the
-  chain chi rate (read only as `chain_chi_rate` does: a missing rate is
-  refused). xian-abci `tests/fixtures/reward_outputs.json` pins the current
-  outputs over 160 generated configurations as the differential corpus for the
-  port. Wire it in with B4.
-- B4: `execute_block` with the GIL released over `BlockState`; transactions
-  that need Python (random, zk, deploy) hand the overlay back and run the
-  existing path. The process-pool parallel executor stays as legacy, off by
-  default.
+What B4 means for the legacy process-pool parallel executor: it still works
+and its configuration is unchanged, but it runs the Python per-transaction
+path in its workers, which is now 1.4-1.5x slower than serial Rust execution
+before any pool overhead. Enabling it would make blocks slower; it stays off
+by default and gets no further work. The GIL is released for the whole Rust
+run, so a thread-based scheduler (step C) is possible now without Python
+callbacks in the hot path.
 
-Step C (Block-STM) stays deferred until B is measured.
+Not ported yet (they run on the Python path, correctly but at Python speed):
+hash scans, `contract.info`, `contract.code_hash` and other metadata syscalls,
+and random. They are the next candidates if real traffic uses them on hot
+paths.
+
+Step B is complete. Step C (Block-STM) stays deferred: it needs multi-version
+state over `BlockState`, and its gain is about zero on hot contracts such as
+one DEX pair; revisit it when real block sizes and traffic justify it.
 
 ## Current Diagnosis
 
