@@ -225,7 +225,8 @@ change (edge cases, 20 per block: 776 and 777 over three runs).
 
 Not ported yet (they run on the Python path, correctly but at Python speed):
 random, deploy, the submission-only metadata changes (`contract.set_owner`,
-`contract.set_developer`) and zk. Random is the next candidate if real
+`contract.set_developer`) and zk. (Random has since been ported as increment 5
+of `XIAN_SINGLE_ENGINE_PLAN.md`.) Random is the next candidate if real
 traffic uses it on hot paths. Porting it means: the per-transaction
 `DeterministicRandom` state in the block host (cleared per transaction,
 shared by nested calls), its seed material from the chain id, block number,
