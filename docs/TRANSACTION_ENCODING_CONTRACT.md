@@ -40,8 +40,7 @@ and native validators. [V2 transaction fixtures](https://github.com/xian-technol
 
 To reproduce V1 signing fixtures, select `vm_profile="xian_vm_v1"` in the Python
 network SDK or `vmProfile: "xian_vm_v1"` in the JavaScript client. This encoding
-option does not enable V1 execution in `ContractingClient` or
-`ParallelBatchExecutor`. V1 has its own
+option does not enable V1 execution in `ContractingClient`. V1 has its own
 normalization and integer-wrapper boundaries. Its golden fixture preserves
 expected historical signatures, submitted bytes and CometBFT receipts.
 The V1 fixtures come from earlier development and test configurations.

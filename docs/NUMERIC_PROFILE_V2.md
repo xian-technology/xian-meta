@@ -3,8 +3,8 @@
 This is the protocol specification for the fresh-genesis numeric profile. It
 defines the arithmetic, interchange and expected results for conformance.
 The genesis manifest selects the profile. The standalone compiler and network
-SDKs default to V2. Public `ContractingClient` and `ParallelBatchExecutor`
-execution accepts only V2, including the profile of an injected driver.
+SDKs default to V2. Public `ContractingClient` execution accepts only V2,
+including the profile of an injected driver.
 Low-level native tools select V1 explicitly for historical artifact/state
 verification and migration; SDK V1 encoding remains available for historical
 signed-payload fixtures. A V2 node must reject incompatible persisted state.

@@ -26,9 +26,8 @@ accepted and the launch gates below are closed.
 
 - The current source tree targets fresh `xian_vm_v2` genesis using the
   [V2 numeric specification](NUMERIC_PROFILE_V2.md). Standalone compilation
-  defaults to that profile. Public `ContractingClient` and
-  `ParallelBatchExecutor` execution is V2-only; explicit V1 profiles and V1
-  drivers are rejected. Low-level native V1 compilation, storage, encoding and
+  defaults to that profile. Public `ContractingClient` execution is V2-only;
+  explicit V1 profiles and V1 drivers are rejected. Low-level native V1 compilation, storage, encoding and
   execution remain for historical verification and migration tools.
 - The current V2 execution revision is `xvm-execution-12` with gas schedule
   `xvm-gas-6`; archival native V1 remains `xvm-execution-7`. Revision 11

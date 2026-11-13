@@ -2,8 +2,7 @@
 
 ## Goal
 
-Replace the current speculative process-pool executor with a parallel execution
-model that is:
+Design a parallel execution model (step C below) that is:
 
 - deterministic
 - measurably faster than serial execution
@@ -22,8 +21,10 @@ parallel design. The roadmap is therefore:
 | B | Move the per-transaction block loop into Rust (`execute_block`): Rust-side LMDB reads and block overlay, fee reservation/settlement and reward deltas in Rust, GIL released | landed (B0-B5, see below) |
 | C | Block-STM-style multi-threading in Rust over multi-version state | deferred |
 
-Parallel mode stays disabled by default meanwhile (Phase 0 below). The
-process-pool executor gets no further tuning.
+The legacy speculative process-pool executor (`parallel_execution_*`) was
+removed in November 2026, after step B4 made serial Rust execution faster than
+it (see "Removal of the legacy executor" below). Blocks execute serially until
+step C, if it is ever built, proves faster and mismatch-free.
 
 ### Measurements behind the decision
 
@@ -60,8 +61,8 @@ IR parse and serialization; app hash identical to unpatched):
 Caching the Rust-side parse as well is expected to bring DEX to about 2-3x
 (estimate, not measured).
 
-Current process-pool parallel mode (200-transaction blocks, tx/s; all runs
-matched the serial app hash):
+The former process-pool parallel mode, measured before its removal
+(200-transaction blocks, tx/s; all runs matched the serial app hash):
 
 | Workload | Serial | 1 worker | 2 | 4 | 8 |
 |---|---|---|---|---|---|
@@ -189,13 +190,12 @@ could refuse. The reason is logged at debug level. The differential tests
 and the bench (per-block app hash, receipt digest, success count and final
 state on every workload) check the outcomes against the Python path.
 
-What B4 means for the legacy process-pool parallel executor: it still works
-and its configuration is unchanged, but it runs the Python per-transaction
-path in its workers, which is now 1.4-1.5x slower than serial Rust execution
-before any pool overhead. Enabling it would make blocks slower; it stays off
-by default and gets no further work. The GIL is released for the whole Rust
-run, so a thread-based scheduler (step C) is possible now without Python
-callbacks in the hot path.
+What B4 meant for the legacy process-pool parallel executor: it ran the
+Python per-transaction path in its workers, which became 1.4-1.5x slower than
+serial Rust execution before any pool overhead, so enabling it made blocks
+slower. It was therefore removed (see "Removal of the legacy executor"
+below). The GIL is released for the whole Rust run, so a thread-based
+scheduler (step C) is possible now without Python callbacks in the hot path.
 
 B5 serves hash scans (`Hash.all`, `Hash.clear`, `Hash.clone_from`,
 `ForeignHash.all`, with or without a prefix) and the read-only metadata
@@ -241,34 +241,58 @@ Step B is complete. Step C (Block-STM) stays deferred: it needs multi-version
 state over `BlockState`, and its gain is about zero on hot contracts such as
 one DEX pair; revisit it when real block sizes and traffic justify it.
 
-## Current Diagnosis
+### Removal of the legacy executor
 
-The current `parallel_execution` path is correct but not performant enough to
+The speculative process-pool executor was removed completely in November 2026:
+`contracting.execution.parallel` (`ParallelBatchExecutor` and its planner and
+controller), the node's `ParallelBlockExecutor`, access estimation and the
+per-transaction access records built for it, the
+`xian-parallel-estimator-report` tool, the `parallel_*` perf/metrics fields,
+and every `parallel_execution_*` setting in node config, CLI flags, node
+profiles, network templates, deployment roles and localnet tooling. It was
+never consensus-relevant: blocks produced the same results with it on or off,
+and removing it changes no execution revision.
+
+Existing configurations fail loudly instead of being silently ignored, as for
+earlier removed settings: a node rejects a `xian.toml` that still sets a
+`parallel_execution_*` key at startup with an error naming the keys to delete
+(re-rendering the home writes a config without them), and `xian-cli` and
+`xian-deploy` reject profiles or templates that still carry the fields.
+
+The read-tracking support in the block overlay (`BlockState` access tracking,
+`Driver.transaction_access`) that the executor consumed stays for now with
+tracking off in the node; it has no remaining consumer and can be removed
+separately. Step C, if built, is a new design and does not reuse the removed
+executor.
+
+## Diagnosis of the Removed Executor
+
+The removed `parallel_execution` path was correct but not performant enough to
 justify being enabled by default.
 
-Observed behavior from the current VM branch benchmarks:
+Observed behavior from the VM branch benchmarks at the time:
 
 - native VM transaction execution is already relatively cheap
 - `track_access=True` adds only a small serial overhead
 - the slowdown sits mainly in block-level `finalize_parallel`
 - accepted speculative execution still loses to serial execution
 
-This means the bottleneck is not the VM interpreter. It is the orchestration
+This means the bottleneck was not the VM interpreter. It was the orchestration
 model around it.
 
-## Why The Current Model Loses
+## Why The Process-Pool Model Lost
 
-The current design speculates by running transactions in separate spawned worker
-processes, with copied pending writes and per-task cache resets. That means
-Xian pays for:
+The removed design speculated by running transactions in separate spawned
+worker processes, with copied pending writes and per-task cache resets. That
+meant Xian paid for:
 
 - process creation and IPC semantics
 - repeated state snapshot shipping
 - repeated cache flush/reset cycles
 - repeated result merging into the authoritative process
 
-This cost is structural. It remains even when speculation succeeds and fallback
-is not triggered.
+This cost is structural. It remained even when speculation succeeded and
+fallback was not triggered.
 
 ## Design Constraints
 
@@ -307,7 +331,7 @@ This is the best medium-term fit for Xian.
 ### 2. Rust-Side Shared-State Executor
 
 Once access specs exist, move the parallel execution engine away from the
-current process-pool model and toward a shared in-memory executor in Rust.
+removed process-pool model and toward a shared in-memory executor in Rust.
 
 That executor should:
 
@@ -348,7 +372,7 @@ MVCC engine exists.
 
 ## What Not To Do
 
-Do not keep investing heavily in the current speculative process-pool executor.
+Do not reintroduce a speculative process-pool executor.
 
 Small optimizations there may reduce waste, but they do not change the core
 problem: the system is parallelizing by duplicating runtime work and moving
@@ -364,9 +388,11 @@ first.
 
 ### Phase 0: Safe Default
 
-- keep `parallel_execution` disabled by default
-- keep opt-in support for localnet experiments and benchmark profiles
-- keep current profiling counters so regressions stay visible
+- serial execution is the only mode; the legacy executor and its
+  `parallel_execution_*` settings were removed
+- a new design adds its own explicit opt-in only once it is faster than serial
+  and mismatch-free
+- keep the block timing counters so regressions stay visible
 
 ### Phase 1: Access-Spec IR Design
 

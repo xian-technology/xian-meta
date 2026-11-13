@@ -35,7 +35,7 @@ Files:
 - `XIAN_VM_EXECUTION_MODEL.md`: target design for a Xian-owned VM and bytecode execution model
 - `XIAN_VM_FOUNDATION_BASELINE.md`: current implementation baseline for the VM-front-end subset, explicit execution-policy config shape, structural IR lowering, explicit runtime host ops, first Rust-side VM crate, and authored-contract audit status
 - `XIAN_VM_LANGUAGE_EXPANSION_ROADMAP.md`: ranked roadmap for growing the contract language safely around Xian-owned VM semantics instead of inheriting CPython's execution boundary
-- `XIAN_VM_PARALLEL_EXECUTION_PLAN.md`: execution-speed roadmap (serial host speedups and a Rust block loop now, Block-STM threading deferred, with the measurements behind that order) and the deterministic, access-spec-driven design meant to replace the speculative process-pool executor
+- `XIAN_VM_PARALLEL_EXECUTION_PLAN.md`: execution-speed roadmap (serial host speedups and a Rust block loop now, Block-STM threading deferred, with the measurements behind that order) and the deterministic, access-spec-driven design for any future parallel executor (the speculative process-pool executor was removed)
 - `COMETBFT_TO_SEI_MIGRATION_MEMO.md`: evaluation of what a move from CometBFT to Sei's integrated chain stack would actually mean for Xian and why it is not a drop-in swap
 - `XIAN_MISSION_AND_PRODUCT_STRATEGY.md`: shared mission, principles, and product direction for Xian
 - `XIAN_X402_EXACT_PROFILE.md`: first native-Xian x402 exact-payment profile for HTTP 402 paid API requests

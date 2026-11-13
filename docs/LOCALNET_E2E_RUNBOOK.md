@@ -17,9 +17,6 @@ make localnet-up
 # Broad 5-validator whole-stack harness
 make localnet-e2e
 
-# Lower-batch parallel 5-validator harness
-make localnet-parallel-e2e
-
 # Release-grade validation gate
 make release-safety
 ```
@@ -28,11 +25,11 @@ make release-safety
 bootstrap, health, `xian-py` smoke, contract orchestration, load, invalid and
 conflicting transactions, DEX behavior, simulator load, BDS catch-up, retrieval
 APIs, determinism checks, validator governance, state patches, logging,
-shielded-note flows, parallel-execution behavior, restart/chaos convergence,
+shielded-note flows, same-block ordering, restart/chaos convergence,
 and soak/abuse coverage.
 
 `make release-safety` is the release gate. It combines repo validation,
-parallel e2e, node reporting, and the focused protocol-safety localnet
+the full e2e, node reporting, and the focused protocol-safety localnet
 (`make localnet-protocol-safety`).
 
 ## Source Of Truth
