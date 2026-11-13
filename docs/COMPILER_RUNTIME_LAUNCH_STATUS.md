@@ -35,7 +35,9 @@ accepted and the launch gates below are closed.
   scans) by size and capped one V2 transaction at 1,000,000 chi; revision 12
   gave V2 dictionaries a hash index with in-place mutation; revision 13
   bounded storage keys at LMDB's 511 bytes; revision 14 reads a `__delta__`
-  wire value only as `[days, seconds]`, two integers. Every chain fee
+  wire value only as `[days, seconds]`, two integers, stores timedeltas and
+  bytearrays, and moves the app hash to `xian-state-root-v3`, whose leaves
+  hash each value's stored bytes rather than its receipt JSON. Every chain fee
   mode carries hard caps in `__fee_policy` (`max_tx_chi` 200,000 and
   `max_block_chi` 500,000 by default). V2 failure messages preserve the outer recognized
   exception type, so message text cannot change the reported error category.
