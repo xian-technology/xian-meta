@@ -19,7 +19,7 @@ parallel design. The roadmap is therefore:
 | Step | What | Status |
 |---|---|---|
 | A | Serial host speedups: copy-on-write (or journaled) block-state snapshots instead of `deepcopy`, and a parsed-IR cache keyed by content hash | landed (see below) |
-| B | Move the per-transaction block loop into Rust (`execute_block`): Rust-side LMDB reads and block overlay, fee reservation/settlement and reward deltas in Rust, GIL released | landed (B0-B4, see below) |
+| B | Move the per-transaction block loop into Rust (`execute_block`): Rust-side LMDB reads and block overlay, fee reservation/settlement and reward deltas in Rust, GIL released | landed (B0-B5, see below) |
 | C | Block-STM-style multi-threading in Rust over multi-version state | deferred |
 
 Parallel mode stays disabled by default meanwhile (Phase 0 below). The
@@ -84,8 +84,9 @@ matched the serial app hash):
   the whole call, every storage read, `contract.*`, `random.*`, `zk.*` and
   deploy went through Python callbacks, and `rt.env`, the random state and
   the zk proof cache are process-global. Step B removed these from the hot
-  path (the block executor runs with the GIL released); random, zk, deploy
-  and hash scans still take the Python path.
+  path (the block executor runs with the GIL released, and since B5 also
+  serves hash scans and the contract metadata reads); random, zk and deploy
+  still take the Python path.
 - Expected gain of C is about linear in cores for independent work and about
   zero on hot contracts such as one DEX pair, which degrade to serial plus
   wasted work. A and B help every workload.
@@ -149,6 +150,7 @@ Landed:
 | B2 | Block overlay in a Rust `BlockState` (pending writes as stored bytes in key order, tracked reads, one discarding scope); the driver and the node use a small explicit API; the VM reads pending and committed state in Rust; byte-identical Rust stored-value writer (prerequisite for B4) | contracting `8e69f0d2`, `b3cb041a`, `9097f065`; abci `95b4f95` |
 | B3 | Fee reservation, refunds, failure metering and transaction rewards in Rust: CPython's default `decimal` context through the vendored libmpdec, `ContractingDecimal` arithmetic, reward split by validator power, commission, self bond, delegations and developer contract costs; rewards computed in Rust over node state from the Python path already | contracting `4b78c907`; abci `f566781`, `9777402` |
 | B4 | `BlockExecutor`: a block's transactions run in Rust over the block overlay with the GIL released (reservation, preparation, entry checks, VM execution through the shared bundle executor with a Rust host, failure charge, refund or metering, rewards, staging through the single staging point); transactions that need Python run through `process_tx` in their place in the block | contracting `a31c6cf6`, `74296283`, `ad6bcbf1`; abci `80d5bad` |
+| B5 | Hash scans and the `contract.info` / `contract.code_hash` metadata reads served by the block executor instead of handed back (see below) | contracting `707d6137`; abci `6d7bcbc` |
 
 Throughput after B4 (revision 13), same harness as step A, tx/s, median of two
 interleaved runs. The revision-12 baseline (step A only, xian-contracting
@@ -177,14 +179,15 @@ How B4 stays byte-identical: the Rust path covers the common shape and hands
 everything else back before any of its effects reach the overlay. The node
 then runs that transaction through the existing Python path, in block order,
 and Rust continues after it. Handed back: contract submission, host syscalls
-other than `contract.exists`, `contract.has_export` and `contract.owner_of`
-(random, zk, deploy, metadata changes), hash scans, zk modules, owner or
-export rejections, preparation failures, non-numeric balances, reward inputs
+other than the contract metadata reads `contract.exists`,
+`contract.has_export`, `contract.owner_of`, `contract.info` and
+`contract.code_hash` (random, zk, deploy, metadata changes), zk modules,
+owner or export rejections, preparation failures, non-numeric balances, reward inputs
 the B3 port does not cover, and any write or event Python's output checks
 could refuse. The reason is logged at debug level. The differential tests
 (`tests/integration/test_rust_block_executor.py`, the reward and fee corpora)
 and the bench (per-block app hash, receipt digest, success count and final
-state on all six workloads) check the outcomes against the Python path.
+state on every workload) check the outcomes against the Python path.
 
 What B4 means for the legacy process-pool parallel executor: it still works
 and its configuration is unchanged, but it runs the Python per-transaction
@@ -194,10 +197,45 @@ by default and gets no further work. The GIL is released for the whole Rust
 run, so a thread-based scheduler (step C) is possible now without Python
 callbacks in the hot path.
 
+B5 serves hash scans (`Hash.all`, `Hash.clear`, `Hash.clone_from`,
+`ForeignHash.all`, with or without a prefix) and the read-only metadata
+syscalls `contract.info` and `contract.code_hash` in Rust. A scan reads the
+block overlay's pending entries over one LMDB snapshot, as
+`Driver.iter_items` does: a pending deletion hides the stored entry, values
+are decoded as the scan reaches them, and the VM stops it when chi or the
+scan allocation bound (128 KiB, 131072 entries) runs out. The metadata
+syscalls also take a contract module handle, as the Python host does.
+
+Throughput after B5 (same harness, tx/s, median of two interleaved runs,
+load average 4-10; base is the B4 main). Every block was byte-identical to
+B4. The new `scanmeta` workload sends 200 transactions per block that each
+write two hash entries, scan a 12-entry hash group (pending and committed
+entries) and call `contract.info` and `contract.code_hash`; on B4 every one
+of them was handed back. Workloads without scans or metadata calls do not
+change (edge cases, 20 per block: 776 and 777 over three runs).
+
+| Workload | B4 | B5 | B5 vs B4 |
+|---|---|---|---|
+| Hash scans + metadata, 200 per block | 893 | 2153 | 2.41x |
+| Transfers, 200 per block | 1944 | 1961 | 1.01x |
+| Transfers, 1000 per block | 2116 | 2118 | 1.00x |
+| DEX, one hot pair, 200 per block | 597 | 603 | 1.01x |
+| CPU-heavy, 200 per block | 185 | 189 | 1.02x |
+| Mix, 30% DEX, 200 per block | 1118 | 1125 | 1.01x |
+
 Not ported yet (they run on the Python path, correctly but at Python speed):
-hash scans, `contract.info`, `contract.code_hash` and other metadata syscalls,
-and random. They are the next candidates if real traffic uses them on hot
-paths.
+random, deploy, the submission-only metadata changes (`contract.set_owner`,
+`contract.set_developer`) and zk. Random is the next candidate if real
+traffic uses it on hot paths. Porting it means: the per-transaction
+`DeterministicRandom` state in the block host (cleared per transaction,
+shared by nested calls), its seed material from the chain id, block number,
+block hash and the transaction's input hash (`__input_hash`, which the Rust
+transaction context does not carry yet) plus `aux_salt` formatted exactly
+as Python's `str()` formats each VM value, the SHA3-256 counter stream with
+`getrandbits` over arbitrary bit counts, `randbelow` rejection sampling,
+`random()` as 53 bits over 2^53, `shuffle`, `randint`, `choice` and
+`choices` with Python's error texts, and a differential corpus over all of
+them.
 
 Step B is complete. Step C (Block-STM) stays deferred: it needs multi-version
 state over `BlockState`, and its gain is about zero on hot contracts such as
