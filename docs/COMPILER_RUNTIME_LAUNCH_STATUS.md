@@ -37,7 +37,10 @@ accepted and the launch gates below are closed.
   bounded storage keys at LMDB's 511 bytes; revision 14 reads a `__delta__`
   wire value only as `[days, seconds]`, two integers, stores timedeltas and
   bytearrays, and moves the app hash to `xian-state-root-v3`, whose leaves
-  hash each value's stored bytes rather than its receipt JSON. Every chain fee
+  hash each value's stored bytes rather than its receipt JSON. Revision 14
+  also pays a failed paid transaction's charged fee out through the governed
+  reward split (the developer share goes to the validators) instead of
+  debiting it without a recipient. Every chain fee
   mode carries hard caps in `__fee_policy` (`max_tx_chi` 200,000 and
   `max_block_chi` 500,000 by default). V2 failure messages preserve the outer recognized
   exception type, so message text cannot change the reported error category.
