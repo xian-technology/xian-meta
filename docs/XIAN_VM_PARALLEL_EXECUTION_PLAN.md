@@ -259,11 +259,19 @@ earlier removed settings: a node rejects a `xian.toml` that still sets a
 (re-rendering the home writes a config without them), and `xian-cli` and
 `xian-deploy` reject profiles or templates that still carry the fields.
 
-The read-tracking support in the block overlay (`BlockState` access tracking,
-`Driver.transaction_access`) that the executor consumed stays for now with
-tracking off in the node; it has no remaining consumer and can be removed
-separately. Step C, if built, is a new design and does not reuse the removed
-executor.
+The read tracking the executor consumed was removed as a follow-up: the
+block overlay (`BlockState`) no longer records read keys and scanned
+prefixes, the Rust state view, committed reads and block executor no longer
+book them, and `Driver.transaction_access`, `set_transaction_read_tracking`,
+`clear_transaction_reads`, `track_transaction_reads`, the read sets in
+`NativeExecutor` output and the `save`/`mark` read-marking flags of
+`Driver.get`/`get_var` are gone. The node had kept tracking off, so execution
+is byte-identical: the differential tests and the determinism campaign match,
+and the bench (7 workloads, 2 interleaved runs each) gives the same app hashes,
+receipts, success counts and final state. Throughput is unchanged within
+noise (0.99-1.05x), as expected with tracking already off. Step C, if built,
+is a new design: it needs multi-version state, not this per-transaction read
+set.
 
 ## Diagnosis of the Removed Executor
 
