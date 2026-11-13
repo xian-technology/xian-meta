@@ -2,7 +2,8 @@
 
 Run `python3 -m unittest discover -s tests` from `xian-meta` to validate the
 graph freshness helper with temporary Git repositories, optional-checkout
-convention policy with temporary workspaces, and release-helper parity.
+convention policy with temporary workspaces, release-helper parity, and
+Rust toolchain parity.
 
 `fixtures/code_graph_cases.json` contains source-reviewed caller inventories
 for the code-graph comparison. Each case declares its production-source scope;

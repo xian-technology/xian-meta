@@ -13,6 +13,9 @@ Files:
 - `check_release_helper_parity.py`: checks that the SDK and linter release
   helpers remain byte-identical; edit both copies together until they use a
   shared published helper
+- `check_rust_toolchain_parity.py`: checks that every Rust toolchain pin in
+  the `xian-contracting` workflows equals the Rust version of the xian-stack
+  node image, so CI, release wheels and the node build use one compiler
 - `report_workspace_shas.py`: reports resolved sibling Git refs and SHAs for
   local debugging and CI job summaries
 - `graphify_workspace.py`: checks working-file and graph freshness, and
