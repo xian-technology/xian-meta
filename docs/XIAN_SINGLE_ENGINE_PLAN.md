@@ -70,4 +70,5 @@ bridges or `rt.env` must be rewritten; moving the zk proof cache may change prev
 
 | # | Status | Commits |
 |---|--------|---------|
-| 0-10 | not started | |
+| 0 | done (branch `engine/inc0-parity`, not merged): golden corpora in xian-abci `tests/fixtures/engine_parity/` with `test_engine_parity_corpus.py`; hand-back inventory `handback_inventory.json` (what increments 2-9 move) | xian-abci 2993bca |
+| 1-10 | not started | |
