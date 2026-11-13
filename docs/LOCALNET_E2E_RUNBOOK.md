@@ -25,8 +25,9 @@ make release-safety
 bootstrap, health, `xian-py` smoke, contract orchestration, load, invalid and
 conflicting transactions, DEX behavior, simulator load, BDS catch-up, retrieval
 APIs, determinism checks, validator governance, state patches, logging,
-shielded-note flows, same-block ordering, restart/chaos convergence,
-and soak/abuse coverage.
+shielded-note flows, switching the `zk` runtime feature off and on again with
+governed state patches (`15-zk-feature-toggle`), same-block ordering,
+restart/chaos convergence, and soak/abuse coverage.
 
 `make release-safety` is the release gate. It combines repo validation,
 the full e2e, node reporting, and the focused protocol-safety localnet
