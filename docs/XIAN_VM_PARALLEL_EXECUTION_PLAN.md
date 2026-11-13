@@ -19,7 +19,7 @@ parallel design. The roadmap is therefore:
 | Step | What | Status |
 |---|---|---|
 | A | Serial host speedups: copy-on-write (or journaled) block-state snapshots instead of `deepcopy`, and a parsed-IR cache keyed by content hash | landed (see below) |
-| B | Move the per-transaction block loop into Rust (`execute_block`): Rust-side LMDB reads and block overlay, fee reservation/settlement and reward deltas in Rust, GIL released | doing now |
+| B | Move the per-transaction block loop into Rust (`execute_block`): Rust-side LMDB reads and block overlay, fee reservation/settlement and reward deltas in Rust, GIL released | B0-B2 landed; B3, B4 next (see below) |
 | C | Block-STM-style multi-threading in Rust over multi-version state | deferred |
 
 Parallel mode stays disabled by default meanwhile (Phase 0 below). The
@@ -127,6 +127,63 @@ serial step; C stays deferred.
 Steps A and B must keep receipts, chi, `ContractingDecimal` rounding, error
 texts, event order and the sorted write list byte-identical; prove it with the
 determinism corpus, a parity corpus and app-hash replay.
+
+### Step B result so far
+
+Step B moves the per-transaction block loop into Rust in increments; every
+increment kept app hashes, receipts (including error texts), chi, fees,
+refunds, reward deltas, event order and final state byte-identical (checked
+with the determinism corpus, seed 20261103, and per-block app hash, receipt
+digest, success count and final state on six benchmark workloads).
+
+Landed:
+
+| Increment | What | Commits |
+|---|---|---|
+| B0 | Function IR shared by handle instead of cloned per call; entry charge and lexical bindings computed once per validated module | contracting `e2e492b4` |
+| Owner cache | Contract owner read once per execution, not per call | contracting `ba2bc995` |
+| B0b | Module-level declarations evaluated without copying the globals per declaration | contracting `08b7df3d` |
+| B1b | Rust owns the node's single LMDB environment (vendored LMDB 0.9.36); py-lmdb only in compatibility tests | contracting `d4c28cf5`, abci `a375933` |
+| B1a | Rust stored-value reader; committed VM reads served from LMDB in Rust; a rejected stored value is a host fault | contracting `21bc7ee2`, `1e2127a9` |
+| B2 | Block overlay in a Rust `BlockState` (pending writes as stored bytes in key order, tracked reads, one discarding scope); the driver and the node use a small explicit API; the VM reads pending and committed state in Rust; byte-identical Rust stored-value writer (prerequisite for B4) | contracting `8e69f0d2`, `b3cb041a`, `9097f065`; abci `95b4f95` |
+
+Throughput after B2 (revision 13), same harness as step A, tx/s, median of two
+interleaved runs, load average 4-5; the revision-12 baseline is xian-contracting
+`96363368` with xian-abci `711e8c5` (step A only), the previous step is main
+before B2 (B0 through B1a plus the revision-13 key-size fix). All bench venvs
+use the native admission fastpath, as the node image does. Previous step and B2
+were byte-identical on every block.
+
+| Workload | Rev 12 (step A) | Before B2 | After B2 | vs rev 12 | vs before B2 |
+|---|---|---|---|---|---|
+| Transfers, 200 per block | 872 | 1082 | 1132 | 1.30x | 1.05x |
+| Transfers, 1000 per block | 901 | 1084 | 1192 | 1.32x | 1.10x |
+| DEX, one hot pair, 200 per block | 158 | 374 | 403 | 2.55x | 1.08x |
+| CPU-heavy, 200 per block | 183 | 181 | 176 | 0.96x | 0.97x |
+| Mix, 30% DEX, 200 per block | 370 | 694 | 755 | 2.04x | 1.09x |
+| Edge cases, 20 per block | 505 | 550 | 584 | 1.16x | 1.06x |
+
+Most of the B gain so far is inside the VM (shared function IR, owner cache)
+and in the block overlay (no Python dict lookups or callbacks per read, one
+encode per write, no read cache). CPU-heavy work is pure interpretation and is
+unchanged.
+
+Remaining in step B:
+
+- B3: fee reservation and settlement, refunds and reward deltas in Rust.
+  The reward path mixes Python `decimal` at its default 28-digit context
+  (half-even; the participant reward is rounded to 8 places) with
+  `ContractingDecimal` (30 fractional digits, rounding down) and divides by the
+  chain chi rate (read only as `chain_chi_rate` does: a missing rate is
+  refused). xian-abci `tests/fixtures/reward_outputs.json` pins the current
+  outputs over 160 generated configurations as the differential corpus for the
+  port. Wire it in with B4.
+- B4: `execute_block` with the GIL released over `BlockState`; transactions
+  that need Python (random, zk, deploy) hand the overlay back and run the
+  existing path. The process-pool parallel executor stays as legacy, off by
+  default.
+
+Step C (Block-STM) stays deferred until B is measured.
 
 ## Current Diagnosis
 
