@@ -73,17 +73,19 @@ Recorded as golden behaviour today; increment 7 must give each an explicit rule 
 3. A malformed reward split (short list, str, dict) fails every paid transaction, including the governance transaction that would repair it.
 4. A failed transaction from a sender with a negative balance sets the balance to 0, minting the difference.
 5. The Rust "receipt encoding refuses" hand-back (RawDecimal, DecimalTuple, Float, Reference) is unreachable from V2 contracts; remove it with its Python counterpart.
-6. Random seed salts other than str/int/bool/None are still handed back to Python after increment 5 (bools are served as
-   Python formats them, `True`/`False`); decision 4 makes them a defined error. Increment 5 also hands back random calls
-   with other argument or population types (dict, set, tuple, decimal, ...) and call shapes Python refuses with its own
-   `TypeError` (wrong arity, unknown keywords); increment 7 gives them explicit errors.
+6. Resolved in revision 14 (`fix/random-work-bounds`): `random.seed` salts other than str/int/bool/None and
+   `choice`/`choices` populations other than list/tuple/str/bytes/bytearray are defined errors (decision 4),
+   checked by the VM before any host. Still handed back: number arguments of other types and call shapes Python
+   refuses with its own `TypeError` (wrong arity, unknown keywords); increment 7 gives them explicit errors.
 7. The fixed 5-chi base charge is not counted against `chi_supplied` (out-of-chi only when raw cost > supplied x 1000; chi_used = min(raw/1000 + 5, supplied)), so a transaction can supply up to 4 chi less than its cost and still succeed. Approved fix (2026-11-13): the base charge counts against the budget. The simulator must then estimate with the real signed envelope (the sender's real nonce and the final chi value's digits) so exact supply never fails at a chi boundary.
-8. `random.getrandbits(k)` does host work and memory proportional to `k` for a flat ~20 chi, and any `k` up to 2^512 is
-   accepted (k = 2^26 takes 0.2 s; k = 2^40 needs 128 GB: every validator stalls or runs out of memory, a chain halt
-   from one transaction). `random.choices(items, k)` likewise draws `k` times before the VM's element-work limit refuses
-   the result (k = 4,000,000: 7.5 s). Increment 5 serves k up to 2^20 bits/draws and hands larger ones back, so the
-   outcome is unchanged; increment 7 must define a rule (for example: a `getrandbits` result above 512 bits is an error
-   before drawing, and `choices` charges or bounds `k` before drawing).
+8. Resolved in revision 14 (`fix/random-work-bounds`): host work that grew with an argument is refused or charged
+   before it runs, the same on both paths: `getrandbits` above 512 bits fails with the V2 boundary's own text before
+   drawing (it used to draw first: k = 2^40 needed 128 GB); `choices` above the sequence limit (131,072) fails like a
+   sequence repetition; a range-backed `list`/`tuple`/`set`/`sorted`/`reversed` longer than the limit is refused before
+   iterating (it collected 131,072 items for 20 chi first); `importlib.code_hash` charges 4 raw chi per hashed byte
+   (a 1 MB IR was hashed on every call for ~6 chi). Checked and already bounded or charged up front: hashlib, crypto,
+   zk, string/bytes size arguments, repetition, `bytes(n)`. Python-path only (simulations, contract views until
+   increment 8): `shuffle`/`choices` draw at 45-55x the baseline time per chi there (Rust: 4-8x).
 
 Also: CI has no zk extra, so the zk parity corpus is skipped in CI; increment 6 (decision 5: zk in every build) must make CI run it.
 
@@ -97,4 +99,5 @@ Also: CI has no zk extra, so the zk parity corpus is skipped in CI; increment 6 
 | 3 | done (branch `engine/inc3-owner`, not merged): `contract.set_owner` / `set_developer` in the Rust block host (`block_host::metadata::change` stages via `HostWrites`; `block_host::charges::HostCharges` = `_record_raw_cost`: (encoded key + value) * 25 raw, no write cap, shared budget, entry-contract attribution); only `submission.submit_contract` is still handed back; the executor gets the submission name; byte-identical (owner corpus in Rust with unchanged golden outputs, metadata differential test in paid/free/unmetered mode, determinism campaign, bench) | xian-contracting 7ef32957, xian-abci 1a5fbde |
 | 4 | done (branch `engine/inc4-deploy`, not merged): contract submission and `contract.deploy` in the Rust block host (`block_host::deploy`; vm-core links `xian-compiler-core`, whose `compiler_error_message` gives the exact `CompilerError` text; name/exists/source checks, normalize(lint) + IR(lint=false), IR validation, zk check from `__runtime_features.zk` else the node's installed features (`zk_enabled_without_state`), constructor in a nested executor over the same host and budget, metadata + constructor effects staged and charged, `DEPLOYMENT_BASE_COST` + source bytes; missing source fails as `vm_requires_contract_source`); no submission or deploy hand-back left; byte-identical (deploy corpus 41 cases + policy corpora on the Rust path, deployment differential test in paid/free/unmetered mode, determinism campaign, bench). Open: 5-node localnet e2e | xian-contracting a84859f8 14df7743, xian-abci 130cfac |
 | 5 | done (branch `engine/inc5-random`, not merged): vm-core `src/block_host/random.rs` (+ `random/stream.rs`): `DeterministicRandom` and the random syscalls in the Rust block host, one state per transaction shared by nested calls (and constructors once deploy runs there); `VmExecutionContext.input_hash` carries the transaction's `__input_hash` from the node. Hand-backs left: finding 6 and the large draws of finding 8. Parity hook `_random_syscalls_debug` fuzzed against the Python bridge; random corpus 35 -> 9 hand-backs (the non-str/int/bool/None salts), `free/random`, `unmetered/random` and `unmetered/out_of_chi` run in Rust too. Also fixed a production-path difference found by the new differential test: the Rust executor charged an entry result with ints of 54-63 bits in its non-V2 encoding (plain number instead of `__big_int__`), so chi and the developer split differed from the Python path; it now runs the bundle in the V2 numeric scope like `execute_bundle`. | xian-contracting 1fc1cbdb 23a0fbb9, xian-abci 5aa6f7e ac0b773 |
+| 5b | done (branch `fix/random-work-bounds`, not merged; revision 14): findings 6 and 8 resolved (see above); random corpus hand-backs 9 -> 0; golden changes only for the 9 non-str/int salt cases (README in the fixtures) | xian-contracting 09472e86, xian-abci c546c68 |
 | 6-10 | not started | |
