@@ -151,7 +151,7 @@ so this is silent data loss rather than just rejection.
 
 Sources: [SDK signing/broadcast](../../xian-js/packages/client/src/client.ts#L1078),
 [node canonical-byte check](../../xian-abci/src/xian/utils/encoding.py#L72),
-[native canonical writer](../../xian-contracting/packages/xian-fastpath-core/src/lib.rs#L376).
+[native canonical writer](../../xian-contracting/packages/xian-fastpath-core/src/canonical.rs).
 
 **Fix:** use a canonical JSON writer that emits sorted key/value pairs directly,
 and preserve own keys safely throughout object copying and decoding. Changing

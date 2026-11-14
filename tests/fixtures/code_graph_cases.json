@@ -227,31 +227,31 @@
     {
       "repo": "xian-contracting",
       "target": "contract_name_is_formatted",
-      "file": "packages/xian-fastpath-core/src/lib.rs",
+      "file": "packages/xian-fastpath-core/src/rules.rs",
       "scope": [
         "packages/xian-fastpath-core/src/"
       ],
       "expected": [
         {
-          "file": "packages/xian-fastpath-core/src/lib.rs",
-          "name": "is_valid_submission_name",
-          "call_line": 310
+          "file": "packages/xian-fastpath-core/src/rules.rs",
+          "name": "require_submission_name",
+          "call_line": 126
         }
       ],
       "truth": "Manually checked source call sites"
     },
     {
       "repo": "xian-contracting",
-      "target": "is_valid_submission_name",
-      "file": "packages/xian-fastpath-core/src/lib.rs",
+      "target": "require_submission_name",
+      "file": "packages/xian-fastpath-core/src/rules.rs",
       "scope": [
         "packages/xian-fastpath-core/src/"
       ],
       "expected": [
         {
-          "file": "packages/xian-fastpath-core/src/lib.rs",
-          "name": "validate_transaction_static_impl",
-          "call_line": 223
+          "file": "packages/xian-fastpath-core/src/rules.rs",
+          "name": "validate_transaction_static",
+          "call_line": 48
         }
       ],
       "truth": "Manually checked source call sites"
