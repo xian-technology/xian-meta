@@ -53,6 +53,7 @@ import random
 
 random.seed()
 random.seed("round-2")
+random.random()
 random.getrandbits(k)
 random.shuffle(items)
 random.randrange(k)
@@ -67,6 +68,9 @@ But the implementation changes:
 - no module-global seeded flag
 - one execution-local deterministic RNG state
 - explicit reset between top-level executions
+- `random.random()` is an exact decimal in [0, 1): `randbelow(10**30) / 10**30`,
+  drawn like `randrange(10**30)` (Python's is a 53-bit binary float; the VM
+  has no floats)
 
 ## Seed Material
 

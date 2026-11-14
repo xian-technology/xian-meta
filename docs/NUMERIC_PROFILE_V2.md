@@ -46,13 +46,15 @@ truncation toward zero of x × S, divided by S.
 | `mul_div_floor(a,b,d)`, `mul_div_ceil(a,b,d)` | Three ints with d > 0. Return floor or ceiling of a×b/d as an int, with one division. The product can exceed the result range. |
 | `sqrt(x)` | Nonnegative int or decimal. Return the largest representable decimal whose mathematical square is ≤ x. |
 | `quantize(x, places, mode)` | Return decimal rounded to a multiple of 10**−places. Places is an int in [0,30]. The four modes are `toward_zero`, `floor`, `ceil` and `half_even`. Half-even chooses the nearest multiple, choosing the even coefficient on a tie. |
+| `round(x)`, `round(x, n)` | Python's `round`, half to even. `round(x)` of a decimal is an int; `round(x, n)` of a decimal is the decimal rounded to a multiple of 10**−n (n may be negative; n > 30 returns x); `round` of an int is an int (negative n rounds to a multiple of 10**−n). n is an int or None; a bool is neither number. Work is bounded for any n. |
+| `random.random()` | A decimal in [0, 1): `randbelow(10**30) / 10**30` from the transaction's random stream (Python's is a 53-bit binary float). |
 
 Zero denominators, invalid types, negative square roots, unknown rounding modes
 and out-of-range results fail deterministically. A failed contract call commits
 no writes or events. The current V2 policy uses execution revision `xvm-execution-14`, gas schedule
 `xvm-gas-6` and bytecode `xvm-2`; the numeric charges below are unchanged since
 `xvm-gas-3`. The additional raw computation charge is
-96 units for a numeric binary operation, 96 for `quantize` or `sqrt`, and
+96 units for a numeric binary operation, 96 for `quantize`, `round` or `sqrt`, and
 192 for either `mul_div` helper. Power charges 96 times (1 + the exponent
 bit length, capped at 512 bits). These are additions to execution and I/O
 charges, not a whole-call chi estimate.
