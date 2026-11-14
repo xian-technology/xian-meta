@@ -91,9 +91,11 @@ Implemented model (decision option 2, constrained discovery):
 
 Implemented model:
 
-- simulation runs in bounded worker processes with explicit
-  `simulation_max_concurrency`, `simulation_timeout_ms`, and
-  `simulation_max_chi` limits
+- simulation runs in-process with the block's Rust rules on a fork of the
+  pending state (single-engine plan, increment 8; the worker processes are
+  gone), bounded by its chi budget and the explicit
+  `simulation_max_concurrency`, `simulation_timeout_ms` (response deadline)
+  and `simulation_max_chi` limits; a Rust panic becomes a simulation error
 - node bindings are fail-closed loopback by default; exposing RPC (and with
   it simulation) requires the explicit `--public-rpc` opt-in
 - operators who deliberately expose public RPC accept the residual bounded
