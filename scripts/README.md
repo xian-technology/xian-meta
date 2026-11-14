@@ -8,8 +8,9 @@ Files:
 - `bootstrap_workspace.py`: reads `../workspace-repos.json` and clones missing
   sibling repos into the expected local layout, or prints commands with
   `--dry-run`
-- `check_repo_conventions.py`: checks required root files and root README
-  section headings across repos declared in `../workspace-repos.json`
+- `check_repo_conventions.py`: checks required root files (including an MIT
+  `LICENSE`) and root README section headings across repos declared in
+  `../workspace-repos.json`
 - `check_release_helper_parity.py`: checks that the SDK and linter release
   helpers remain byte-identical; edit both copies together until they use a
   shared published helper

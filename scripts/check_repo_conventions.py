@@ -13,6 +13,10 @@ REQUIRED_README_MARKERS = (
     "## Related Docs",
 )
 
+LICENSE_FILE = "LICENSE"
+REQUIRED_ROOT_FILES = ("README.md", "AGENTS.md", LICENSE_FILE)
+LICENSE_FIRST_LINE = "MIT License"
+
 
 def read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
@@ -20,6 +24,36 @@ def read_text(path: Path) -> str:
 
 def load_manifest(manifest_path: Path) -> dict:
     return json.loads(manifest_path.read_text(encoding="utf-8"))
+
+
+def check_license(repo: Path, repo_name: str) -> list[str]:
+    license_path = repo / LICENSE_FILE
+    if not license_path.exists():
+        return []
+    first_line = read_text(license_path).strip().partition("\n")[0]
+    if first_line != LICENSE_FIRST_LINE:
+        return [f"{repo_name}: LICENSE is not the MIT license"]
+    return []
+
+
+def check_full_tier(repo: Path, repo_entry: dict) -> list[str]:
+    errors: list[str] = []
+    repo_name = repo_entry["name"]
+    docs_dir = repo_entry.get("docs_dir", "docs")
+    internal_required = (f"{docs_dir}/ARCHITECTURE.md", f"{docs_dir}/BACKLOG.md")
+
+    for rel in internal_required:
+        if not (repo / rel).exists():
+            errors.append(f"{repo_name}: missing {rel}")
+
+    readme_path = repo / "README.md"
+    if readme_path.exists():
+        readme_text = read_text(readme_path)
+        for marker in REQUIRED_README_MARKERS:
+            if marker not in readme_text:
+                errors.append(f"{repo_name}: README.md missing heading {marker}")
+
+    return errors
 
 
 def check_repo(repo_root: Path, repo_entry: dict, *, require_missing: bool) -> list[str]:
@@ -30,25 +64,13 @@ def check_repo(repo_root: Path, repo_entry: dict, *, require_missing: bool) -> l
     if not repo.exists():
         return [f"{repo_name}: repo path is missing"] if require_missing else []
 
-    for rel in ("README.md", "AGENTS.md"):
+    for rel in REQUIRED_ROOT_FILES:
         if not (repo / rel).exists():
             errors.append(f"{repo_name}: missing {rel}")
+    errors.extend(check_license(repo, repo_name))
 
-    tier = repo_entry.get("tier", "light")
-    if tier == "full":
-        docs_dir = repo_entry.get("docs_dir", "docs")
-        internal_required = (f"{docs_dir}/ARCHITECTURE.md", f"{docs_dir}/BACKLOG.md")
-
-        for rel in internal_required:
-            if not (repo / rel).exists():
-                errors.append(f"{repo_name}: missing {rel}")
-
-        readme_path = repo / "README.md"
-        if readme_path.exists():
-            readme_text = read_text(readme_path)
-            for marker in REQUIRED_README_MARKERS:
-                if marker not in readme_text:
-                    errors.append(f"{repo_name}: README.md missing heading {marker}")
+    if repo_entry.get("tier", "light") == "full":
+        errors.extend(check_full_tier(repo, repo_entry))
 
     return errors
 

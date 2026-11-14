@@ -43,6 +43,7 @@ Full-tier repos should have:
 
 - `README.md`
 - `AGENTS.md`
+- `LICENSE`
 
 Full-tier repos should also expose two stable internal note entrypoints:
 
@@ -57,6 +58,7 @@ Light-tier repos should have:
 
 - `README.md`
 - `AGENTS.md`
+- `LICENSE`
 
 Light-tier repos may add `docs/ARCHITECTURE.md` and `docs/BACKLOG.md` when
 their operational or security surface grows. Promote them to the full tier once
@@ -66,9 +68,29 @@ Exempt repos are intentionally outside the shared checker. Forked upstream
 repos should be marked exempt instead of silently failing to match local
 conventions.
 
+## License
+
+Every non-exempt repo is MIT-licensed. The root `LICENSE` file carries the
+standard SPDX MIT text with the holder line
+`Copyright (c) <first-year>-<current-year> Xian Technology`, where the first
+year is the year of the repo's first commit (a single year when both match).
+The checker requires the file and its `MIT License` title.
+
+- Package metadata says `MIT`: `license = "MIT"` with
+  `license-files = ["LICENSE"]` in `pyproject.toml`, `"license": "MIT"` in
+  `package.json`, `license = "MIT"` in `Cargo.toml`.
+- A package built from a sub-directory carries its own copy of the root
+  `LICENSE`, because its sdist, wheel, crate or npm package cannot reach the
+  repo root. A `package.json` that restricts `files` lists `LICENSE`.
+- Vendored third-party code keeps its own license and notices next to the
+  code, and the owning package's license expression names it, for example
+  `MIT AND OLDAP-2.8` for the LMDB sources in `xian-vm-core`.
+- Exempt forks keep their upstream license.
+
 ## Meaning Of The Standard Files
 
 - `README.md`: public repo entrypoint
+- `LICENSE`: the repo's MIT license
 - `AGENTS.md`: fast AI/operator orientation for the repo
 - `docs/ARCHITECTURE.md`: major components, ownership, dependency direction
 - `docs/BACKLOG.md`: future work, open problems, follow-up items, and links to deeper notes

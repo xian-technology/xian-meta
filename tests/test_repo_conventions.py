@@ -17,6 +17,8 @@ spec = importlib.util.spec_from_file_location(
 checker = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(checker)
 
+MIT_LICENSE_HEAD = "MIT License\n\nCopyright (c) 2026 Xian Technology\n"
+
 
 class OptionalCheckoutTest(unittest.TestCase):
     def setUp(self):
@@ -78,14 +80,42 @@ class OptionalCheckoutTest(unittest.TestCase):
         )
         self.assertEqual(result, 0)
 
-    def test_valid_optional_checkout_passes(self):
+    def write_valid_checkout(self):
         root = self.workspace / self.repo["name"]
         files = ("README.md", "AGENTS.md", "docs/ARCHITECTURE.md", "docs/BACKLOG.md")
         for relative in files:
             path = root / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("## Validation\n\n## Related Docs\n")
+        (root / "LICENSE").write_text(MIT_LICENSE_HEAD)
+        return root
+
+    def test_valid_optional_checkout_passes(self):
+        self.write_valid_checkout()
         self.assertEqual(self.check()[0], 0)
+
+    def test_missing_license_is_reported(self):
+        (self.write_valid_checkout() / "LICENSE").unlink()
+        result, output = self.check()
+        self.assertEqual(result, 1)
+        self.assertIn("xian-optional: missing LICENSE", output)
+
+    def test_non_mit_license_is_reported(self):
+        root = self.write_valid_checkout()
+        (root / "LICENSE").write_text("                                 Apache License\n")
+        result, output = self.check()
+        self.assertEqual(result, 1)
+        self.assertIn("xian-optional: LICENSE is not the MIT license", output)
+
+    def test_light_tier_requires_license(self):
+        self.repo.update(tier="light")
+        root = self.workspace / self.repo["name"]
+        root.mkdir()
+        for relative in ("README.md", "AGENTS.md"):
+            (root / relative).write_text("# Repo\n")
+        result, output = self.check()
+        self.assertEqual(result, 1)
+        self.assertIn("xian-optional: missing LICENSE", output)
 
     def test_unknown_selection_is_rejected(self):
         result, output = self.check("--repo", "unknown")
