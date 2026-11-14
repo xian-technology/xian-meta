@@ -15,7 +15,13 @@ REQUIRED_README_MARKERS = (
 
 LICENSE_FILE = "LICENSE"
 REQUIRED_ROOT_FILES = ("README.md", "AGENTS.md", LICENSE_FILE)
-LICENSE_FIRST_LINE = "MIT License"
+DEFAULT_LICENSE = "MIT"
+# The opening lines of each license text a repo may carry, by SPDX id. A repo
+# other than MIT records "license" and "license_reason" in the manifest.
+LICENSE_HEADS = {
+    "MIT": ("MIT License",),
+    "GPL-3.0-only": ("GNU GENERAL PUBLIC LICENSE", "Version 3, 29 June 2007"),
+}
 
 
 def read_text(path: Path) -> str:
@@ -26,13 +32,26 @@ def load_manifest(manifest_path: Path) -> dict:
     return json.loads(manifest_path.read_text(encoding="utf-8"))
 
 
-def check_license(repo: Path, repo_name: str) -> list[str]:
+def license_exception_errors(repo_entry: dict) -> list[str]:
+    repo_name = repo_entry["name"]
+    spdx = repo_entry.get("license", DEFAULT_LICENSE)
+    if spdx not in LICENSE_HEADS:
+        return [f"{repo_name}: unsupported license {spdx}"]
+    if spdx != DEFAULT_LICENSE and not repo_entry.get("license_reason"):
+        return [f"{repo_name}: license exception {spdx} needs a license_reason"]
+    return []
+
+
+def check_license(repo: Path, repo_entry: dict) -> list[str]:
+    errors = license_exception_errors(repo_entry)
     license_path = repo / LICENSE_FILE
-    if not license_path.exists():
-        return []
-    first_line = read_text(license_path).strip().partition("\n")[0]
-    if first_line != LICENSE_FIRST_LINE:
-        return [f"{repo_name}: LICENSE is not the MIT license"]
+    if errors or not license_path.exists():
+        return errors
+    spdx = repo_entry.get("license", DEFAULT_LICENSE)
+    lines = [line.strip() for line in read_text(license_path).strip().splitlines()]
+    head = LICENSE_HEADS[spdx]
+    if tuple(lines[: len(head)]) != head:
+        return [f"{repo_entry['name']}: LICENSE is not the {spdx} license"]
     return []
 
 
@@ -67,7 +86,7 @@ def check_repo(repo_root: Path, repo_entry: dict, *, require_missing: bool) -> l
     for rel in REQUIRED_ROOT_FILES:
         if not (repo / rel).exists():
             errors.append(f"{repo_name}: missing {rel}")
-    errors.extend(check_license(repo, repo_name))
+    errors.extend(check_license(repo, repo_entry))
 
     if repo_entry.get("tier", "light") == "full":
         errors.extend(check_full_tier(repo, repo_entry))

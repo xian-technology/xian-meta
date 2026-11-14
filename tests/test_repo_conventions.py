@@ -18,6 +18,11 @@ checker = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(checker)
 
 MIT_LICENSE_HEAD = "MIT License\n\nCopyright (c) 2026 Xian Technology\n"
+GPL3_LICENSE_HEAD = (
+    "                    GNU GENERAL PUBLIC LICENSE\n"
+    "                       Version 3, 29 June 2007\n"
+)
+MANIFEST = Path(__file__).absolute().parents[1] / "workspace-repos.json"
 
 
 class OptionalCheckoutTest(unittest.TestCase):
@@ -107,6 +112,47 @@ class OptionalCheckoutTest(unittest.TestCase):
         self.assertEqual(result, 1)
         self.assertIn("xian-optional: LICENSE is not the MIT license", output)
 
+    def test_recorded_gpl_exception_passes(self):
+        self.repo.update(license="GPL-3.0-only", license_reason="Lamden-derived code.")
+        (self.write_valid_checkout() / "LICENSE").write_text(GPL3_LICENSE_HEAD)
+        self.assertEqual(self.check()[0], 0)
+
+    def test_gpl_license_without_exception_is_reported(self):
+        (self.write_valid_checkout() / "LICENSE").write_text(GPL3_LICENSE_HEAD)
+        result, output = self.check()
+        self.assertEqual(result, 1)
+        self.assertIn("xian-optional: LICENSE is not the MIT license", output)
+
+    def test_exception_requires_the_recorded_license_file(self):
+        self.repo.update(license="GPL-3.0-only", license_reason="Lamden-derived code.")
+        self.write_valid_checkout()
+        result, output = self.check()
+        self.assertEqual(result, 1)
+        self.assertIn("xian-optional: LICENSE is not the GPL-3.0-only license", output)
+
+    def test_gpl_2_text_does_not_satisfy_a_gpl_3_exception(self):
+        self.repo.update(license="GPL-3.0-only", license_reason="Lamden-derived code.")
+        (self.write_valid_checkout() / "LICENSE").write_text(
+            "GNU GENERAL PUBLIC LICENSE\nVersion 2, June 1991\n"
+        )
+        result, output = self.check()
+        self.assertEqual(result, 1)
+        self.assertIn("LICENSE is not the GPL-3.0-only license", output)
+
+    def test_exception_requires_a_reason(self):
+        self.repo.update(license="GPL-3.0-only")
+        (self.write_valid_checkout() / "LICENSE").write_text(GPL3_LICENSE_HEAD)
+        result, output = self.check()
+        self.assertEqual(result, 1)
+        self.assertIn("xian-optional: license exception GPL-3.0-only needs a license_reason", output)
+
+    def test_unsupported_license_is_reported(self):
+        self.repo.update(license="Apache-2.0", license_reason="Upstream code.")
+        self.write_valid_checkout()
+        result, output = self.check()
+        self.assertEqual(result, 1)
+        self.assertIn("xian-optional: unsupported license Apache-2.0", output)
+
     def test_light_tier_requires_license(self):
         self.repo.update(tier="light")
         root = self.workspace / self.repo["name"]
@@ -132,3 +178,14 @@ class OptionalCheckoutTest(unittest.TestCase):
             "--repo", "xian-optional", "--allow-missing", "xian-optional"
         )
         self.assertEqual(result, 0)
+
+
+class WorkspaceLicenseTest(unittest.TestCase):
+    def test_only_contracting_records_a_license_exception(self):
+        repos = checker.load_manifest(MANIFEST)["repos"]
+        exceptions = {
+            repo["name"]: repo["license"] for repo in repos if "license" in repo
+        }
+        self.assertEqual(exceptions, {"xian-contracting": "GPL-3.0-only"})
+        contracting = next(r for r in repos if r["name"] == "xian-contracting")
+        self.assertIn("Lamden", contracting["license_reason"])

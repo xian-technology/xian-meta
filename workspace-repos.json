@@ -39,7 +39,9 @@
       "name": "xian-contracting",
       "category": "core-protocol",
       "tier": "full",
-      "clone_by_default": true
+      "clone_by_default": true,
+      "license": "GPL-3.0-only",
+      "license_reason": "src/contracting (xian-tech-contracting) derives from Lamden's contracting, whose author last licensed it GPL-3.0; it and the repo root stay GPL-3.0-only. The packages under packages/ are Xian's own work and MIT, each with its own LICENSE."
     },
     {
       "name": "xian-deploy",

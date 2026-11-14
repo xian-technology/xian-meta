@@ -70,13 +70,27 @@ conventions.
 
 ## License
 
-Every non-exempt repo is MIT-licensed. The root `LICENSE` file carries the
-standard SPDX MIT text with the holder line
+Every non-exempt repo is MIT-licensed unless `workspace-repos.json` records a
+license exception for it. The root `LICENSE` file carries the standard SPDX MIT
+text with the holder line
 `Copyright (c) <first-year>-<current-year> Xian Technology`, where the first
 year is the year of the repo's first commit (a single year when both match).
-The checker requires the file and its `MIT License` title.
+The checker requires the file and the title of the repo's license.
 
-- Package metadata says `MIT`: `license = "MIT"` with
+A license exception is two manifest fields on the repo entry: `license`, an
+SPDX id the checker knows (`GPL-3.0-only`), and `license_reason`, why the repo
+cannot be MIT. The checker then requires that license's text in `LICENSE`
+instead of MIT. There is one exception:
+
+- `xian-contracting` is `GPL-3.0-only`. `src/contracting`
+  (`xian-tech-contracting`) derives from Lamden's contracting, which its author
+  last licensed under GPL-3.0, so the package and the repo root stay
+  GPL-3.0-only. The packages under its `packages/` are Xian's own work and MIT,
+  each with its own `LICENSE`; none of them may depend on or import
+  `contracting` at runtime (xian-contracting tests this), so the SDKs built on
+  them stay MIT.
+
+- Package metadata names the package's license, normally `MIT`: `license = "MIT"` with
   `license-files = ["LICENSE"]` in `pyproject.toml`, `"license": "MIT"` in
   `package.json`, `license = "MIT"` in `Cargo.toml`.
 - A package built from a sub-directory carries its own copy of the root
@@ -90,7 +104,7 @@ The checker requires the file and its `MIT License` title.
 ## Meaning Of The Standard Files
 
 - `README.md`: public repo entrypoint
-- `LICENSE`: the repo's MIT license
+- `LICENSE`: the repo's license (MIT unless the manifest records an exception)
 - `AGENTS.md`: fast AI/operator orientation for the repo
 - `docs/ARCHITECTURE.md`: major components, ownership, dependency direction
 - `docs/BACKLOG.md`: future work, open problems, follow-up items, and links to deeper notes
