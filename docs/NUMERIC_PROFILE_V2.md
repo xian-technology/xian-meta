@@ -5,8 +5,9 @@ defines the arithmetic, interchange and expected results for conformance.
 The genesis manifest selects the profile. The standalone compiler and network
 SDKs default to V2. Public `ContractingClient` execution accepts only V2,
 including the profile of an injected driver.
-Low-level native tools select V1 explicitly for historical artifact/state
-verification and migration; SDK V1 encoding remains available for historical
+Current code executes only V2. Compilation and encoding tools select V1
+explicitly for historical artifacts, state and migration (V1 execution uses
+the pinned older release); SDK V1 encoding remains available for historical
 signed-payload fixtures. A V2 node must reject incompatible persisted state.
 
 ## Values and input

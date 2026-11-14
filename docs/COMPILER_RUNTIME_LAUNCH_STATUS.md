@@ -27,10 +27,14 @@ accepted and the launch gates below are closed.
 - The current source tree targets fresh `xian_vm_v2` genesis using the
   [V2 numeric specification](NUMERIC_PROFILE_V2.md). Standalone compilation
   defaults to that profile. Public `ContractingClient` execution is V2-only;
-  explicit V1 profiles and V1 drivers are rejected. Low-level native V1 compilation, storage, encoding and
-  execution remain for historical verification and migration tools.
+  explicit V1 profiles and V1 drivers are rejected. Every transaction, simulation,
+  contract view, genesis deploy and local client call runs in Rust (vm-core
+  `BlockExecutor` / `execute_tx`); there is no Python execution path. Current
+  code does not execute V1: V1 compilation, IR validation and stored-value
+  encoding remain for migration and archival tooling, and V1 execution or
+  historical replay uses the pinned older release (xian-migration pins one).
 - The current V2 execution revision is `xvm-execution-14` with gas schedule
-  `xvm-gas-6`; archival native V1 remains `xvm-execution-7`. Revision 11
+  `xvm-gas-6`. Revision 11
   priced size-dependent work (text scans, comparisons, boundary values, hash
   scans) by size and capped one V2 transaction at 1,000,000 chi; revision 12
   gave V2 dictionaries a hash index with in-place mutation; revision 13
@@ -58,9 +62,8 @@ accepted and the launch gates below are closed.
 - The Rust compiler core is authoritative for source-to-IR output and
   diagnostics across Python bindings, WASM/JavaScript, the standalone linter,
   and native node deployment admission. Current contract execution uses the
-  native VM without a CPython executor, bytecode transformer or line tracer.
-  Shared Python host context and bridge helpers are independent of the retired
-  execution engine.
+  native VM without a CPython executor, bytecode transformer or line tracer,
+  and without a Python execution host.
 - Compiler admission enforces identical deterministic bounds across those
   surfaces: 128 KiB source, 50,000 syntax nodes, depth 64, 100,000 tokens,
   4,096 tokens per logical line, 1 MiB canonical IR JSON, and 512

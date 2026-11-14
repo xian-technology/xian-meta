@@ -57,7 +57,8 @@ At those inspected revisions the node policy names were `xian_vm_v1`,
 `xvm-execution-5`, `xvm-gas-2`, `xvm-1` and `xian-set-1`. These identifiers are
 evidence of explicit versioning, not an implemented plugin or upgrade system.
 Use `COMPILER_RUNTIME_LAUNCH_STATUS.md` for the current V2-only node/public-client
-boundary and the archival role of low-level native V1.
+boundary; current code does not execute V1 (only V1 compilation and encoding
+remain, for migration and archival tooling).
 
 Source entrypoints:
 

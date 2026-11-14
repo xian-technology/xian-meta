@@ -7,9 +7,10 @@ execution-policy examples and Python-oracle tooling below describe that
 recorded baseline, not the supported current client or node API.
 
 For current compiler authority, runtime coverage and release requirements, use
-`COMPILER_RUNTIME_LAUNCH_STATUS.md`. Current nodes and public local clients
-execute native V2; low-level native V1 is reserved for historical verification
-and migration, and historical Python observers use pinned archived packages.
+`COMPILER_RUNTIME_LAUNCH_STATUS.md`. Current code executes only native V2, in
+Rust; V1 compilation and encoding remain for migration and archival tooling,
+V1 execution uses the pinned older release, and historical Python observers
+use pinned archived packages.
 
 ## What This Slice Added
 

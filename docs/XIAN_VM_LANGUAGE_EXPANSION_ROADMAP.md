@@ -41,10 +41,11 @@ That means the expansion rule is now:
 ## Recorded Starting Position
 
 The following list records the roadmap's earlier V1 starting point. For current
-execution boundaries, use `COMPILER_RUNTIME_LAUNCH_STATUS.md`: public local
-clients are native V2-only, low-level native V1 serves historical verification
-and migration, and Python observations are immutable archived evidence rather
-than a maintained execution engine.
+execution boundaries, use `COMPILER_RUNTIME_LAUNCH_STATUS.md`: current code
+executes only native V2, in Rust; V1 compilation and encoding serve migration
+and archival tooling (V1 execution uses the pinned older release); and Python
+observations are immutable archived evidence rather than a maintained
+execution engine.
 
 The recorded branch had:
 
