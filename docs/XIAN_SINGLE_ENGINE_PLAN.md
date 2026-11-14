@@ -90,7 +90,9 @@ Recorded as golden behaviour today; increment 7 must give each an explicit rule 
 9. Found in increment 6 (pre-existing, kept byte-identical on both paths): the zk runtime feature is checked only where
    a module is prepared (the transaction's import graph), by `importlib.has_export` and at deployment. A contract
    that imports a zk contract dynamically (`importlib.import_module`) and calls it still runs its zk syscalls while
-   the feature is off. Increment 7 should decide whether the feature also gates the syscalls themselves.
+   the feature is off. Decided (2026-11-14, as the user intends: with zk off, deployed zk contracts no longer work and
+   their transactions just fail): with zk off, every zk syscall fails with an ordinary failed receipt, however the
+   contract was reached. Increment 7 implements it (consensus change).
 
 Resolved in increment 6: CI had no zk extra, so the zk parity corpus was skipped in CI. vm-core now links the
 verifier, so every corpus runs with the default extras (decision 5).
