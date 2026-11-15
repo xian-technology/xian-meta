@@ -20,10 +20,19 @@ that imply this network is live until the final gates below are closed.
 - `networks/mainnet/manifest.json`
 - `networks/mainnet/privacy/artifacts.json`
 
-The draft bundle starts from one bootstrap validator and uses
-`selection_mode = "auto_top_n"` with `max_validators = 13`. Validators are
-ranked by `self_bond + total_delegated`; CometBFT power is equal per active
-validator.
+The draft bundle starts from one bootstrap validator in
+`selection_mode = "manual"` with `max_validators = 13` and equal CometBFT
+power: governance adds validators with `add_member`, which requires
+`min_self_bond = 100000` and `min_total_bond = 500000` XIAN. A later switch to
+`auto_top_n`/`hybrid` (one `update_policy` vote, only with a full bonded set)
+ranks validators by `self_bond + total_delegated` and admits newcomers within
+`max_active_set_churn = 1` and `max_new_power_bps = 2000` per rebalance.
+Validators absent from 500 consecutive commits are jailed for downtime
+(no slash; self-unjail after 24 hours); a chain halted by a third or more of
+offline power restarts through the recovery genesis (docs-web operator
+runbook, Halt Recovery). Until the set has four validators each newcomer holds
+a third or more of the power: approve only candidates whose node is already
+synced with its consensus key.
 
 The mainnet manifest enables the chain `zk` runtime feature, but the privacy
 catalog intentionally has no approved proving artifacts until ceremony-derived
