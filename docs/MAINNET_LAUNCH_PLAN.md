@@ -52,7 +52,9 @@ Before final genesis, the launch owner must publish or accept:
 - final allocation file and generated `contracts_mainnet.json`
 - release manifest with pinned repo SHAs, image digests, and package versions
 - stable non-beta release tags for every released package/repo in the launch train
-- signed genesis hash and reproducible command used to generate it
+- signed genesis hash and reproducible command used to generate it; the hash
+  is the manifest's `genesis_sha256` (SHA-256 of the `config/genesis.json`
+  that `xian node init` installs), which nodes enforce on init
 - initial bootstrap validator public key and contact process
 - seed nodes and persistent-peer policy
 - snapshot publication policy and restore validation command
@@ -73,7 +75,11 @@ Before final genesis, the launch owner must publish or accept:
 6. Freeze the release candidate and repeat the rehearsal without code changes.
 7. Replace the draft allocation, seed, image pins, and release manifest with
    final launch values.
-8. Regenerate genesis, sign the genesis hash, and publish the operator bundle.
+8. Regenerate genesis, pin its hash as `genesis_sha256` in
+   `xian-configs/networks/mainnet/manifest.json` (with `genesis_build.status`
+   no longer `draft-rehearsal`, `validate-manifests.py` refuses a missing or
+   stale pin), sign that hash, publish the operator bundle (it carries the pin),
+   and publish the signed hash through a channel separate from the bundle.
 
 ## Required Artifacts
 
