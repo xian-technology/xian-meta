@@ -86,8 +86,9 @@ Notes:
 - `xian-tech-py` depends on `xian-tech-accounts` and `xian-tech-runtime-types`.
 - `xian-tech-abci` depends on `xian-tech-contracting`, `xian-tech-accounts`, and
   `xian-tech-runtime-types`.
-- `xian-tech-cli` depends on `xian-tech-abci`.
-- `xian-tech-linter` depends on `xian-tech-contracting`.
+- `xian-tech-cli` depends on `xian-tech-abci` and `xian-tech-compiler-core`.
+- `xian-tech-linter` depends on `xian-tech-compiler-core` and
+  `xian-tech-vm-core` (not on `xian-tech-contracting`).
 
 ## Current Version Baseline
 

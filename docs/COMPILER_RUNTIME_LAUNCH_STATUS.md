@@ -51,8 +51,12 @@ accepted and the launch gates below are closed.
   Earlier V2 state requires its matching pinned runtime.
 - Deployment is source-backed: clients submit cleartext source, and validators
   compile and persist canonical IR on admission.
-- The Rust compiler core builds `xian_contract_artifact_v1` artifacts through
-  the `contracting.artifacts` surface used by Python tooling.
+- The Rust compiler core builds and validates `xian_contract_artifact_v1`
+  artifacts and the deploy pair (normalized source plus canonical IR) in one
+  implementation. xian-linter and `xian contract build-artifacts` call its
+  Python binding (`xian_compiler_core`) directly, `contracting.artifacts` is a
+  thin delegation for runtime code, and the browser tools use its WASM build;
+  Python and WASM artifacts are byte-identical.
 - Browser/Node and CLI consumers have native compiler integration paths.
 - The VM baseline has moved past pure validation: native execution covers a
   bounded but real `xian_ir_v1` subset, source-backed native deployment,
