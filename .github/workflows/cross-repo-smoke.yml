@@ -13,7 +13,7 @@ permissions:
 
 env:
   XIAN_JS_FLOATING_REF: main
-  XIAN_JS_PINNED_REF: 9fbc6d4ba345ded93ce87818d307e4f53c86c738
+  XIAN_JS_PINNED_REF: 13011470c8c8d2c1faf02525795d5390fbf900ae
 
 jobs:
   smoke:
@@ -27,11 +27,11 @@ jobs:
           - repo: xian-wallet-browser
             node-version: "24"
             floating_ref: main
-            pinned_ref: 907a5130f983a4b1885e34b6b420a98fcfa81cb6
+            pinned_ref: 77cabf84c3a31a9337c83f93a2d9e792fdf60c15
           - repo: xian-wallet-mobile
             node-version: "24"
             floating_ref: main
-            pinned_ref: 12b84afbd0a2eebb15949d2c31088235b0272eee
+            pinned_ref: ed1068410ed6c4ae0ea730c98b91d8702e30fc2d
 
     steps:
       - name: Check out xian-meta
