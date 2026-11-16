@@ -38,23 +38,22 @@ The mainnet manifest enables the chain `zk` runtime feature, but the privacy
 catalog intentionally has no approved proving artifacts until ceremony-derived
 artifacts are imported and checksum-pinned.
 
-## Fresh-Chain Consensus And History Gate
+## Consensus And Bootstrap Gate
 
-The fresh-chain source target pairs the Xian application with the stack-owned
-CometBFT 0.40.0 evidence-history revision 1 patch. This is not a backend swap
-for an existing development or live chain. The release manifest must pin the
-official source commit/archive hash, patch path/hash and history revision as
-well as the resulting immutable node image digests. Expected CLI/deployment
-metadata is not attestation of an arbitrary installed binary.
+The release uses unmodified upstream CometBFT with peer-to-peer application
+state sync disabled. Pin the upstream version and archive hash alongside the
+matching Xian application and immutable node image digests. Expected
+CLI/deployment metadata is not attestation of an arbitrary installed binary.
+Do not swap a consensus-sensitive backend into an existing development or live
+chain without a separately reviewed network upgrade.
 
 Before accepting the release, require a fresh multi-validator rehearsal from
-those exact inputs that exercises peer snapshot bootstrap, authenticated
-pre-checkpoint evidence inclusion, proof availability after block-body pruning,
-interruption and restart around application import/history/core publication,
-missing or corrupt required history, and ordinary full-store replay. Record the
-trusted light-client checkpoint and independently operated history RPC sources.
-Evidence verification does not establish current proposer priorities supplied
-by the standard state-sync RPC path.
+those exact inputs. Exercise full replay from genesis and verified full
+node-store snapshot bootstrap, including historical evidence from before the
+snapshot checkpoint, pruning boundaries, interrupted restore and restart, and
+rejection of missing or inconsistent consensus stores. Record the accepted
+chain identity, genesis hash, checkpoint, archive checksum and publisher trust
+material. An application-state snapshot alone is not a supported bootstrap.
 
 Genesis must commit an evidence duration covering the seeded unbonding period
 plus one day (at least 15 days for the draft 14-day mainnet policy), preserving
