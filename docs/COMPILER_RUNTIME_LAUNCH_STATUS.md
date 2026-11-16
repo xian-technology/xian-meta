@@ -33,8 +33,8 @@ accepted and the launch gates below are closed.
   code does not execute V1: V1 compilation, IR validation and stored-value
   encoding remain for migration and archival tooling, and V1 execution or
   historical replay uses the pinned older release (xian-migration pins one).
-- The current V2 execution revision is `xvm-execution-14` with gas schedule
-  `xvm-gas-6`. Revision 11
+- The current V2 execution revision is `xvm-execution-15` with gas schedule
+  `xvm-gas-7`. Revision 11
   priced size-dependent work (text scans, comparisons, boundary values, hash
   scans) by size and capped one V2 transaction at 1,000,000 chi; revision 12
   gave V2 dictionaries a hash index with in-place mutation; revision 13
@@ -48,6 +48,10 @@ accepted and the launch gates below are closed.
   mode carries hard caps in `__fee_policy` (`max_tx_chi` 200,000 and
   `max_block_chi` 500,000 by default). V2 failure messages preserve the outer recognized
   exception type, so message text cannot change the reported error category.
+  Revision 15 charges canonical IR reads before module preparation with the
+  transaction's shared budget, including dynamic loads. Cache warmth does not
+  change charges. A transaction prepares at most 512 modules and 16 MiB of IR,
+  even with metering disabled; block-local module caches have the same bounds.
   Earlier V2 state requires its matching pinned runtime.
 - Deployment is source-backed: clients submit cleartext source, and validators
   compile and persist canonical IR on admission.
