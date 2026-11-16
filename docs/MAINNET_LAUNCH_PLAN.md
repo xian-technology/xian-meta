@@ -38,6 +38,33 @@ The mainnet manifest enables the chain `zk` runtime feature, but the privacy
 catalog intentionally has no approved proving artifacts until ceremony-derived
 artifacts are imported and checksum-pinned.
 
+## Fresh-Chain Consensus And History Gate
+
+The fresh-chain source target pairs the Xian application with the stack-owned
+CometBFT 0.40.0 evidence-history revision 1 patch. This is not a backend swap
+for an existing development or live chain. The release manifest must pin the
+official source commit/archive hash, patch path/hash and history revision as
+well as the resulting immutable node image digests. Expected CLI/deployment
+metadata is not attestation of an arbitrary installed binary.
+
+Before accepting the release, require a fresh multi-validator rehearsal from
+those exact inputs that exercises peer snapshot bootstrap, authenticated
+pre-checkpoint evidence inclusion, proof availability after block-body pruning,
+interruption and restart around application import/history/core publication,
+missing or corrupt required history, and ordinary full-store replay. Record the
+trusted light-client checkpoint and independently operated history RPC sources.
+Evidence verification does not establish current proposer priorities supplied
+by the standard state-sync RPC path.
+
+Genesis must commit an evidence duration covering the seeded unbonding period
+plus one day (at least 15 days for the draft 14-day mainnet policy), preserving
+larger explicit settings. Governance increases raise the committed target while
+the effective duration grows no faster than elapsed committed time; reductions
+must not shrink it. Rehearse increases, reductions and restart/replay with the
+same evidence block-count and byte limits. These are acceptance requirements,
+not a statement that the final release gates have passed. Operator details live
+in `xian-docs-web/node/configuration.md` and `node/pruning.md`.
+
 ## Launch Inputs
 
 The draft allocation has an unresolved custody blocker: `team_lock` receives

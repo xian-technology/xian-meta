@@ -142,6 +142,10 @@ The remaining launch gates are:
   pinned release manifest
 - native Contract Determinism evidence passes the same-corpus, exact-observation
   comparison across all three required platforms for the pinned release
+- the fresh-chain consensus/history gate in
+  [Mainnet Launch Plan](MAINNET_LAUNCH_PLAN.md#fresh-chain-consensus-and-history-gate)
+  passes from the pinned patched backend and matching application, including
+  pre-checkpoint evidence, interrupted bootstrap, pruning, restart and replay
 - docs, SDK examples, and product defaults all describe source-backed
   deployment consistently
 - an explicit public-network launch manifest pins the accepted stable
