@@ -73,6 +73,18 @@ full-store snapshot bootstrap. These are acceptance requirements, not a
 statement that the final release gates have passed. Operator details live
 in `xian-docs-web/node/configuration.md` and `node/pruning.md`.
 
+## Optional Financial Application Gate
+
+The optional stable protocol is not production-approved by the core node
+rehearsal. Its reference oracle's chain-time receipt age does not establish
+external price freshness in a stale first-after-idle block. Require acceptance,
+implementation and the complete test campaign of the proposed
+[Oracle Authorization V2](ORACLE_AUTHORIZATION_V2.md) design before production
+price-dependent actions are enabled. In particular, choose source/signing
+independence, clock uncertainty, delayed-authorization exposure and the exact
+freshness guarantee explicitly. The design is not an enabled feature or a
+claim of finite wall-clock settlement freshness after arbitrary suspension.
+
 ## Launch Inputs
 
 The draft allocation has an unresolved custody blocker: `team_lock` receives

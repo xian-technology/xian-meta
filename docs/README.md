@@ -28,6 +28,7 @@ Files:
 - `CODEBASE_CONSISTENCY_AUDIT.md`: verified cross-repo protocol, dependency, signing, and bootstrap inconsistencies
 - `TRANSACTION_ENCODING_CONTRACT.md`: canonical wire fixtures and shared runtime encoding requirements
 - `MAINNET_LAUNCH_PLAN.md`: future public-network launch checklist for the current codebase
+- [Oracle authorization V2](ORACLE_AUTHORIZATION_V2.md): proposed transaction-bound price authorization, exact stock-0.40 constraints and production gates for optional financial applications
 - `COMPILER_RUNTIME_LAUNCH_STATUS.md`: reconciled compiler/runtime readiness status
 - `README_TEMPLATE.md`: the shared root README shape for the main repos
 - `FOLDER_README_TEMPLATE.md`: the short per-folder entrypoint template
