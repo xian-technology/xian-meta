@@ -40,12 +40,18 @@ artifacts are imported and checksum-pinned.
 
 ## Consensus And Bootstrap Gate
 
-The release uses unmodified upstream CometBFT with peer-to-peer application
+The fresh-chain baseline is unmodified upstream CometBFT 0.40.0, at source
+commit `0880b4d378f347ab16e54ec677ff50d803f37d62`, with peer-to-peer application
 state sync disabled. Pin the upstream version and archive hash alongside the
 matching Xian application and immutable node image digests. Expected
 CLI/deployment metadata is not attestation of an arbitrary installed binary.
 Do not swap a consensus-sensitive backend into an existing development or live
 chain without a separately reviewed network upgrade.
+
+The current mainnet and testnet manifests remain `draft-rehearsal` recipes with
+`local_build` images. Their intended CometBFT source recipe does not attest any
+older registry image. Publish and accept the matching source train and image
+digests before changing either network to a finalized registry-backed manifest.
 
 Before accepting the release, require a fresh multi-validator rehearsal from
 those exact inputs. Exercise full replay from genesis and verified full
