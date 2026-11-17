@@ -65,9 +65,12 @@ Genesis must commit an evidence duration covering the seeded unbonding period
 plus one day (at least 15 days for the draft 14-day mainnet policy), preserving
 larger explicit settings. Governance increases raise the committed target while
 the effective duration grows no faster than elapsed committed time; reductions
-must not shrink it. Rehearse increases, reductions and restart/replay with the
-same evidence block-count and byte limits. These are acceptance requirements,
-not a statement that the final release gates have passed. Operator details live
+must not shrink it. Rehearse increases, reductions and restart/replay against
+the effective block-age window as well as the duration schedule. Preserve the
+evidence byte cap and conservatively retain the height history required by up
+to two rooted security-checkpoint epochs, including during pruning and
+full-store snapshot bootstrap. These are acceptance requirements, not a
+statement that the final release gates have passed. Operator details live
 in `xian-docs-web/node/configuration.md` and `node/pruning.md`.
 
 ## Launch Inputs
