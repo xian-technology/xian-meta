@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "experiment_date": "2026-11-19",
+  "timezone": "Europe/Berlin",
+  "status": "observational baseline, not a calibrated CI threshold",
+  "sources": {
+    "image_digest": "sha256:7f606883345b53732e93d1f1fa4218052508dd44a4c16f59738b77d93f314ea4",
+    "repository_commits": {
+      "xian-stack": "27cc6cf9870a55d3000513454c09e86de65dd0e0",
+      "xian-abci": "e1e6f885b99c7e3adc770d0476d531197ebb5106",
+      "xian-contracting": "4d91b5f5eac8ccf97f3ee5851428d966777944d4",
+      "xian-py": "12e6c450db4024661ded49e59c71b1f6184fdbe9",
+      "xian-configs": "59d0d60bea794dd7c54727ff15ec5b39c1464ee8"
+    }
+  },
+  "configuration": {
+    "host": {
+      "cpu": "Apple M1",
+      "logical_cpus": 8,
+      "memory_bytes": 17179869184,
+      "architecture": "arm64"
+    },
+    "docker": {
+      "cpus": 8,
+      "memory_bytes": 8215052288
+    },
+    "image_architecture": "arm64",
+    "fee_policy": {
+      "tx_fee_mode": "paid_metered",
+      "max_tx_chi": 200000,
+      "max_block_chi": 500000
+    },
+    "consensus": {
+      "block_policy_mode": "on_demand",
+      "block_policy_interval": "0s",
+      "timeout_propose": "500ms",
+      "timeout_propose_delta": "100ms",
+      "timeout_prevote": "200ms",
+      "timeout_prevote_delta": "50ms",
+      "timeout_precommit": "200ms",
+      "timeout_precommit_delta": "50ms",
+      "timeout_commit": "200ms",
+      "skip_timeout_commit": true
+    },
+    "mempool": {
+      "size": 50000,
+      "cache_size": 100000
+    },
+    "node_count": 5,
+    "fixed_chi_supply": 500
+  },
+  "measurement": {
+    "transaction": "currency.transfer amount 1, disjoint sender/recipient lanes",
+    "sender_lanes": 64,
+    "signing": "before timing",
+    "nonce": "explicit",
+    "chi": 500,
+    "timed_simulations": 0,
+    "capacity_clock": "first broadcast until application committed height; verification outside clock",
+    "profile_clock": "callback metric deltas bracket submission through verification/drain; includes empty fence blocks",
+    "callback_shares": "summed non-overlapping callback durations across all five validators; not CPU or wall-clock shares",
+    "limits": "one shared Mac/Docker VM; fixed phase order; bounded/flood arms had different operation counts; no causal A/B optimization trial",
+    "success_verification": [
+      "exact committed wire hashes",
+      "all receipts successful",
+      "sender nonces",
+      "recipient balances",
+      "matching application hashes on all five validators"
+    ]
+  },
+  "unprofiled_capacity": {
+    "profiling_enabled": false,
+    "best_5000_transfer_sample_tps": 365.3006968577837,
+    "repeats": [
+      {
+        "operations": 10000,
+        "inflight_window": 1000,
+        "elapsed_seconds": 28.8035793750023,
+        "committed_tps": 347.1790734688578
+      },
+      {
+        "operations": 10000,
+        "inflight_window": 1000,
+        "elapsed_seconds": 35.755922750002355,
+        "committed_tps": 279.6739457660715
+      },
+      {
+        "operations": 10000,
+        "inflight_window": 1000,
+        "elapsed_seconds": 49.624647958989954,
+        "committed_tps": 201.51276454926287
+      }
+    ]
+  },
+  "profiled_cases": [
+    {
+      "phase": "bounded",
+      "transactions": 3000,
+      "wall_seconds": 10.13515054200252,
+      "diagnostic_tps": 295.9995500379864,
+      "callback_stages": {
+        "check_tx": {
+          "calls": 30147,
+          "total_ms_across_nodes": 11344.351,
+          "callback_time_share_percent": 44.69
+        },
+        "block_packing": {
+          "calls": 9,
+          "total_ms_across_nodes": 356.753,
+          "callback_time_share_percent": 1.41
+        },
+        "process_proposal": {
+          "calls": 40,
+          "total_ms_across_nodes": 1639.823,
+          "callback_time_share_percent": 6.46
+        },
+        "finalize_block": {
+          "calls": 40,
+          "total_ms_across_nodes": 12042.381,
+          "callback_time_share_percent": 47.44
+        }
+      },
+      "finalization_detail": {
+        "finalize_decode": {
+          "total_ms_across_nodes": 1516.981,
+          "share_of_finalize_percent": 12.6
+        },
+        "finalize_execute": {
+          "total_ms_across_nodes": 6623.103,
+          "share_of_finalize_percent": 55.0
+        },
+        "finalize_result_assembly": {
+          "total_ms_across_nodes": 3482.806,
+          "share_of_finalize_percent": 28.92
+        },
+        "finalize_commit_prepare": {
+          "total_ms_across_nodes": 73.082,
+          "share_of_finalize_percent": 0.61
+        }
+      },
+      "node0_committed_blocks": 7,
+      "proposal_timeout_events_across_five_nodes": 40,
+      "largest_observed_prepare_proposal_ms": 92.568,
+      "per_transaction_per_validator_ms": {
+        "check_tx": 0.7563,
+        "block_packing": 0.0238,
+        "process_proposal": 0.1093,
+        "finalize_decode": 0.1011,
+        "finalize_execute": 0.4415,
+        "finalize_result_assembly": 0.2322,
+        "finalize_commit_prepare": 0.0049
+      }
+    },
+    {
+      "phase": "flood",
+      "transactions": 6000,
+      "wall_seconds": 38.120721250001225,
+      "diagnostic_tps": 157.394713511613,
+      "callback_stages": {
+        "check_tx": {
+          "calls": 110167,
+          "total_ms_across_nodes": 46475.731,
+          "callback_time_share_percent": 54.77
+        },
+        "block_packing": {
+          "calls": 23,
+          "total_ms_across_nodes": 7128.666,
+          "callback_time_share_percent": 8.4
+        },
+        "process_proposal": {
+          "calls": 44,
+          "total_ms_across_nodes": 3145.041,
+          "callback_time_share_percent": 3.71
+        },
+        "finalize_block": {
+          "calls": 40,
+          "total_ms_across_nodes": 28103.964,
+          "callback_time_share_percent": 33.12
+        }
+      },
+      "finalization_detail": {
+        "finalize_decode": {
+          "total_ms_across_nodes": 3142.478,
+          "share_of_finalize_percent": 11.18
+        },
+        "finalize_execute": {
+          "total_ms_across_nodes": 15502.858,
+          "share_of_finalize_percent": 55.16
+        },
+        "finalize_result_assembly": {
+          "total_ms_across_nodes": 8470.367,
+          "share_of_finalize_percent": 30.14
+        },
+        "finalize_commit_prepare": {
+          "total_ms_across_nodes": 132.049,
+          "share_of_finalize_percent": 0.47
+        }
+      },
+      "node0_committed_blocks": 7,
+      "proposal_timeout_events_across_five_nodes": 106,
+      "largest_observed_prepare_proposal_ms": 613.617,
+      "per_transaction_per_validator_ms": {
+        "check_tx": 1.5492,
+        "block_packing": 0.2376,
+        "process_proposal": 0.1048,
+        "finalize_decode": 0.1047,
+        "finalize_execute": 0.5168,
+        "finalize_result_assembly": 0.2823,
+        "finalize_commit_prepare": 0.0044
+      }
+    }
+  ],
+  "local_evidence": {
+    "profile_directory": "xian-stack/.artifacts/tps-profile/20261119T000350Z",
+    "capacity_directory": "xian-stack/.artifacts/ultra-performance/20261118T233707Z",
+    "note": "Local ignored artifacts; raw files are not distributed with this extract. This JSON preserves the public measurements and provenance needed to interpret the plan.",
+    "profile_summary_sha256": "59778c28e391a33f10588b8cab9f3f95d1e84f5f9f0fdbc5b13dfe7b635ec7bf",
+    "capacity_results_sha256": "698cbe00566568698ed96da6be87b604474ec9195eeb5e65231c584b51913109"
+  }
+}

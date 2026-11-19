@@ -21,6 +21,11 @@ parallel design. The roadmap is therefore:
 | B | Move the per-transaction block loop into Rust (`execute_block`): Rust-side LMDB reads and block overlay, fee reservation/settlement and reward deltas in Rust, GIL released | landed (B0-B5, see below) |
 | C | Block-STM-style multi-threading in Rust over multi-version state | deferred |
 
+For the current five-validator admission, queue and receipt bottlenecks, use
+the proposed [transaction throughput optimization plan](TRANSACTION_THROUGHPUT_OPTIMIZATION_PLAN.md).
+It establishes the optimized serial node pipeline and measurement gates before
+reconsidering step C.
+
 The legacy speculative process-pool executor (`parallel_execution_*`) was
 removed in November 2026, after step B4 made serial Rust execution faster than
 it (see "Removal of the legacy executor" below). Blocks execute serially until
