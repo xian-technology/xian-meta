@@ -71,6 +71,46 @@ Source inspection establishes the following:
   conversion and receipt construction. Pure VM time has not been isolated.
   Result assembly/encoding consumed about 29–30% of finalization time.
 
+## Planning estimate for committed TPS
+
+For prepared simple XIAN transfers on this same M1/five-validator Docker setup,
+use **approximately 600 committed TPS** as a planning number and **400–800 TPS**
+as the working range after the serial-path optimizations. Approximately
+**1,000 TPS** is a stretch target. These are engineering scenarios, not measured
+forecasts, statistical confidence intervals or implementation acceptance gates.
+They retain paid metering, current chi limits and successful-commit accounting.
+They do not describe SDK automatic submissions or a geographically distributed
+network.
+
+A sensitivity model anchored to the observed 279.67-TPS repeat median is:
+
+`TPS_after = TPS_before / (1 - p + p / s)`
+
+Here `p` is an **assumed** fraction of end-to-end time benefited by the changes,
+and `s` is the **assumed** combined acceleration of that fraction, including
+avoided repeated work. These assumptions are not obtained by adding the
+callback percentages: those percentages exclude parts of the wall clock.
+
+| Scenario | Assumed affected fraction p | Assumed acceleration s | Model result |
+| --- | ---: | ---: | ---: |
+| Conservative | 50% | 2x | 373 TPS, approximately 400 |
+| Central | 70% | 4x | 589 TPS, approximately 600 |
+| Optimistic | 80% | 5x | 777 TPS, approximately 800 |
+| Stretch | 85% | 6x | 959 TPS, approximately 1,000 |
+
+The central case requires substantial reductions in live admission and
+conversion work, plus less queue-related delay; a signature cache alone does
+not justify it. Fixed consensus/storage costs can hold the result below the
+working range. Conversely, eliminating repeated queue work and false round
+changes can produce gains that this simple fixed-fraction model does not
+capture. Step 0 must replace these assumptions with paired measurements.
+
+Reassess the estimate after steps 1 and 2. Do not select the best burst as the
+new reference, assume linear scaling with five validators, or forecast
+11–15k committed TPS from the admission-only microbenchmark. A future parallel
+execution implementation needs its own estimate after the serial baseline is
+measured.
+
 ## Design boundaries
 
 Separate four kinds of data:
