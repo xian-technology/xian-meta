@@ -38,7 +38,7 @@ Canonical assets:
 
 Recommended template:
 
-- `single-node-indexed`
+- `single-node-dev`
 
 The deeper reference-app path is implemented in `xian-py/examples`, with an
 admin job, API service, projector, and local read model.
@@ -58,7 +58,7 @@ Canonical assets:
 
 Recommended template:
 
-- `single-node-indexed`
+- `single-node-dev`
 
 The active DEX codebase remains `xian-dex`; that repo owns the hash-pinned
 deployable product snapshot and starter flow.
@@ -78,7 +78,7 @@ Canonical assets:
 
 Recommended template:
 
-- `single-node-indexed`
+- `single-node-dev`
 
 The deeper reference-app path is implemented in `xian-py/examples`, with an
 admin job, API service, projector, hydrated projections, and approval activity
@@ -98,7 +98,7 @@ Canonical assets:
 
 Recommended template:
 
-- `single-node-indexed`
+- `single-node-dev`
 
 The deeper reference-app path is implemented in `xian-py/examples`, with an
 admin job, API service, processor worker, projector worker, queue projections,
@@ -118,7 +118,7 @@ Canonical assets:
 
 Recommended template:
 
-- `single-node-indexed`
+- `single-node-dev`
 
 The deeper reference-app path is implemented in `xian-py/examples`, with a
 settlement deployment job, paid FastAPI resource server, optional facilitator
