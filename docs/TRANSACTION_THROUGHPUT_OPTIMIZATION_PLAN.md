@@ -178,10 +178,10 @@ arms; neither waits for individual execution results during sending.
 Add bounded inflight windows and explicit offered-rate control alongside the
 flood arm. Use the same transaction count for bounded/flood comparisons. Fix the
 maintained runner's default serial receipt resolution and double signing in
-the capacity path. The short block-window TPS calculation currently counts
-the first block while its denominator starts at that block's timestamp; stop
-using it as a capacity measurement and define/test any diagnostic window with
-matching numerator and time boundaries, including single-block cases.
+the capacity path. The block-window diagnostic measures from the preceding
+block through the final counted block, including for a single counted block.
+It labels the wall-clock fallback when that interval is unavailable. Use the
+submission-to-commit clock defined above for capacity comparisons.
 
 Preflight workload funding from transfer amount, transaction count, supplied
 chi and the committed chi rate, with explicit headroom. Respect the pending
