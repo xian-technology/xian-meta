@@ -55,10 +55,13 @@ validated by stack/localnet flows when they affect runtime behavior.
 Local workflows are now strong enough that the next product value is remote
 operator clarity:
 
-- profile-driven remote deploy flows that map cleanly to the same network templates
+- profile-driven remote deploy flows that install prepared node homes and
+  verify the accepted genesis hash when the manifest pins it
 - health and recovery playbooks that match the local CLI mental model
 - monitoring profiles that surface actionable node, BDS, and runtime state
-- snapshot/state-sync guidance that is explicit about source of truth
+  using release-pinned Stack monitoring assets
+- bootstrap and recovery guidance for full replay and verified full node-store
+  snapshots
 
 ### 3. Keep Validation Release-Grade
 
