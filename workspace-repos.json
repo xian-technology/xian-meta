@@ -115,6 +115,13 @@
       "reason": "Wallet and signing surface."
     },
     {
+      "name": "xian-wallet-cli",
+      "category": "developer-tooling",
+      "tier": "full",
+      "clone_by_default": false,
+      "reason": "Optional terminal wallet and signing surface."
+    },
+    {
       "name": "xian-wallet-mobile",
       "category": "developer-tooling",
       "tier": "full",
