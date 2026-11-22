@@ -52,14 +52,16 @@ def main() -> int:
     manifest = load_manifest(Path(args.manifest).resolve())
     organization = manifest["organization"]
 
-    workspace_root.mkdir(parents=True, exist_ok=True)
+    if not args.dry_run:
+        workspace_root.mkdir(parents=True, exist_ok=True)
 
     for repo in manifest.get("repos", []):
         name = repo["name"]
-        if repo.get("tier") == "exempt" and not args.include_exempt:
-            print(f"skip {name}: exempt")
-            continue
-        if not repo.get("clone_by_default", True) and not args.include_exempt:
+        if repo.get("tier") == "exempt":
+            if not args.include_exempt:
+                print(f"skip {name}: exempt")
+                continue
+        elif not repo.get("clone_by_default", True):
             print(f"skip {name}: clone_by_default=false")
             continue
 
