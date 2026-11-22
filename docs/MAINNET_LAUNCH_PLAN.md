@@ -48,10 +48,9 @@ CLI/deployment metadata is not attestation of an arbitrary installed binary.
 Do not swap a consensus-sensitive backend into an existing development or live
 chain without a separately reviewed network upgrade.
 
-The current mainnet and testnet manifests remain `draft-rehearsal` recipes with
-`local_build` images. Their intended CometBFT source recipe does not attest any
-older registry image. Publish and accept the matching source train and image
-digests before changing either network to a finalized registry-backed manifest.
+The mainnet manifest uses `draft-rehearsal` status and `local_build` images.
+Publish and accept the matching source train and image digests before changing
+it to a finalized registry-backed manifest.
 
 Before accepting the release, require a fresh multi-validator rehearsal from
 those exact inputs. Exercise full replay from genesis and verified full

@@ -54,7 +54,9 @@ accepted and the launch gates below are closed.
   even with metering disabled; block-local module caches have the same bounds.
   Earlier V2 state requires its matching pinned runtime.
 - Deployment is source-backed: clients submit cleartext source, and validators
-  compile and persist canonical IR on admission.
+  compile and persist canonical IR on admission. Fresh V2 genesis commits
+  compiler admission revision `xian-admission-4`, which records character
+  columns for f-string spans.
 - The Rust compiler core builds and validates `xian_contract_artifact_v1`
   artifacts and the deploy pair (normalized source plus canonical IR) in one
   implementation. xian-linter and `xian contract build-artifacts` call its
