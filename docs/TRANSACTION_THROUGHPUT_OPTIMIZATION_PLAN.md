@@ -1,8 +1,9 @@
 # Transaction Throughput Optimization Plan
 
-Status: proposed implementation sequence, based on the 19 November 2026
-five-validator investigation. Runtime behavior has not been changed by this
-plan.
+Status as of 26 November 2026. The serial admission, proposal, and receipt
+changes are on main. Sustained capacity on separate Linux validator hosts
+still needs measurement. The original implementation sequence and baseline
+remain below for reference.
 
 Improve successfully committed TPS and confirmation latency by removing
 repeated admission work and unnecessary conversions before designing parallel
@@ -14,6 +15,51 @@ This is the shared contract between `xian-abci` (admission and block lifecycle),
 (workload generation, profiling and CI). Implementation details stay in those
 repos. The existing [parallel execution plan](XIAN_VM_PARALLEL_EXECUTION_PLAN.md)
 remains the reference for a future Block-STM executor.
+
+## November 2026 outcome
+
+Keep the serial Rust executor, required native VM receipts, stock CometBFT,
+and the two-second proposal timeout. Main includes successful static admission
+reuse, chi-based proposal packing, and the streaming ABCI frame reader. The
+candidate window remains an opt-in experiment in the patched CometBFT build.
+In the closest 600/s pair it reduced p95 preparation time from 320 to 235 ms
+while committed throughput moved from 545 to 553 TPS. The two window-off
+runs differed by 157 TPS, so the experiment did not establish a throughput gain.
+
+The stock tests used five Linux ARM64 validators sharing one eight-CPU Docker
+Desktop VM, separate native transaction-index volumes, paid currency transfers,
+and BDS disabled. The image used ABCI `4d05aeb2`, Contracting `bd8adca7`
+(VM 0.1.4), and upstream CometBFT v0.40.0 at `0880b4d3`. The test explicitly
+set the two-second timeout later merged in ABCI `ad650d1` and Stack `91607f3`.
+The longer tests used the same image with the prepared transfer workload
+at Stack `b834422` and 2,400 senders.
+
+| Test | Result |
+| --- | --- |
+| 60 s at 500 submissions/s | 483 committed TPS during seconds 10–55. Confirmation p95 was 3.2 s and backlog stability was inconclusive. |
+| 60 s at 600 submissions/s | 412 committed TPS during seconds 10–55. Confirmation p95 was 58.7 s and backlog grew by about 153 transactions/s. |
+| Ten-minute hold attempts at 350, 450, and 500 submissions/s | The mempool reached its 50,000-transaction cap after 7:19, 4:05, and 3:41, respectively. Each run stopped before the full hold ended. |
+| Standalone 30 s burst at 600 submissions/s | All 18,000 receipts verified. The final block was observed 2.1 s after the nominal offer window ended. |
+
+For full blocks observed after two minutes in the aborted holds, 80–90%
+of the measured commit cycle was before `FinalizeBlock`. These runs
+establish local overload behavior. The short runs verified all receipts.
+The aborted holds preserved signed commit records through teardown.
+
+The four-worker Rust replay at `5cf3baee` used an access plan from a prior
+serial replay. All 61 replayed blocks matched the serial responses and app
+hashes. Local `FinalizeBlock` time fell 26–31% on independent contract calls
+and 5–6% on the mixed workload. Swaps on one pair ran serially. The timings
+exclude live dependency detection and retries. Keep the prototype out of the
+node runtime until representative workloads show a material end-to-end
+gain with those costs included.
+
+Repeat ten-minute holds with validators on separate Linux hosts using the
+intended indexing configuration. Record offered and committed TPS, backlog,
+confirmation latency, commit rounds, and drain after a short overload burst.
+A sustainable rate requires bounded backlog and confirmation latency within
+the deployment target. If proposal delays recur, trace where time is spent
+before changing execution.
 
 ## Evidence and its limits
 
