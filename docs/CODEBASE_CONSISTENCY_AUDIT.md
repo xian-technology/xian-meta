@@ -2,11 +2,10 @@
 
 Snapshot: 2026-09-11. This is a source-backed audit of shared contracts across
 the sibling workspace, not an exhaustive security review or a release gate.
-All five findings have now been fixed in the local working trees and verified.
-Nothing has been committed or published. Subsequent deployment/testing was
-limited to an isolated localnet; see the live follow-up below. The numbered findings below
-preserve the original evidence; their descriptions of broken behavior and old
-dependency ranges describe the pre-fix snapshot.
+At the time of the audit, all five fixes were verified in local working trees
+before publication. The follow-up used an isolated localnet. The numbered
+findings preserve the original evidence, including the dependency ranges from
+before the fixes.
 
 Five actionable inconsistencies were confirmed. The broader pattern was that
 independently tested components lacked shared input/output fixtures at their
@@ -171,7 +170,7 @@ work concrete and urgent. Keep the node's canonical validation strict.
 | [Bridge](../../xian-bridge/pyproject.toml#L45) | `>=0.4.15,<0.5` |
 | [NFT deploy group](../../xian-nft/pyproject.toml#L15) | `>=0.4.11,<0.5` |
 | [Stable-protocol deploy group](../../xian-stable-protocol/pyproject.toml#L15) | `>=0.4.11,<0.5` |
-| [Playground](../../xian-playground-web/pyproject.toml#L12) | `>=0.4.8,<0.5.0` |
+| [Playground's former Python app](https://github.com/xian-technology/xian-playground-web/blob/6ed019a6d689430ee4c86d9d98e39c2c57597986/pyproject.toml#L12) | `>=0.4.8,<0.5.0` |
 
 The current workspace SDK is **0.5.0**. Its
 [`submit_contract`](../../xian-py/src/xian_py/xian_async.py#L1054) sends a `code`

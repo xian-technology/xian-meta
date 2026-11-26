@@ -497,8 +497,7 @@ Wallets must expose:
 - `account_id`
 - display-oriented fields where helpful
 
-The current Ethereum wallet property named `public_key` should be replaced in
-the SDK with explicit naming like `address` or `account_id`.
+The Python SDK's `EthereumWallet.address` exposes the Ethereum address.
 
 ### Mnemonic Strategy
 
@@ -518,11 +517,9 @@ It is explicitly different from reusing the same raw private key across curves.
 - Ed25519 wallet derivation
 - Ethereum wallet derivation
 
-However, as of this design, the current HD dependency stack on Python 3.14 is
-not yet production-ready because the `bip-utils -> coincurve` chain currently
-fails to build in local tests.
-
-That is a packaging problem, not a protocol-design problem.
+SDK derivation examples and dependency requirements live in the
+[`xian-py` README](../../xian-py/README.md). Derivation alone does not enable
+additional signing schemes on a chain.
 
 ## Genesis And Validator Configuration
 

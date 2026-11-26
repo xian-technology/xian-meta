@@ -39,14 +39,8 @@ common path obvious and boring.
 
 ### 1. Keep The Starter Flows Sharp
 
-The current example set should remain small and high quality:
-
-- Credits Ledger
-- DEX Demo
-- Registry / Approval
-- Workflow Backend
-
-New examples should be added only when they prove a distinct backend pattern.
+Keep the [reference example set](EXAMPLES.md) small and focused. Add examples
+only when they prove a distinct backend pattern.
 Existing example manifests should stay installable through `xian-cli` and
 validated by stack/localnet flows when they affect runtime behavior.
 

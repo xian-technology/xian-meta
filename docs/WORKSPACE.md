@@ -35,7 +35,7 @@ python3 ./scripts/report_workspace_shas.py --workspace-root ..
 The bootstrap script only clones missing repos. It does not pull, reset, or
 rewrite existing checkouts.
 
-## Optional Migration Tooling
+## Optional Repositories
 
 `xian-migration` owns offline legacy-state migration analysis and rehearsal.
 It is full-tier because it handles state conversion, but `clone_by_default` is
@@ -53,10 +53,18 @@ The dependency points one way: `xian-migration` consumes node/runtime tooling;
 `xian-abci` does not import or depend on migration implementation. Its node
 package, image, and normal startup do not require the migration checkout.
 
+`xian-wallet-cli` owns the terminal wallet and signing workflows. Install it as
+described in its README or clone it explicitly for development:
+
+```bash
+git clone https://github.com/xian-technology/xian-wallet-cli.git ../xian-wallet-cli
+python3 ./scripts/check_repo_conventions.py --workspace-root .. --repo xian-wallet-cli
+```
+
 Default convention checks allow absent optional repos and validate them when
 present. Selecting a repo with `--repo` requires its checkout unless explicitly
-allowed through `--allow-missing`. Full-tier structural requirements apply to
-the migration repo just as they do to other full-tier repos.
+allowed through `--allow-missing`. Both optional repos follow the full-tier
+structural requirements.
 
 ## Progressive Disclosure
 

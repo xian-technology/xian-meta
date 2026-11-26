@@ -155,9 +155,8 @@ The remaining launch gates are:
 
 ## Related Source Docs
 
-- `../xian-contracting/docs/RUST_COMPILER_CORE.md` defines the target compiler
+- `../xian-contracting/docs/RUST_COMPILER_CORE.md` describes the compiler
   architecture and original authority gates.
-- `XIAN_VM_FOUNDATION_BASELINE.md` records the implemented VM/runtime baseline
-  and native-path progress.
+- `XIAN_VM_FOUNDATION_BASELINE.md` records the first V1 implementation slice.
 - `LOCALNET_E2E_RUNBOOK.md` links the current five-validator localnet and
   release-safety validation flows.

@@ -20,8 +20,9 @@ surface first.
 
 This profile applies to:
 
-- `xian-configs`: settlement contract and example metadata
-- `xian-py`: buyer, seller, and facilitator helpers
+- `xian-py`: settlement contract, example metadata, and buyer, seller, and
+  facilitator helpers
+- `xian-stack`: localnet canary coverage
 - future `xian-wallet-browser` work: typed payment approvals
 - future `xian-intentkit` work: native-Xian x402 skills
 
@@ -175,7 +176,6 @@ attempting settlement again.
 - `xian-py` helpers for requirement encoding, payment signing, verification,
   settlement, and paid HTTP requests
 - a FastAPI seller/facilitator example under `xian-py/examples/x402_exact`
-- an example contract source under `xian-py/examples/x402_exact/contracts`
 
 ## Later Work
 

@@ -92,9 +92,9 @@ python3 ./scripts/report_workspace_shas.py --workspace-root ..
 python3 -m unittest discover -s tests
 ```
 
-The checker walks the workspace root, resolves the main `xian-*` repos, and
-reports any deviations from the required-root-files and folder-README rules
-defined in `docs/REPO_CONVENTIONS.md`.
+The checker resolves the repositories listed in `workspace-repos.json` and
+validates the root files, license, and full-tier documentation entrypoints
+required by `docs/REPO_CONVENTIONS.md`.
 
 ## Related Docs
 

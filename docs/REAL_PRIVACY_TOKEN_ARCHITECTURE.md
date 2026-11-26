@@ -1,9 +1,9 @@
 # Real Privacy Token Architecture
 
-Status: in progress
-
-This document defines the path for turning Xian's current experimental
-privacy-token work into a real shielded token design.
+Design record for the implemented shielded-note token. The implementation
+summary below describes the shipped components. The design sections preserve
+the original motivation and delivery phases. For open production and
+operational work, see [Privacy Asset Stack Follow-ups](PRIVACY_ASSET_STACK_FOLLOW_UPS.md).
 
 Current implementation status:
 
@@ -22,24 +22,19 @@ Current implementation status:
 
 ## Decision
 
-Xian should not try to harden the current
-`contracts/privacy-token/src/con_privacy_token.py` into a production privacy
-primitive.
-
-Instead, Xian should build a new shielded-token model based on:
+Xian adopted a shielded-token model based on:
 
 - shielded notes
 - nullifiers
 - Merkle-root state
 - native zero-knowledge proof verification in the runtime
 
-The current commitment-only contract remains a research artifact. It is not the
-production base.
+The former commitment-only experiment motivated this design.
 
-## Why The Current Contract Cannot Become The Real Thing
+## Limits Of The Original Commitment-Only Contract
 
-The current experimental contract proves only algebraic consistency between
-stored commitments. It does not prove:
+The original experimental contract proved algebraic consistency between
+stored commitments. The model could not prove:
 
 - that a transfer amount corresponds to a meaningful hidden value
 - that a burn amount corresponds to a meaningful hidden value
@@ -58,14 +53,14 @@ This was confirmed locally on `2026-03-26`:
 
 Those are not patch-level issues. They are consequences of the model.
 
-## Current Runtime Limitation
+## Runtime Requirements At Design Time
 
-Today Xian contracts expose:
+Before native proof verification, Xian contracts exposed:
 
 - hashing helpers like `sha3` / `sha256`
 - Ed25519 signature verification
 
-They do not expose:
+The original runtime lacked:
 
 - a SNARK verifier
 - a proof-friendly Merkle primitive
@@ -282,7 +277,7 @@ V1 should be:
 - one proof backend
 - one clearly documented note model
 
-## Repo Changes Required
+## Original Repo Implementation Plan
 
 ### `xian-contracting`
 
@@ -328,7 +323,7 @@ Add:
 - clear privacy guarantees and non-guarantees
 - operator docs for random-bundle generation and verifying-key registration
 
-## Recommended Phases
+## Original Delivery Phases
 
 ### Phase 1: Runtime groundwork
 

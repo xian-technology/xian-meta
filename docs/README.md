@@ -33,10 +33,10 @@ Files:
 - `README_TEMPLATE.md`: the shared root README shape for the main repos
 - `FOLDER_README_TEMPLATE.md`: the short per-folder entrypoint template
 - `MULTI_ACCOUNT_SUPPORT.md`: protocol-level design for multi-scheme transaction accounts
-- `XIAN_VM_EXECUTION_MODEL.md`: target design for a Xian-owned VM and bytecode execution model
-- `XIAN_VM_FOUNDATION_BASELINE.md`: current implementation baseline for the VM-front-end subset, explicit execution-policy config shape, structural IR lowering, explicit runtime host ops, first Rust-side VM crate, and authored-contract audit status
+- `XIAN_VM_EXECUTION_MODEL.md`: original V1 execution model design record
+- `XIAN_VM_FOUNDATION_BASELINE.md`: historical record of the first VM implementation slice
 - `XIAN_VM_LANGUAGE_EXPANSION_ROADMAP.md`: ranked roadmap for growing the contract language safely around Xian-owned VM semantics instead of inheriting CPython's execution boundary
-- `XIAN_SINGLE_ENGINE_PLAN.md`: approved plan to make the Rust VM core the single execution engine (every consensus rule once, in Rust), its increments, proof gates and recorded decisions
+- `XIAN_SINGLE_ENGINE_PLAN.md`: migration record for the single Rust execution engine, including the approved decisions and proof gates
 - [Transaction throughput optimization plan](TRANSACTION_THROUGHPUT_OPTIMIZATION_PLAN.md):
   proposed cross-repo admission reuse, queue handling, receipt optimization and
   measurement gates, with the
@@ -49,13 +49,13 @@ Files:
 - `EXAMPLES.md`: canonical definition of the reference example set and first example scope
 - `LOCALNET_E2E_RUNBOOK.md`: current cross-repo pointer for the 5-validator localnet and release-safety validation flows
 - `VALIDATOR_OPERATIONS_RUNBOOK.md`: cross-repo acceptance evidence for validator onboarding, exit/unbond, jail/unjail, evidence/slashing, governance changes, and recovery rehearsals
-- `PYPI_RELEASE_ROLLOUT.md`: historical March2026 PyPI registration and rollout record; current package boundaries come from owning release workflows and `COMPILER_RUNTIME_LAUNCH_STATUS.md`
-- `XIAN_SECURITY_AUDIT_FOLLOWUPS.md`: status note for the latest stack-wide security audit, including fixed findings and the remaining dashboard/simulation follow-up decisions
-- `SHARED_FOUNDATIONS_PLAN.md`: cleanup plan for neutral shared Python foundations and removing the `xian-abci -> xian-py` dependency
+- `PYPI_RELEASE_ROLLOUT.md`: March 2026 PyPI registration and rollout record
+- `XIAN_SECURITY_AUDIT_FOLLOWUPS.md`: completed audit findings and scope for future security reviews
+- `SHARED_FOUNDATIONS_PLAN.md`: implemented package boundaries for accounts and runtime types, and the decompiler retirement decision
 - `SHARED_PACKAGE_EXTRACTION_PLAN.md`: deferred extraction criteria and migration path for shared packages that currently live in `xian-contracting`
 - `INTENTKIT_STACK_INTEGRATION.md`: cross-repo contract for keeping `xian-intentkit` independent while attaching it cleanly to the stack and CLI
-- `DETERMINISTIC_RANDOMNESS.md`: design for a Xian-owned deterministic contract randomness model and simulation alignment
-- `REAL_PRIVACY_TOKEN_ARCHITECTURE.md`: architecture for replacing the current experimental privacy-token contract with a real shielded-note token backed by native proof verification
+- `DETERMINISTIC_RANDOMNESS.md`: implemented deterministic VM randomness and its execution-context inputs
+- `REAL_PRIVACY_TOKEN_ARCHITECTURE.md`: design record for the proof-backed shielded-note token
 - `PRIVATE_SUBMISSION_RELAYER_ARCHITECTURE.md`: current network-layer relayer service, discovery shape, and trust boundary for proof-bound private submission
 - `PRIVACY_ASSET_STACK_FOLLOW_UPS.md`: deferred cross-repo gap list for what still remains before the shielded-note stack can be treated as fully finished
 - `PRIVACY_ASSET_THREAT_MODEL.md`: first explicit threat-model and privacy-review pass for the current shielded asset stack

@@ -11,9 +11,9 @@ already exists in `REAL_PRIVACY_TOKEN_ARCHITECTURE.md`. This file is the short
 cross-repo list of what is still needed before Xian can call the privacy asset
 stack finished without qualification.
 
-## Current Shipped Base
+## Shipped Base In The March 2026 Review
 
-As of `2026-03-27`, the stack already has:
+The review recorded:
 
 - native Groth16 / BN254 verifier support in the runtime
 - registry-backed `vk_id` verification through `zk_registry`
@@ -51,10 +51,9 @@ Current state:
 
 Still needed:
 
-- operator documentation for ceremony provenance, custody, and rotation
-- clear policy for which proving material is allowed on which network
-- packaging / release discipline so imported ceremony artifacts map cleanly to
-  network-approved manifests
+- complete the operator custody and rotation runbook
+- accept ceremony provenance and publish reviewed artifacts under the
+  [mainnet ceremony policy](../../xian-configs/docs/MAINNET_ZK_CEREMONY.md)
 
 Why it matters:
 
@@ -92,12 +91,12 @@ Current state:
   - canonical single- and multi-relayer discovery in network manifests
 - the relayer defaults to loopback bind and now requires a bearer token for
   non-loopback binds
- - the relayer now also has baseline operational controls:
-   - public-route policy
-   - in-memory rate limits
-   - bounded job-retention TTL
-   - Prometheus-style metrics
-   - an operator runbook
+- the relayer has baseline operational controls:
+  - public-route policy
+  - in-memory rate limits
+  - bounded job-retention TTL
+  - Prometheus-style metrics
+  - an operator runbook
 - that is still not a full anonymity-network or relay-mesh design
 
 Still needed:
@@ -144,8 +143,7 @@ Current state:
   proof-bound payload hashes
 - wallets now recover note payloads from indexed transaction history via BDS or
   another equivalent indexer feed
-- the current branches now expose a first protocol-shaped
-  `shielded_wallet_history` feed in `xian-abci` and `xian-py`
+- `xian-abci` and `xian-py` expose the `shielded_wallet_history` feed
 - `xian-stack` now standardizes BDS snapshot export/import as part of the
   operator recovery path
 - browser and mobile wallets can now check indexed history after a stored
@@ -154,8 +152,9 @@ Current state:
   - `privacy_artifact_catalog`
   - `shielded_history_policy`
   - `privacy_submission_policy`
-- `xian-configs` now carries checksum-pinned privacy artifact catalogs for the
-  canonical local, devnet, and testnet manifests
+- `xian-configs` carries checksum-pinned privacy artifact catalogs for the
+  canonical local and draft mainnet manifests. Both catalogs have empty
+  artifact lists.
 
 Still needed:
 
@@ -172,7 +171,7 @@ Why it matters:
 - indexed transaction recovery is the right architecture, but it still needs a
   more polished and more explicitly versioned app-facing read surface
 
-### 5. Threat model and privacy-review pass
+### 6. Threat model and privacy-review pass
 
 Current state:
 
@@ -194,7 +193,7 @@ Why it matters:
 - a privacy product is not complete when it only works cryptographically; the
   threat model has to be explicit
 
-### 6. Canonical network packaging
+### 7. Canonical network packaging
 
 Current state:
 

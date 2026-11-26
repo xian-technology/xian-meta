@@ -1,13 +1,15 @@
 # Rust as the single execution engine
 
-Status: approved 2026-11-13 with all seven recommended decisions. Progress is recorded per increment below.
+Implemented. This record preserves the decisions approved on 2026-11-13 and
+the branch status reported during each increment. For supported behavior and
+release gates, see [Compiler Runtime Launch Status](COMPILER_RUNTIME_LAUNCH_STATUS.md).
 
 ## Goal
-Every consensus rule of a transaction exists once, in Rust (`xian-vm-core`). Today eight rule sets exist twice
-(Python + Rust) and must be kept byte-identical by differential tests: fee reservation/refund/failure charge,
+The migration moved transaction execution rules into Rust (`xian-vm-core`).
+Before it started, eight rule sets existed in Python and Rust: fee reservation/refund/failure charge,
 contract preparation and entry checks, metadata syscalls, the reward split, stored-value encoding, receipt
-assembly, host-write metering, and the static admission fallback. After this work the Python per-transaction path,
-the hand-backs and those duplicates are deleted.
+assembly, host-write metering, and the static admission fallback. The migration removed the Python per-transaction
+path and its execution fallbacks.
 
 ## Target architecture
 - **Rust owns:** fee path, preparation/entry checks, every syscall (metadata reads and writes, deploy via the
@@ -20,7 +22,7 @@ the hand-backs and those duplicates are deleted.
 - **Python keeps:** ABCI glue, CheckTx/nonce/mempool policy, the decision logic for epoch rebalance and evidence,
   BDS, queries, CLI, genesis and state-patch assembly (bytes encoded by Rust), SDK value types, local test tooling.
 
-## Increments (each one merged and proven before the next)
+## Original Implementation Sequence
 | # | Step | Size | Consensus | Proof |
 |---|------|------|-----------|-------|
 | 0 | Parity harness: force-Python switch, golden corpora for deploy/random/zk/owner/system txs/simulation/queries, Python outputs frozen as fixtures | S | no | corpora |
@@ -52,8 +54,7 @@ at a time on the laptop; zk last (slow to compile). Every step: determinism camp
    reproducing Python's `str()` for every VM type.
 5. **zk in every node build:** yes, one build, no feature variants; costs compile time only.
 6. **V1 (old revision-1 contracts):** drop V1 execution from current code; historical V1 replay uses the pinned old
-   release (xian-migration already pins abci `8cd5231`). Needs an update of the V1 policy in xian-contracting/AGENTS.md and the xian-meta docs that say
-   current code preserves V1 execution (only after confirming xian-migration does not need it).
+   release (xian-migration pins the legacy runtime).
 7. **Transaction decoding:** Rust takes the raw transaction bytes (decode, wire numbers, input hash), removing one
    more Python/Rust duplicate.
 
@@ -115,7 +116,7 @@ shared scenario's transcript (every outcome, the exported store, the state root)
 (Python `execute_tx`), the in-memory store in Rust and the WebAssembly build under Node; the node's proofs are
 listed in the Progress row.
 
-## Progress
+## Implementation Record
 
 | # | Status | Commits |
 |---|--------|---------|

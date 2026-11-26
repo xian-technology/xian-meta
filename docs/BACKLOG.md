@@ -13,10 +13,5 @@ Open follow-up items for `xian-meta` itself:
 - keep completed implementation plans out of `docs/` once the current behavior
   is covered by repo-local or public docs
 
-Done: the shared-foundations cleanup in `docs/SHARED_FOUNDATIONS_PLAN.md`
-(accounts extracted to `xian-accounts`, decompiler retired in favor of
-canonical stored source), and CI for
-`scripts/check_repo_conventions.py` in the Validate workflow.
-
 Cross-repo protocol and architecture designs do not belong in this backlog
 unless the follow-up work is specifically about `xian-meta` itself.

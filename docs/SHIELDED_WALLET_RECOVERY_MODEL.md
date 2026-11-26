@@ -1,7 +1,5 @@
 # Shielded Wallet Recovery Model
 
-Status: current branch-state note after the `zk-runtime-optimization` work
-
 This note explains the current recovery and availability model for Xian's
 shielded wallet flows. It is intentionally operational, not aspirational.
 
@@ -14,9 +12,7 @@ The important split is:
 That is normal for privacy systems, but it creates real operational
 requirements.
 
-## What Exists Now
-
-Current branches now have all of the following:
+## Supported Recovery Interfaces
 
 - `ShieldedWallet.to_json()` / `from_json()` as the canonical rich wallet
   `state_snapshot`
@@ -30,10 +26,6 @@ Current branches now have all of the following:
   back to older indexed event/tag/transaction reads when needed
 - standardized `xian-stack` BDS snapshot export/import commands for operator
   recovery
-
-So the current stack is no longer just "BDS is practical today." It now has a
-real first wallet-facing history interface and real wallet-side rich-backup
-support.
 
 ## What Recovery Actually Means
 

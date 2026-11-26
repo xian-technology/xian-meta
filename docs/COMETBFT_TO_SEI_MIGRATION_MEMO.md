@@ -2,7 +2,10 @@
 
 ## Status
 
-Evaluation memo.
+Historical evaluation of a Sei-style node architecture. The current launch
+baseline uses upstream CometBFT with the native Rust Xian VM. See the
+[launch plan](MAINNET_LAUNCH_PLAN.md) and
+[runtime status](COMPILER_RUNTIME_LAUNCH_STATUS.md) for the supported stack.
 
 ## Scope
 
@@ -34,9 +37,9 @@ integrated chain binary with much more Go-native execution and storage logic.
 
 Today, that would be a poor fit for Xian's architecture and priorities.
 
-## What Xian Uses Today
+## Xian Architecture At Evaluation Time
 
-Today Xian is explicitly structured around CometBFT:
+The evaluated stack was structured around CometBFT:
 
 - `xian-abci` describes itself as the "CometBFT-facing Xian node application"
   and owns ABCI request handling, deterministic chain behavior, and node-side
@@ -69,8 +72,8 @@ is the explicit separation between:
 - the application process
 - the application interface between them
 
-That separation is exactly why Xian can keep its execution model in Python while
-letting CometBFT own replication, block production, and finality.
+That separation lets Xian own contract execution while CometBFT handles
+replication, block production, and finality.
 
 Relevant upstream references:
 
@@ -314,7 +317,7 @@ So the honest answer is:
 - switching to Sei might increase the theoretical TPS ceiling
 - it would not be an easy or immediate route to higher real TPS for Xian
 
-## Better Path For Xian
+## Recommended Path At Evaluation Time
 
 The better path is:
 
@@ -325,8 +328,8 @@ The better path is:
    - conflict handling
    - state backend efficiency
    - query/indexing efficiency
-3. Continue the long-term Xian VM path so Python stops being the runtime
-   bottleneck while remaining the authoring language.
+3. Move execution into the Xian VM and retain Python-shaped contract
+   authoring. The native Rust VM implements this direction.
 4. Borrow ideas from Sei where useful without inheriting the whole integrated
    stack.
 

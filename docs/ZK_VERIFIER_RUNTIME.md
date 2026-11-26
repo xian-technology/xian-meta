@@ -1,9 +1,9 @@
 # ZK Verifier Runtime
 
-Status: implemented v1 runtime surface
-
-This document defines the first runtime verifier surface required for a real
-privacy token in Xian.
+Design record for the first verifier API. The current VM links the Rust verifier
+in `xian-zk` and serves the verifier calls from the native block host. See the
+[contract API guide](https://docs.xian.technology/smart-contracts/stdlib/zk) for
+supported usage.
 
 It is the immediate follow-up to:
 
