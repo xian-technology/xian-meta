@@ -14,20 +14,22 @@ From `xian-stack`:
 LOCALNET_NODES=5 make localnet-init
 make localnet-up
 
-# Broad 5-validator whole-stack harness
+# Core five-validator chain suite
 make localnet-e2e
+
+# Full five-validator whole-stack harness
+make localnet-e2e LOCALNET_E2E_SUITE=full
 
 # Release-grade validation gate
 make release-safety
 ```
 
-`make localnet-e2e` is the main "test everything" localnet path. It validates
-bootstrap, health, `xian-py` smoke, contract orchestration, load, invalid and
-conflicting transactions, DEX behavior, simulator load, BDS catch-up, retrieval
-APIs, determinism checks, validator governance, state patches, logging,
-shielded-note flows, switching the `zk` runtime feature off and on again with
-governed state patches (`15-zk-feature-toggle`), same-block ordering,
-restart/chaos convergence, and soak/abuse coverage.
+`make localnet-e2e` checks chain health and agreement, signed payments and
+contract rollback, BDS recovery, governed fees, block ordering, crash and
+quorum recovery, observer catch-up, and pending nonces. Select the `dex`,
+`x402`, or `load` suite for those workflows. The `full` suite adds exhaustive
+contract and accounting cases, deeper governance, shielded flows, state
+patches, snapshot restore, resource limits, and replay.
 
 `make release-safety` is the release gate. It combines repo validation,
 the full e2e, node reporting, and the focused protocol-safety localnet
