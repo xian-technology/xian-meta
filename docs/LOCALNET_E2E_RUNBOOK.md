@@ -26,7 +26,7 @@ make release-safety
 
 `make localnet-e2e` checks chain health and agreement, signed payments and
 contract rollback, BDS recovery, governed fees, block ordering, crash and
-quorum recovery, observer catch-up, and pending nonces. Select the `dex`,
+quorum recovery, observer catch-up, and committed nonce cancellation. Select the `dex`,
 `x402`, or `load` suite for those workflows. The `full` suite adds exhaustive
 contract and accounting cases, deeper governance, shielded flows, state
 patches, snapshot restore, resource limits, and replay.
